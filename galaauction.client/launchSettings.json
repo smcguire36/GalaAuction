@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "npm": {
+      "commandName": "Npm",
+      "workingDirectory": ".",
+      "launchBrowser": false,
+      "commandLineArgs": "run dev"
+    }
+  }
+}
