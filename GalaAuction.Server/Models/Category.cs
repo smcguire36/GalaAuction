@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace GalaAuction.Server.Models
 {
@@ -11,7 +12,7 @@ namespace GalaAuction.Server.Models
         public required string CategoryName { get; set; }
 
         // Navigation property for related Bidders
-        [NotMapped]
+        [JsonIgnore]
         public List<Item> Items { get; set; } = new List<Item>();
     }
 }
