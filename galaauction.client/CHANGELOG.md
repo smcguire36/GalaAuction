@@ -4,7 +4,7 @@ The following tools were used to generate this project:
 - create-vite
 
 The following steps were used to generate this project:
-- Create react project with create-vite: `npm init --yes vite@latest galaauction.client -- --template=react`.
+- Create react project with create-vite: `npm init --yes vite@latest galaauction.client -- --template=react-ts  --no-rolldown --no-immediate`.
 - Create project file (`galaauction.client.esproj`).
 - Create `launch.json` to enable debugging.
 - Create `tasks.json` to enable debugging.

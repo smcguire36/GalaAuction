@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GalaAuction.Server.Models
 {
@@ -8,9 +9,15 @@ namespace GalaAuction.Server.Models
         public required string EventName { get; set; }
         public required string OrganizationName { get; set; }
         public required string ThankYouMessage { get; set; }
-        public bool IsActive { get; set; } = false;
-        public bool IsClosed { get; set; } = false;
+        public string EventStatus { get; set; } = "Setup";   // "Setup", "Active", "Closeout", "Checkout", "Closed"
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        // Navigation property for related Bidders
+        [NotMapped]
+        public List<Guest> Guests { get; set; } = new List<Guest>();
+
+        // Navigation property for related Items 
+        [NotMapped]
+        public List<Item> Items { get; set; } = new List<Item>();
     }
 }
