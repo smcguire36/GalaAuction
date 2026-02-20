@@ -1,5 +1,7 @@
 using GalaAuction.Server.Data;
+using GalaAuction.Server.Mappings;
 using GalaAuction.Server.Services;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
@@ -8,11 +10,21 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddControllers(options =>
+{
+    // Add a route token transformer convention to convert controller and action names to kebab-case in the generated routes
+    options.Conventions.Add(new RouteTokenTransformerConvention(new KebabCaseParameterTransformer()));
+});
+builder.Services.AddOpenApi(opts =>
+{
+    // Add transformers to provide support for Badge and Scalar attributes in the OpenAPI document
+    opts.AddScalarTransformers();
+});
 builder.AddServiceDefaults();
 
 builder.Services.AddScoped<EventService>();
+builder.Services.AddScoped<ItemService>();
+builder.Services.AddScoped<GuestService>();
 
 builder.Services.AddAuthentication()
     .AddKeycloakJwtBearer(serviceName: "keycloak", realm: "GalaAuction", options =>
@@ -55,8 +67,13 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference(options =>
     {
-        options.WithTitle("Gala Auction API");
-//        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarTarget.HttpClient);
+        options.WithTitle("Gala Auction API")
+        .AddPreferredSecuritySchemes("BearerAuth")
+        .AddHttpAuthentication("BearerAuth", auth =>
+        {
+            auth.Token = "";
+        });
+        //        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarTarget.HttpClient);
     });
 }
 

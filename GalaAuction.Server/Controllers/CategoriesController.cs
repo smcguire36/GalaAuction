@@ -21,7 +21,7 @@ namespace GalaAuction.Server.Controllers
     {
         // GET: api/Categories
         [HttpGet]
-        [Badge("New")]
+        [Badge(name:"New", color:"lightgreen")]
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
         {
             return await context.Categories.Select(c => c.ToDto()).ToListAsync();

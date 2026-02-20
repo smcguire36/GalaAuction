@@ -172,6 +172,9 @@ namespace GalaAuction.Server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<DateOnly?>("EventDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("EventName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -275,6 +278,126 @@ namespace GalaAuction.Server.Migrations
                         });
                 });
 
+            modelBuilder.Entity("GalaAuction.Server.Models.Item", b =>
+                {
+                    b.Property<int>("ItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ItemId"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GalaEventId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ItemNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PaymentMethodId")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("WinningBidAmount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("WinningBidderNumber")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ItemId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("GalaEventId");
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.HasIndex("WinningBidderNumber");
+
+                    b.ToTable("Item");
+
+                    b.HasData(
+                        new
+                        {
+                            ItemId = -1,
+                            CategoryId = 2,
+                            GalaEventId = 1,
+                            IsPaid = false,
+                            ItemName = "Adirondack Get-away",
+                            ItemNumber = 201
+                        },
+                        new
+                        {
+                            ItemId = -2,
+                            CategoryId = 2,
+                            GalaEventId = 1,
+                            IsPaid = false,
+                            ItemName = "The Bunker Hill Inn",
+                            ItemNumber = 202
+                        },
+                        new
+                        {
+                            ItemId = -3,
+                            CategoryId = 3,
+                            GalaEventId = 1,
+                            IsPaid = false,
+                            ItemName = "Veuve Cliquot Champagne Brut, with flutes",
+                            ItemNumber = 301
+                        },
+                        new
+                        {
+                            ItemId = -4,
+                            CategoryId = 3,
+                            GalaEventId = 1,
+                            IsPaid = false,
+                            ItemName = "Crate of Summer Wines",
+                            ItemNumber = 303
+                        },
+                        new
+                        {
+                            ItemId = -5,
+                            CategoryId = 6,
+                            GalaEventId = 1,
+                            IsPaid = false,
+                            ItemName = "Golf Outing",
+                            ItemNumber = 601
+                        },
+                        new
+                        {
+                            ItemId = -6,
+                            CategoryId = 6,
+                            GalaEventId = 1,
+                            IsPaid = false,
+                            ItemName = "Yankee Tickets (4)",
+                            ItemNumber = 602
+                        },
+                        new
+                        {
+                            ItemId = -7,
+                            CategoryId = 9,
+                            GalaEventId = 1,
+                            IsPaid = false,
+                            ItemName = "Orchid",
+                            ItemNumber = 901
+                        },
+                        new
+                        {
+                            ItemId = -8,
+                            CategoryId = 9,
+                            GalaEventId = 1,
+                            IsPaid = false,
+                            ItemName = "Orchid",
+                            ItemNumber = 902
+                        });
+                });
+
             modelBuilder.Entity("GalaAuction.Server.Models.PaymentMethod", b =>
                 {
                     b.Property<string>("PaymentMethodId")
@@ -329,7 +452,7 @@ namespace GalaAuction.Server.Migrations
             modelBuilder.Entity("GalaAuction.Server.Models.Bidder", b =>
                 {
                     b.HasOne("GalaAuction.Server.Models.Guest", "Guest")
-                        .WithMany()
+                        .WithMany("Bidders")
                         .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -340,12 +463,65 @@ namespace GalaAuction.Server.Migrations
             modelBuilder.Entity("GalaAuction.Server.Models.Guest", b =>
                 {
                     b.HasOne("GalaAuction.Server.Models.GalaEvent", "GalaEvent")
-                        .WithMany()
+                        .WithMany("Guests")
                         .HasForeignKey("GalaEventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("GalaEvent");
+                });
+
+            modelBuilder.Entity("GalaAuction.Server.Models.Item", b =>
+                {
+                    b.HasOne("GalaAuction.Server.Models.Category", "Category")
+                        .WithMany("Items")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GalaAuction.Server.Models.GalaEvent", "GalaEvent")
+                        .WithMany("Items")
+                        .HasForeignKey("GalaEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GalaAuction.Server.Models.PaymentMethod", "PaymentMethod")
+                        .WithMany("Items")
+                        .HasForeignKey("PaymentMethodId");
+
+                    b.HasOne("GalaAuction.Server.Models.Bidder", "Bidder")
+                        .WithMany()
+                        .HasForeignKey("WinningBidderNumber");
+
+                    b.Navigation("Bidder");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("GalaEvent");
+
+                    b.Navigation("PaymentMethod");
+                });
+
+            modelBuilder.Entity("GalaAuction.Server.Models.Category", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("GalaAuction.Server.Models.GalaEvent", b =>
+                {
+                    b.Navigation("Guests");
+
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("GalaAuction.Server.Models.Guest", b =>
+                {
+                    b.Navigation("Bidders");
+                });
+
+            modelBuilder.Entity("GalaAuction.Server.Models.PaymentMethod", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

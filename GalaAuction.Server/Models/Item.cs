@@ -8,14 +8,16 @@ namespace GalaAuction.Server.Models
     public class Item
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ItemId { get; set; }
+        public required int ItemNumber { get; set; }
         public required string ItemName { get; set; }
 
-        [AllowNull]
         public int? WinningBidderNumber { get; set; }
 
-        [AllowNull]
+        // Navigation property back to Bidder
+        [ForeignKey("WinningBidderNumber")]
+        public Bidder? Bidder { get; set; }
+
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? WinningBidAmount { get; set; }
 
@@ -34,6 +36,11 @@ namespace GalaAuction.Server.Models
         [ForeignKey("GalaEventId")]
         public GalaEvent GalaEvent { get; set; } = null!;
 
+        // Foreign key to Categories
+        public int CategoryId { get; set; }
+        // Navigation property back to Category
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; } = null!;
 
     }
 }

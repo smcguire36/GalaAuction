@@ -6,9 +6,10 @@ namespace GalaAuction.Server.Services
 {
     public class EventService(GalaAuctionDBContext context)
     {
-        public async Task<GalaEvent> GetEventById(int id)
+        public async Task<GalaEvent?> GetEventById(int id)
         {
-            var galaEvent = await context.GalaEvents.FindAsync(id);
+            return await context.GalaEvents.FindAsync(id);
+/*
             if (galaEvent != null)
             {
                 return galaEvent;
@@ -17,6 +18,7 @@ namespace GalaAuction.Server.Services
             {
                 throw new Exception("Event not found");
             }
+*/
         }
     }
 }

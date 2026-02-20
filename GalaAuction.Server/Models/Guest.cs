@@ -24,6 +24,7 @@ namespace GalaAuction.Server.Models
         // Navigation property back to parent GalaEvent
         [ForeignKey("GalaEventId")]
         public GalaEvent? GalaEvent { get; set; }
+        public bool OnlineBidderOnly { get; set; } = false;
 
     }
 }

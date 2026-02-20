@@ -11,6 +11,7 @@ namespace GalaAuction.Server.Data
         public DbSet<Bidder> Bidders { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<Item> Items { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,7 @@ namespace GalaAuction.Server.Data
 #endif
 
         }
+        public DbSet<GalaAuction.Server.Models.Item> Item { get; set; } = default!;
     }
 
     public static class ModelBuilderExtensions
@@ -47,6 +49,74 @@ namespace GalaAuction.Server.Data
                     }
                 );
 
+            // Seed data for Items (development only)
+            modelBuilder.Entity<Item>()
+                .HasData(
+                    new Item
+                    {
+                        ItemId = -1,
+                        ItemNumber = 201,
+                        ItemName = "Adirondack Get-away",
+                        GalaEventId = 1,
+                        CategoryId = 2
+                    },
+                    new Item
+                    {
+                        ItemId = -2,
+                        ItemNumber = 202,
+                        ItemName = "The Bunker Hill Inn",
+                        GalaEventId = 1,
+                        CategoryId = 2
+                    },
+                    new Item
+                    {
+                        ItemId = -3,
+                        ItemNumber = 301,
+                        ItemName = "Veuve Cliquot Champagne Brut, with flutes",
+                        GalaEventId = 1,
+                        CategoryId = 3
+                    },
+                    new Item
+                    {
+                        ItemId = -4,
+                        ItemNumber = 303,
+                        ItemName = "Crate of Summer Wines",
+                        GalaEventId = 1,
+                        CategoryId = 3
+                    },
+                    new Item
+                    {
+                        ItemId = -5,
+                        ItemNumber = 601,
+                        ItemName = "Golf Outing",
+                        GalaEventId = 1,
+                        CategoryId = 6
+                    },
+                    new Item
+                    {
+                        ItemId = -6,
+                        ItemNumber = 602,
+                        ItemName = "Yankee Tickets (4)",
+                        GalaEventId = 1,
+                        CategoryId = 6
+                    },
+                    new Item
+                    {
+                        ItemId = -7,
+                        ItemNumber = 901,
+                        ItemName = "Orchid",
+                        GalaEventId = 1,
+                        CategoryId = 9
+                    },
+                    new Item
+                    {
+                        ItemId = -8,
+                        ItemNumber = 902,
+                        ItemName = "Orchid",
+                        GalaEventId = 1,
+                        CategoryId = 9
+                    }
+                );
             // Seed data for Guests (development only)
             modelBuilder.Entity<Guest>()
                 .HasData(

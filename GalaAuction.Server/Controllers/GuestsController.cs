@@ -1,4 +1,6 @@
-﻿using GalaAuction.Server.Data;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using GalaAuction.Server.Data;
 using GalaAuction.Server.DTOs;
 using GalaAuction.Server.Mappings;
 using GalaAuction.Server.Migrations;
@@ -6,14 +8,19 @@ using GalaAuction.Server.Models;
 using GalaAuction.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GalaAuction.Server.Controllers
@@ -21,26 +28,110 @@ namespace GalaAuction.Server.Controllers
     [Route("api/events/{eventId}/[controller]")]
     [ApiController]
     [Authorize]
-    public class GuestsController(GalaAuctionDBContext context, EventService eventService) : ControllerBase 
+    public class GuestsController(GalaAuctionDBContext context, EventService eventService, GuestService guestService) : ControllerBase, IAsyncActionFilter
     {
+        public GalaEvent? GalaEvent { get; set; }
+
+        [NonAction]
+        public async Task OnActionExecutionAsync(
+            ActionExecutingContext context,
+            ActionExecutionDelegate next)
+        {
+            // Try to load the GalaEvent object into the property so that it can be used in the action methods.
+            // This is needed to avoid having to load the GalaEvent in each action method.
+            if (context.ActionArguments.TryGetValue("eventId", out var eventIdObj) && eventIdObj is int eventId)
+            {
+                GalaEvent = eventService.GetEventById(eventId).GetAwaiter().GetResult();
+                if (GalaEvent == null)
+                {
+                    context.Result = BadRequest("Event not found");
+                    return;
+                }
+            }
+            else
+            {
+                context.Result = BadRequest("A valid Event Id is required");
+                return;
+            }
+            await next();
+            // Put any post action code here.
+        }
+
         // GET: api/Guests
         [HttpGet]
-        [Badge("New")]
+        [Badge("New", color: "lightgreen")]
         public async Task<ActionResult<IEnumerable<GuestDto>>> GetGuests(int eventId)
         {
-            try
-            {
-                var galaEvent = await eventService.GetEventById(eventId);
-                var query = context.Guests.AsQueryable()
-                    .Where(g => g.GalaEventId == galaEvent!.GalaEventId)
+            var query = context.Guests.AsQueryable()
+                    .Where(g => g.GalaEventId == GalaEvent!.GalaEventId)
                     .OrderBy(g => g.LastName)
                     .Include(g => g.Bidders)
                     .Select(g => g.ToDto());
-                return await query.ToListAsync();
-            }
-            catch (Exception e)
+            return await query.ToListAsync();
+        }
+
+        [HttpGet("downloadcsv")]
+        public async Task<ActionResult> DownloadCsv(int eventId)
+        {
+            // Get the guest data to be exported as a CSV file
+            var query = context.Guests.AsQueryable()
+                    .Where(g => g.GalaEventId == GalaEvent!.GalaEventId)
+                    .OrderBy(g => g.GuestId)
+                    .Include(g => g.Bidders)
+                    .Select(g => g.ToDto());
+            var guests = await query.ToListAsync();
+
+            // Create a custom configuration to include quoting string fields
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                return BadRequest(e.Message);
+                // Force the library to put quotes around string fields.
+                ShouldQuote = args => args.FieldType == typeof(string)
+            };
+
+            // Create a memory stream to write the CSV data to, and use CsvHelper to write the data to the stream.
+            using var memoryStream = new MemoryStream();
+            using (var writer = new StreamWriter(memoryStream))
+            using (var csv = new CsvWriter(writer, config))
+            {
+                csv.Context.RegisterClassMap<GuestExportMap>();
+                csv.WriteRecords(guests);
+                writer.Flush();
+            }
+            // Return the CSV file as a download, outputting the memory stream as a byte array.
+            return File(memoryStream.ToArray(), "text/csv", $"guests_for_event_{eventId}.csv");
+        }
+
+        [HttpPost("uploadcsv")]
+        public async Task<ActionResult> UploadGuestCsv(int eventId, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            try
+            {
+                using (var reader = new StreamReader(file.OpenReadStream(), Encoding.UTF8))
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    csv.Context.RegisterClassMap<GuestImportMap>();
+                    var guestsFromCsv = csv.GetRecords<GuestDto>().ToList();
+                    foreach (var guestDto in guestsFromCsv)
+                    {
+                        // Ensure the GalaEventId from the URL is used as it will not be coming from the CSV
+                        guestDto.GalaEventId = eventId;
+                        // Create the Guest object from the DTO and add it to the context.
+                        // The GuestService is used in the mapping to set the next available in person bidder number if one is not provided and OnlineBidderOnly is false.
+                        var guest = guestDto.ToGuest(guestService);
+                        context.Guests.Add(guest);
+                    }
+                    await context.SaveChangesAsync();
+                    return Ok($"File uploaded and {guestsFromCsv.Count} guests imported successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, $"An error occurred while processing the file: {ex.Message}");
             }
         }
 
@@ -48,24 +139,16 @@ namespace GalaAuction.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GuestDto>> GetGuest(int eventId, int id)
         {
-            try
+            var query = context.Guests.AsQueryable()
+                .Where(g => g.GalaEventId == eventId && g.GuestId == id)
+                .Include(g => g.Bidders)
+                .Select(g => g.ToDto());
+            var guest = await query.SingleOrDefaultAsync();
+            if (guest == null)
             {
-                var galaEvent = await eventService.GetEventById(eventId);
-                var query = context.Guests.AsQueryable()
-                    .Where(g => g.GalaEventId == galaEvent!.GalaEventId && g.GuestId == id)
-                    .Include(g => g.Bidders)
-                    .Select(g => g.ToDto());
-                var guest = await query.SingleOrDefaultAsync();
-                if (guest == null)
-                {
-                    return NotFound();
-                }
-                return guest;
+                return NotFound();
             }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return guest;
         }
 
         // PUT: api/Guests/5
@@ -73,16 +156,6 @@ namespace GalaAuction.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGuest(int eventId, int id, GuestDto dto)
         {
-            var galaEvent = null as GalaEvent;
-            try
-            {
-                galaEvent = await eventService.GetEventById(eventId);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-
             if (id != dto.GuestId)
             {
                 return BadRequest();
@@ -93,7 +166,7 @@ namespace GalaAuction.Server.Controllers
             {
                 return NotFound();
             }
-            if (guest.GalaEventId != galaEvent.GalaEventId)
+            if (guest.GalaEventId != eventId)
             {
                 return BadRequest("Guest does not belong to the specified event.");
             }
@@ -158,49 +231,14 @@ namespace GalaAuction.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         // Create a new guest
         [HttpPost]
-        public async Task<ActionResult<Guest>>CreateGuest(int eventId, GuestDto dto)
+        public async Task<ActionResult<Guest>> CreateGuest(int eventId, GuestDto dto)
         {
-            var galaEvent = null as GalaEvent;
-            try
+            if (dto.GalaEventId != eventId)
             {
-                galaEvent = await eventService.GetEventById(eventId);
+                return BadRequest("Guest does not belong to the specified event.");
             }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-
-            var bidders = new List<Bidder>();
-
+            var guest = dto.ToGuest(guestService);
             // [TODO] Add code to make sure the BidderNumber is unique.  Perhaps a unique attribute on the BidderNumber in the Model.
-
-            // Create Bidder object and add to bidders list if OnlineBidderNumber is provided
-            if (dto.OnlineBidderNumber != null)
-            {
-                bidders.Add(new Bidder
-                {
-                    BidderNumber = dto.OnlineBidderNumber,
-                    IsOnline = true,
-                });
-            }
-            // Create Bidder object and add to bidders list if InPersonBidderNumber is provided
-            if (dto.InPersonBidderNumber != null)
-            {
-                bidders.Add(new Bidder
-                {
-                    BidderNumber = dto.InPersonBidderNumber,
-                    IsOnline = false
-                });
-            }
-            // Create Guest object and associate with the provided eventId and bidders
-            var guest = new Guest
-            {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                GalaEventId = galaEvent.GalaEventId,
-                TableNumber = dto.TableNumber,
-                Bidders = bidders
-            };
             context.Guests.Add(guest);
             await context.SaveChangesAsync();
 
@@ -211,27 +249,18 @@ namespace GalaAuction.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGuest(int eventId, int id)
         {
-            try
+            var guest = await context.Guests.FindAsync(id);
+            if (guest == null)
             {
-                var galaEvent = await eventService.GetEventById(eventId);
-
-                var guest = await context.Guests.FindAsync(id);
-                if (guest == null)
-                {
-                    return NotFound();
-                }
-                if (guest.GalaEventId != galaEvent!.GalaEventId)
-                {
-                    return BadRequest("Guest does not belong to the specified event.");
-                }
-
-                context.Guests.Remove(guest);
-                await context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (Exception e)
+            if (guest.GalaEventId != eventId)
             {
-                return BadRequest(e.Message);
+                return BadRequest("Guest does not belong to the specified event.");
             }
+
+            context.Guests.Remove(guest);
+            await context.SaveChangesAsync();
             return NoContent();
         }
 

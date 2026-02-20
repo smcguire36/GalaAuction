@@ -1,32 +1,25 @@
-﻿using GalaAuction.Server.DTOs;
-using GalaAuction.Server.Models;
+﻿using GalaAuction.Server.Data;
 
 namespace GalaAuction.Server.Services
 {
-    public class GuestService
+    public class GuestService(GalaAuctionDBContext context)
     {
-        public GuestDto GetGuestDto(Guest guest)
+        public string GetNextBidderNumber(int eventId)
         {
-            var dto = new GuestDto
+            Func<string, int?> stringToNullableInt = s =>
             {
-                GuestId = guest.GuestId,
-                FirstName = guest.FirstName,
-                LastName = guest.LastName,
-                TableNumber = guest.TableNumber,
-                GalaEventId = guest.GalaEventId
+                int temp;
+                if (int.TryParse(s, out temp))
+                { return temp; }
+                return null;
             };
-            var ipBidder = guest.Bidders.FirstOrDefault(item => item.IsOnline == false);
-            if (ipBidder != null)
-            {
-                dto.InPersonBidderNumber = ipBidder.BidderNumber;
-            }
-            var olBidder = guest.Bidders.FirstOrDefault(item => item.IsOnline == true);
-            if (olBidder != null)
-            {
-                dto.InPersonBidderNumber = olBidder.BidderNumber;
-            }
 
-            return dto;
+            var maxId = context.Bidders
+                .Where(b => b.Guest.GalaEventId == eventId && b.IsOnline == false)
+                .Select(b => stringToNullableInt(b.BidderNumber)) // Convert BidderNumbers to a nullable int
+                .Where(b => b.HasValue)                           // Filter out any non-numeric BidderNumbers
+                .Max() ?? 0;
+            return (maxId + 1).ToString();
         }
     }
 }

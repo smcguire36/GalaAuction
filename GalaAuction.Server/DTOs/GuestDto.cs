@@ -9,5 +9,6 @@
         public int GalaEventId { get; set; }
         public string? InPersonBidderNumber { get; set; }
         public string? OnlineBidderNumber { get; set; }
+        public bool OnlineBidderOnly { get; set; }
     }
 }
