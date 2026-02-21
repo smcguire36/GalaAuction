@@ -3,6 +3,7 @@ using System;
 using GalaAuction.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GalaAuction.Server.Migrations
 {
     [DbContext(typeof(GalaAuctionDBContext))]
-    partial class GalaAuctionDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260218051352_AddedEventDateAndItemTable")]
+    partial class AddedEventDateAndItemTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,9 +229,6 @@ namespace GalaAuction.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("OnlineBidderOnly")
-                        .HasColumnType("boolean");
-
                     b.Property<int?>("TableNumber")
                         .HasColumnType("integer");
 
@@ -245,7 +245,6 @@ namespace GalaAuction.Server.Migrations
                             FirstName = "Stewart",
                             GalaEventId = 1,
                             LastName = "McGuire",
-                            OnlineBidderOnly = false,
                             TableNumber = 2
                         },
                         new
@@ -254,7 +253,6 @@ namespace GalaAuction.Server.Migrations
                             FirstName = "Elisabeth",
                             GalaEventId = 1,
                             LastName = "McDonald",
-                            OnlineBidderOnly = false,
                             TableNumber = 2
                         },
                         new
@@ -263,7 +261,6 @@ namespace GalaAuction.Server.Migrations
                             FirstName = "Edie",
                             GalaEventId = 1,
                             LastName = "Rosenbaum",
-                            OnlineBidderOnly = false,
                             TableNumber = 1
                         },
                         new
@@ -272,7 +269,6 @@ namespace GalaAuction.Server.Migrations
                             FirstName = "Harold",
                             GalaEventId = 1,
                             LastName = "Rosenbaum",
-                            OnlineBidderOnly = false,
                             TableNumber = 1
                         },
                         new
@@ -281,7 +277,6 @@ namespace GalaAuction.Server.Migrations
                             FirstName = "Peggy",
                             GalaEventId = 1,
                             LastName = "McGuire",
-                            OnlineBidderOnly = false,
                             TableNumber = 2
                         });
                 });
@@ -289,12 +284,9 @@ namespace GalaAuction.Server.Migrations
             modelBuilder.Entity("GalaAuction.Server.Models.Item", b =>
                 {
                     b.Property<int>("ItemId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ItemId"));
-
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<int>("GalaEventId")
@@ -306,9 +298,6 @@ namespace GalaAuction.Server.Migrations
                     b.Property<string>("ItemName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("ItemNumber")
-                        .HasColumnType("integer");
 
                     b.Property<string>("PaymentMethodId")
                         .HasColumnType("text");
@@ -327,83 +316,7 @@ namespace GalaAuction.Server.Migrations
 
                     b.HasIndex("PaymentMethodId");
 
-                    b.HasIndex("WinningBidderNumber");
-
                     b.ToTable("Item");
-
-                    b.HasData(
-                        new
-                        {
-                            ItemId = -1,
-                            CategoryId = 2,
-                            GalaEventId = 1,
-                            IsPaid = false,
-                            ItemName = "Adirondack Get-away",
-                            ItemNumber = 201
-                        },
-                        new
-                        {
-                            ItemId = -2,
-                            CategoryId = 2,
-                            GalaEventId = 1,
-                            IsPaid = false,
-                            ItemName = "The Bunker Hill Inn",
-                            ItemNumber = 202
-                        },
-                        new
-                        {
-                            ItemId = -3,
-                            CategoryId = 3,
-                            GalaEventId = 1,
-                            IsPaid = false,
-                            ItemName = "Veuve Cliquot Champagne Brut, with flutes",
-                            ItemNumber = 301
-                        },
-                        new
-                        {
-                            ItemId = -4,
-                            CategoryId = 3,
-                            GalaEventId = 1,
-                            IsPaid = false,
-                            ItemName = "Crate of Summer Wines",
-                            ItemNumber = 303
-                        },
-                        new
-                        {
-                            ItemId = -5,
-                            CategoryId = 6,
-                            GalaEventId = 1,
-                            IsPaid = false,
-                            ItemName = "Golf Outing",
-                            ItemNumber = 601
-                        },
-                        new
-                        {
-                            ItemId = -6,
-                            CategoryId = 6,
-                            GalaEventId = 1,
-                            IsPaid = false,
-                            ItemName = "Yankee Tickets (4)",
-                            ItemNumber = 602
-                        },
-                        new
-                        {
-                            ItemId = -7,
-                            CategoryId = 9,
-                            GalaEventId = 1,
-                            IsPaid = false,
-                            ItemName = "Orchid",
-                            ItemNumber = 901
-                        },
-                        new
-                        {
-                            ItemId = -8,
-                            CategoryId = 9,
-                            GalaEventId = 1,
-                            IsPaid = false,
-                            ItemName = "Orchid",
-                            ItemNumber = 902
-                        });
                 });
 
             modelBuilder.Entity("GalaAuction.Server.Models.PaymentMethod", b =>
@@ -481,11 +394,9 @@ namespace GalaAuction.Server.Migrations
 
             modelBuilder.Entity("GalaAuction.Server.Models.Item", b =>
                 {
-                    b.HasOne("GalaAuction.Server.Models.Category", "Category")
+                    b.HasOne("GalaAuction.Server.Models.Category", null)
                         .WithMany("Items")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("GalaAuction.Server.Models.GalaEvent", "GalaEvent")
                         .WithMany("Items")
@@ -496,14 +407,6 @@ namespace GalaAuction.Server.Migrations
                     b.HasOne("GalaAuction.Server.Models.PaymentMethod", "PaymentMethod")
                         .WithMany("Items")
                         .HasForeignKey("PaymentMethodId");
-
-                    b.HasOne("GalaAuction.Server.Models.Bidder", "Bidder")
-                        .WithMany()
-                        .HasForeignKey("WinningBidderNumber");
-
-                    b.Navigation("Bidder");
-
-                    b.Navigation("Category");
 
                     b.Navigation("GalaEvent");
 

@@ -3,6 +3,7 @@ using System;
 using GalaAuction.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GalaAuction.Server.Migrations
 {
     [DbContext(typeof(GalaAuctionDBContext))]
-    partial class GalaAuctionDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260219051448_AddedItemJoinForWinningBidder")]
+    partial class AddedItemJoinForWinningBidder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,9 +229,6 @@ namespace GalaAuction.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("OnlineBidderOnly")
-                        .HasColumnType("boolean");
-
                     b.Property<int?>("TableNumber")
                         .HasColumnType("integer");
 
@@ -245,7 +245,6 @@ namespace GalaAuction.Server.Migrations
                             FirstName = "Stewart",
                             GalaEventId = 1,
                             LastName = "McGuire",
-                            OnlineBidderOnly = false,
                             TableNumber = 2
                         },
                         new
@@ -254,7 +253,6 @@ namespace GalaAuction.Server.Migrations
                             FirstName = "Elisabeth",
                             GalaEventId = 1,
                             LastName = "McDonald",
-                            OnlineBidderOnly = false,
                             TableNumber = 2
                         },
                         new
@@ -263,7 +261,6 @@ namespace GalaAuction.Server.Migrations
                             FirstName = "Edie",
                             GalaEventId = 1,
                             LastName = "Rosenbaum",
-                            OnlineBidderOnly = false,
                             TableNumber = 1
                         },
                         new
@@ -272,7 +269,6 @@ namespace GalaAuction.Server.Migrations
                             FirstName = "Harold",
                             GalaEventId = 1,
                             LastName = "Rosenbaum",
-                            OnlineBidderOnly = false,
                             TableNumber = 1
                         },
                         new
@@ -281,7 +277,6 @@ namespace GalaAuction.Server.Migrations
                             FirstName = "Peggy",
                             GalaEventId = 1,
                             LastName = "McGuire",
-                            OnlineBidderOnly = false,
                             TableNumber = 2
                         });
                 });

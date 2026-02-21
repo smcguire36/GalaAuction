@@ -3,6 +3,7 @@ using System;
 using GalaAuction.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GalaAuction.Server.Migrations
 {
     [DbContext(typeof(GalaAuctionDBContext))]
-    partial class GalaAuctionDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260220051643_AddedOnlineBidderOnly")]
+    partial class AddedOnlineBidderOnly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
