@@ -44,7 +44,7 @@ namespace GalaAuction.Server.Data
                         EventName = "Gala 2026",
                         OrganizationName = "Canticorum Virtuosi, Inc.",
                         ThankYouMessage = "Thank you for your support!",
-                        EventStatus = "Setup",
+                        EventStatus = 0,    // 0 = Setup
                         CreatedAt = new DateTime(2026,2,15,23,0,0,DateTimeKind.Utc)
                     }
                 );
@@ -168,56 +168,56 @@ namespace GalaAuction.Server.Data
                     {
                         BidderId = -1,
                         GuestId = -1,
-                        BidderNumber = "1",
+                        BidderNumber = 1,
                         IsOnline = false
                     },
                     new Bidder
                     {
                         BidderId = -2,
                         GuestId = -2,
-                        BidderNumber = "2",
+                        BidderNumber = 2,
                         IsOnline = false
                     },
                     new Bidder
                     {
                         BidderId = -3,
                         GuestId = -2,
-                        BidderNumber = "ESM",
+                        BidderNumber = 1001,
                         IsOnline = true
                     },
                     new Bidder
                     {
                         BidderId = -4,
                         GuestId = -3,
-                        BidderNumber = "3",
+                        BidderNumber = 3,
                         IsOnline = false
                     },
                     new Bidder
                     {
                         BidderId = -5,
                         GuestId = -3,
-                        BidderNumber = "ER",
+                        BidderNumber = 1002,
                         IsOnline = true
                     },
                     new Bidder
                     {
                         BidderId = -6,
                         GuestId = -4,
-                        BidderNumber = "4",
+                        BidderNumber = 4,
                         IsOnline = false
                     },
                     new Bidder
                     {
                         BidderId = -7,
                         GuestId = -5,
-                        BidderNumber = "5",
+                        BidderNumber = 5,
                         IsOnline = false
                     },
                     new Bidder
                     {
                         BidderId = -8,
                         GuestId = -5,
-                        BidderNumber = "PM",
+                        BidderNumber = 1003,
                         IsOnline = true
                     }
                 );

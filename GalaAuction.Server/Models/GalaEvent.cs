@@ -11,7 +11,7 @@ namespace GalaAuction.Server.Models
         public DateOnly? EventDate { get; set; }
         public required string OrganizationName { get; set; }
         public required string ThankYouMessage { get; set; }
-        public string EventStatus { get; set; } = "Setup";   // "Setup", "Active", "Closeout", "Checkout", "Closed"
+        public int EventStatus { get; set; } = 0;   // 0="Setup", 1="Active", 2="Closeout", 3="Checkout", 4="Closed"
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation property for related Bidders

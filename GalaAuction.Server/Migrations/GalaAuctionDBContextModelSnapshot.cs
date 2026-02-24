@@ -30,9 +30,8 @@ namespace GalaAuction.Server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BidderId"));
 
-                    b.Property<string>("BidderNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("BidderNumber")
+                        .HasColumnType("integer");
 
                     b.Property<int>("GuestId")
                         .HasColumnType("integer");
@@ -50,56 +49,56 @@ namespace GalaAuction.Server.Migrations
                         new
                         {
                             BidderId = -1,
-                            BidderNumber = "1",
+                            BidderNumber = 1,
                             GuestId = -1,
                             IsOnline = false
                         },
                         new
                         {
                             BidderId = -2,
-                            BidderNumber = "2",
+                            BidderNumber = 2,
                             GuestId = -2,
                             IsOnline = false
                         },
                         new
                         {
                             BidderId = -3,
-                            BidderNumber = "ESM",
+                            BidderNumber = 1001,
                             GuestId = -2,
                             IsOnline = true
                         },
                         new
                         {
                             BidderId = -4,
-                            BidderNumber = "3",
+                            BidderNumber = 3,
                             GuestId = -3,
                             IsOnline = false
                         },
                         new
                         {
                             BidderId = -5,
-                            BidderNumber = "ER",
+                            BidderNumber = 1002,
                             GuestId = -3,
                             IsOnline = true
                         },
                         new
                         {
                             BidderId = -6,
-                            BidderNumber = "4",
+                            BidderNumber = 4,
                             GuestId = -4,
                             IsOnline = false
                         },
                         new
                         {
                             BidderId = -7,
-                            BidderNumber = "5",
+                            BidderNumber = 5,
                             GuestId = -5,
                             IsOnline = false
                         },
                         new
                         {
                             BidderId = -8,
-                            BidderNumber = "PM",
+                            BidderNumber = 1003,
                             GuestId = -5,
                             IsOnline = true
                         });
@@ -179,9 +178,8 @@ namespace GalaAuction.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("EventStatus")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("EventStatus")
+                        .HasColumnType("integer");
 
                     b.Property<string>("OrganizationName")
                         .IsRequired()
@@ -201,7 +199,7 @@ namespace GalaAuction.Server.Migrations
                             GalaEventId = 1,
                             CreatedAt = new DateTime(2026, 2, 15, 23, 0, 0, 0, DateTimeKind.Utc),
                             EventName = "Gala 2026",
-                            EventStatus = "Setup",
+                            EventStatus = 0,
                             OrganizationName = "Canticorum Virtuosi, Inc.",
                             ThankYouMessage = "Thank you for your support!"
                         });

@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GalaAuction.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class DBCreateWithAllRefactorsToDate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,7 @@ namespace GalaAuction.Server.Migrations
                     GalaEventId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     EventName = table.Column<string>(type: "text", nullable: false),
+                    EventDate = table.Column<DateOnly>(type: "date", nullable: true),
                     OrganizationName = table.Column<string>(type: "text", nullable: false),
                     ThankYouMessage = table.Column<string>(type: "text", nullable: false),
                     EventStatus = table.Column<string>(type: "text", nullable: false),
@@ -64,7 +65,8 @@ namespace GalaAuction.Server.Migrations
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
                     TableNumber = table.Column<int>(type: "integer", nullable: true),
-                    GalaEventId = table.Column<int>(type: "integer", nullable: false)
+                    GalaEventId = table.Column<int>(type: "integer", nullable: false),
+                    OnlineBidderOnly = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,24 +80,66 @@ namespace GalaAuction.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bidder",
+                name: "Bidders",
                 columns: table => new
                 {
                     BidderId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BidderNumber = table.Column<string>(type: "text", nullable: false),
+                    BidderNumber = table.Column<int>(type: "integer", nullable: false),
                     IsOnline = table.Column<bool>(type: "boolean", nullable: false),
                     GuestId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bidder", x => x.BidderId);
+                    table.PrimaryKey("PK_Bidders", x => x.BidderId);
                     table.ForeignKey(
-                        name: "FK_Bidder_Guests_GuestId",
+                        name: "FK_Bidders_Guests_GuestId",
                         column: x => x.GuestId,
                         principalTable: "Guests",
                         principalColumn: "GuestId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Item",
+                columns: table => new
+                {
+                    ItemId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ItemNumber = table.Column<int>(type: "integer", nullable: false),
+                    ItemName = table.Column<string>(type: "text", nullable: false),
+                    WinningBidderNumber = table.Column<int>(type: "integer", nullable: true),
+                    WinningBidAmount = table.Column<decimal>(type: "numeric(18,2)", nullable: true),
+                    IsPaid = table.Column<bool>(type: "boolean", nullable: false),
+                    PaymentMethodId = table.Column<string>(type: "text", nullable: true),
+                    GalaEventId = table.Column<int>(type: "integer", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Item", x => x.ItemId);
+                    table.ForeignKey(
+                        name: "FK_Item_Bidders_WinningBidderNumber",
+                        column: x => x.WinningBidderNumber,
+                        principalTable: "Bidders",
+                        principalColumn: "BidderId");
+                    table.ForeignKey(
+                        name: "FK_Item_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Item_GalaEvents_GalaEventId",
+                        column: x => x.GalaEventId,
+                        principalTable: "GalaEvents",
+                        principalColumn: "GalaEventId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Item_PaymentMethods_PaymentMethodId",
+                        column: x => x.PaymentMethodId,
+                        principalTable: "PaymentMethods",
+                        principalColumn: "PaymentMethodId");
                 });
 
             migrationBuilder.InsertData(
@@ -115,8 +159,8 @@ namespace GalaAuction.Server.Migrations
 
             migrationBuilder.InsertData(
                 table: "GalaEvents",
-                columns: new[] { "GalaEventId", "CreatedAt", "EventName", "EventStatus", "OrganizationName", "ThankYouMessage" },
-                values: new object[] { 1, new DateTime(2026, 2, 15, 23, 0, 0, 0, DateTimeKind.Utc), "Gala 2026", "Setup", "Canticorum Virtuosi, Inc.", "Thank you for your support!" });
+                columns: new[] { "GalaEventId", "CreatedAt", "EventDate", "EventName", "EventStatus", "OrganizationName", "ThankYouMessage" },
+                values: new object[] { 1, new DateTime(2026, 2, 15, 23, 0, 0, 0, DateTimeKind.Utc), null, "Gala 2026", "Setup", "Canticorum Virtuosi, Inc.", "Thank you for your support!" });
 
             migrationBuilder.InsertData(
                 table: "PaymentMethods",
@@ -134,47 +178,85 @@ namespace GalaAuction.Server.Migrations
 
             migrationBuilder.InsertData(
                 table: "Guests",
-                columns: new[] { "GuestId", "FirstName", "GalaEventId", "LastName", "TableNumber" },
+                columns: new[] { "GuestId", "FirstName", "GalaEventId", "LastName", "OnlineBidderOnly", "TableNumber" },
                 values: new object[,]
                 {
-                    { -5, "Peggy", 1, "McGuire", 2 },
-                    { -4, "Harold", 1, "Rosenbaum", 1 },
-                    { -3, "Edie", 1, "Rosenbaum", 1 },
-                    { -2, "Elisabeth", 1, "McDonald", 2 },
-                    { -1, "Stewart", 1, "McGuire", 2 }
+                    { -5, "Peggy", 1, "McGuire", false, 2 },
+                    { -4, "Harold", 1, "Rosenbaum", false, 1 },
+                    { -3, "Edie", 1, "Rosenbaum", false, 1 },
+                    { -2, "Elisabeth", 1, "McDonald", false, 2 },
+                    { -1, "Stewart", 1, "McGuire", false, 2 }
                 });
 
             migrationBuilder.InsertData(
-                table: "Bidder",
+                table: "Item",
+                columns: new[] { "ItemId", "CategoryId", "GalaEventId", "IsPaid", "ItemName", "ItemNumber", "PaymentMethodId", "WinningBidAmount", "WinningBidderNumber" },
+                values: new object[,]
+                {
+                    { -8, 9, 1, false, "Orchid", 902, null, null, null },
+                    { -7, 9, 1, false, "Orchid", 901, null, null, null },
+                    { -6, 6, 1, false, "Yankee Tickets (4)", 602, null, null, null },
+                    { -5, 6, 1, false, "Golf Outing", 601, null, null, null },
+                    { -4, 3, 1, false, "Crate of Summer Wines", 303, null, null, null },
+                    { -3, 3, 1, false, "Veuve Cliquot Champagne Brut, with flutes", 301, null, null, null },
+                    { -2, 2, 1, false, "The Bunker Hill Inn", 202, null, null, null },
+                    { -1, 2, 1, false, "Adirondack Get-away", 201, null, null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Bidders",
                 columns: new[] { "BidderId", "BidderNumber", "GuestId", "IsOnline" },
                 values: new object[,]
                 {
-                    { -8, "PM", -5, true },
-                    { -7, "5", -5, false },
-                    { -6, "4", -4, false },
-                    { -5, "ER", -3, true },
-                    { -4, "3", -3, false },
-                    { -3, "ESM", -2, true },
-                    { -2, "2", -2, false },
-                    { -1, "1", -1, false }
+                    { -8, 1003, -5, true },
+                    { -7, 5, -5, false },
+                    { -6, 4, -4, false },
+                    { -5, 1002, -3, true },
+                    { -4, 3, -3, false },
+                    { -3, 1001, -2, true },
+                    { -2, 2, -2, false },
+                    { -1, 1, -1, false }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bidder_GuestId",
-                table: "Bidder",
+                name: "IX_Bidders_GuestId",
+                table: "Bidders",
                 column: "GuestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Guests_GalaEventId",
                 table: "Guests",
                 column: "GalaEventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Item_CategoryId",
+                table: "Item",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Item_GalaEventId",
+                table: "Item",
+                column: "GalaEventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Item_PaymentMethodId",
+                table: "Item",
+                column: "PaymentMethodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Item_WinningBidderNumber",
+                table: "Item",
+                column: "WinningBidderNumber");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Bidder");
+                name: "Item");
+
+            migrationBuilder.DropTable(
+                name: "Bidders");
 
             migrationBuilder.DropTable(
                 name: "Categories");

@@ -11,13 +11,14 @@ using GalaAuction.Server.DTOs;
 using GalaAuction.Server.Mappings;
 using Microsoft.AspNetCore.Authorization;
 using Scalar.AspNetCore;
+using GalaAuction.Server.Services;
 
 namespace GalaAuction.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class EventsController(GalaAuctionDBContext context) : ControllerBase
+    public class EventsController(GalaAuctionDBContext context, EventService eventService) : ControllerBase
     {
 
         // GET: api/GalaEvents
@@ -25,7 +26,7 @@ namespace GalaAuction.Server.Controllers
         [Badge("New", color:"lightgreen")]
         public async Task<ActionResult<IEnumerable<EventDto>>> GetGalaEvents()
         {
-            return await context.GalaEvents.Select(e => e.ToDto()).ToListAsync();
+            return await context.GalaEvents.Select(e => e.ToDto(eventService)).ToListAsync();
         }
 
         // GET: api/GalaEvents/5
@@ -39,7 +40,39 @@ namespace GalaAuction.Server.Controllers
                 return NotFound();
             }
 
-            return galaEvent.ToDto();
+            return galaEvent.ToDto(eventService);
+        }
+
+        // PATCH: api/GalaEvent/5
+        [HttpPatch("{id}/status/{newStatus}")]
+        public async Task<IActionResult> UpdateGalaEventStatus(int id, int newStatus)
+        {
+            var galaEvent = await context.GalaEvents.FindAsync(id);
+            if (galaEvent == null)
+            {
+                return NotFound();
+            }
+            if (newStatus < 0 || newStatus > 4)
+            {
+                return BadRequest("Invalid status");
+            }
+            galaEvent.EventStatus = newStatus;
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GalaEventExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return NoContent();
         }
 
         // PUT: api/GalaEvents/5
@@ -61,9 +94,9 @@ namespace GalaAuction.Server.Controllers
             galaEvent.EventDate = dto.EventDate;
             galaEvent.OrganizationName = dto.OrganizationName;
             galaEvent.ThankYouMessage = dto.ThankYouMessage;
-            if (dto.EventStatus != null)
+            if (dto.EventStatusId != null)
             {
-                galaEvent.EventStatus = dto.EventStatus;
+                galaEvent.EventStatus = (int)dto.EventStatusId;
             }
             context.Entry(galaEvent).State = EntityState.Modified;
 
@@ -97,12 +130,12 @@ namespace GalaAuction.Server.Controllers
                 EventDate = dto.EventDate,
                 OrganizationName = dto.OrganizationName,
                 ThankYouMessage = dto.ThankYouMessage,
-                EventStatus = dto.EventStatus ?? "Setup"
+                EventStatus = dto.EventStatusId ?? 0
             };
             context.GalaEvents.Add(galaEvent);
             await context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGalaEvent", new { id = galaEvent.GalaEventId }, galaEvent.ToDto() );
+            return CreatedAtAction("GetGalaEvent", new { id = galaEvent.GalaEventId }, galaEvent.ToDto(eventService) );
         }
 
         // DELETE: api/GalaEvents/5

@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv, type ConfigEnv, type UserConfig } from 'vite';
-import plugin from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
@@ -8,12 +9,12 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     const port = parseInt(env.VITE_PORT) || 5173;
 
     return {
-    	plugins: [plugin()],
+    	plugins: [tailwindcss(),react()],
         server: {
             port: port,
             proxy: {
                 '/api': {
-                    target: 'http://localhost:7185',
+                    target: 'http://localhost:7001',
                     secure: false
                 }
             }

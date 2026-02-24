@@ -1,8 +1,12 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="global.json" />
+  </Folder>
   <Project Path="GalaAuction.AppHost/GalaAuction.AppHost.csproj" />
   <Project Path="galaauction.client/galaauction.client.esproj">
     <Build />
   </Project>
   <Project Path="GalaAuction.Server/GalaAuction.Server.csproj" />
   <Project Path="GalaAuction.ServiceDefaults/GalaAuction.ServiceDefaults.csproj" />
+  <Project Path="GalaAuction.Tests/GalaAuction.Tests.csproj" />
 </Solution>

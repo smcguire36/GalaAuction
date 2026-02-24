@@ -26,5 +26,7 @@ namespace GalaAuction.Server.Models
         public GalaEvent? GalaEvent { get; set; }
         public bool OnlineBidderOnly { get; set; } = false;
 
+        public Guid? CheckoutLock { get; set; } = null;
+        public DateTime? CheckoutLockedAt { get; set; } = null;
     }
 }

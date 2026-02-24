@@ -34,5 +34,17 @@ namespace GalaAuction.Server.Mappings
             };
         }
 
+        public static CheckoutItemDto ToCheckoutItemDto(this Item item)
+        {
+            return new CheckoutItemDto
+            {
+                ItemId = item.ItemId,
+                ItemNumber = item.ItemNumber,
+                ItemName = item.ItemName,
+                WinningBidderNumber = item.WinningBidderNumber,
+                WinningBidAmount = item.WinningBidAmount
+            };
+        }
+
     }
 }

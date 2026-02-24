@@ -3,7 +3,6 @@ using CsvHelper.Configuration;
 using GalaAuction.Server.Data;
 using GalaAuction.Server.DTOs;
 using GalaAuction.Server.Mappings;
-using GalaAuction.Server.Migrations;
 using GalaAuction.Server.Models;
 using GalaAuction.Server.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -101,6 +100,37 @@ namespace GalaAuction.Server.Controllers
             return File(memoryStream.ToArray(), "text/csv", $"guests_for_event_{eventId}.csv");
         }
 
+        [HttpGet("registeredguests")]
+        public async Task<ActionResult> RegisteredGuestsCsv(int eventId)
+        {
+            // Get the guest data to be exported as a CSV file
+            var query = context.Guests.AsQueryable()
+                    .Where(g => g.GalaEventId == GalaEvent!.GalaEventId)
+                    .OrderBy(g => g.GuestId)
+                    .Include(g => g.Bidders)
+                    .Select(g => g.ToExportDto());
+            var guests = await query.ToListAsync();
+
+            // Create a custom configuration to include quoting string fields
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                // Force the library to put quotes around string fields.
+                ShouldQuote = args => args.FieldType == typeof(string)
+            };
+
+            // Create a memory stream to write the CSV data to, and use CsvHelper to write the data to the stream.
+            using var memoryStream = new MemoryStream();
+            using (var writer = new StreamWriter(memoryStream))
+            using (var csv = new CsvWriter(writer, config))
+            {
+                csv.Context.RegisterClassMap<RegisteredGuestExportMap>();
+                csv.WriteRecords(guests);
+                writer.Flush();
+            }
+            // Return the CSV file as a download, outputting the memory stream as a byte array.
+            return File(memoryStream.ToArray(), "text/csv", $"guests_for_event_{eventId}.csv");
+        }
+
         [HttpPost("uploadcsv")]
         public async Task<ActionResult> UploadGuestCsv(int eventId, IFormFile file)
         {
@@ -179,13 +209,13 @@ namespace GalaAuction.Server.Controllers
                 var bidder = guest.Bidders.SingleOrDefault(bidder => bidder.IsOnline);
                 if (bidder != null)
                 {
-                    bidder.BidderNumber = dto.OnlineBidderNumber;
+                    bidder.BidderNumber = (int)dto.OnlineBidderNumber;
                 }
                 else
                 {
                     guest.Bidders.Add(new Bidder
                     {
-                        BidderNumber = dto.OnlineBidderNumber,
+                        BidderNumber = (int)dto.OnlineBidderNumber,
                         IsOnline = true
                     });
                 }
@@ -196,13 +226,13 @@ namespace GalaAuction.Server.Controllers
                 var bidder = guest.Bidders.SingleOrDefault(bidder => !bidder.IsOnline);
                 if (bidder != null)
                 {
-                    bidder.BidderNumber = dto.InPersonBidderNumber;
+                    bidder.BidderNumber = (int)dto.InPersonBidderNumber;
                 }
                 else
                 {
                     guest.Bidders.Add(new Bidder
                     {
-                        BidderNumber = dto.InPersonBidderNumber,
+                        BidderNumber = (int)dto.InPersonBidderNumber,
                         IsOnline = false
                     });
                 }

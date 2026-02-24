@@ -29,6 +29,24 @@ namespace GalaAuction.Server.Mappings
             return dto;
         }
 
+        public static GuestExportDto ToExportDto(this Guest guest)
+        {
+            var dto = new GuestExportDto
+            {
+                FullName = guest.FullName,
+                FirstName = guest.FirstName,
+                LastName = guest.LastName,
+                TableNumber = guest.TableNumber
+            };
+            var ipBidder = guest.Bidders.FirstOrDefault(item => item.IsOnline == false);
+            if (ipBidder != null)
+            {
+                dto.BidderNumber = ipBidder.BidderNumber;
+            }
+            return dto;
+        }
+
+
         public static Guest ToGuest(this GuestDto dto, GuestService guestService)
         {
             // Create the Guest object and set properties from the DTO
@@ -45,31 +63,39 @@ namespace GalaAuction.Server.Mappings
                 guest.TableNumber = dto.TableNumber;
             }
             // Create Bidder object and add to bidders list if OnlineBidderNumber is provided
-            if (!string.IsNullOrEmpty(dto.OnlineBidderNumber))
+            if (dto.OnlineBidderNumber != null)
             {
                 guest.Bidders.Add(new Bidder
                 {
-                    BidderNumber = dto.OnlineBidderNumber,
+                    BidderNumber = (int)dto.OnlineBidderNumber,
+                    IsOnline = true
+                });
+            }
+            else if (dto.OnlineAutoGen)
+            {
+                guest.Bidders.Add(new Bidder
+                {
+                    BidderNumber = guestService.GetNextBidderNumber(dto.GalaEventId, true),
                     IsOnline = true
                 });
             }
             if (dto.OnlineBidderOnly == false)
             {
                 // Create Bidder object and add to bidders list if InPersonBidderNumber is provided
-                if (!string.IsNullOrEmpty(dto.InPersonBidderNumber))
+                if (dto.InPersonBidderNumber != null)
                 {
                     guest.Bidders.Add(new Bidder
                     {
-                        BidderNumber = dto.InPersonBidderNumber,
+                        BidderNumber = (int)dto.InPersonBidderNumber,
                         IsOnline = false
                     });
                 }
                 // Get the next available in person bidder number if not provided and OnlineBidderOnly is false
-                else
+                else if (dto.InPersonAutoGen)
                 {
                     guest.Bidders.Add(new Bidder
                     {
-                        BidderNumber = guestService.GetNextBidderNumber(dto.GalaEventId),
+                        BidderNumber = guestService.GetNextBidderNumber(dto.GalaEventId, false),
                         IsOnline = false
                     });
                 }

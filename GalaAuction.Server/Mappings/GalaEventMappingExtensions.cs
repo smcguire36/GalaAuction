@@ -1,11 +1,12 @@
 ﻿using GalaAuction.Server.DTOs;
 using GalaAuction.Server.Models;
+using GalaAuction.Server.Services;
 
 namespace GalaAuction.Server.Mappings
 {
     public static class GalaEventMappingExtensions
     {
-        public static EventDto ToDto(this GalaEvent galaEvent)
+        public static EventDto ToDto(this GalaEvent galaEvent, EventService eventService)
         {
             return new EventDto
             {
@@ -14,7 +15,8 @@ namespace GalaAuction.Server.Mappings
                 EventDate = galaEvent.EventDate,
                 OrganizationName = galaEvent.OrganizationName,
                 ThankYouMessage = galaEvent.ThankYouMessage,
-                EventStatus = galaEvent.EventStatus
+                EventStatusId = galaEvent.EventStatus,
+                EventStatusText = eventService.GetEventStatusText(galaEvent.EventStatus)
             };
         }
     }

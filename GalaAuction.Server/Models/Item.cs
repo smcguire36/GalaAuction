@@ -12,6 +12,9 @@ namespace GalaAuction.Server.Models
         public required int ItemNumber { get; set; }
         public required string ItemName { get; set; }
 
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? OpeningBid { get; set; }
+
         public int? WinningBidderNumber { get; set; }
 
         // Navigation property back to Bidder

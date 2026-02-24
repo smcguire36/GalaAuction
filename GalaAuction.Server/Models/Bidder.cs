@@ -8,7 +8,7 @@ namespace GalaAuction.Server.Models
     {
         [Key]
         public int BidderId { get; set; }
-        public required string BidderNumber { get; set; }
+        public required int BidderNumber { get; set; }
 
         public bool IsOnline { get; set; } = false;
 

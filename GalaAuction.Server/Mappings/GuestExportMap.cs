@@ -16,4 +16,17 @@ namespace GalaAuction.Server.Mappings
             Map(m => m.OnlineBidderNumber).Index(5);
         }
     }
+
+    public class RegisteredGuestExportMap : ClassMap<GuestExportDto>
+    {
+        public RegisteredGuestExportMap()
+        {
+            Map(m => m.FullName).Index(0);
+            Map(m => m.LastName).Index(1);
+            Map(m => m.FirstName).Index(2);
+            Map(m => m.TableNumber).Index(3);
+            Map(m => m.BidderNumber).Index(4);
+        }
+    }
+
 }

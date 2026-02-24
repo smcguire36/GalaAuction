@@ -80,6 +80,51 @@ namespace GalaAuction.Server.Controllers
             return item;
         }
 
+        [HttpPatch("{id}/closeout")]
+        public async Task<ActionResult> UpdateItemCloseout(int eventID, int id, ItemCloseoutDto dto)
+        {
+            if (id != dto.ItemId)
+            {
+                return BadRequest();
+            }
+            var item = await context.Items.SingleOrDefaultAsync(i => i.ItemId == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            if (item.GalaEventId != GalaEvent!.GalaEventId)
+            {
+                return BadRequest("Item does not belong to the specified event.");
+            }
+            if (eventService.ValidateEventStatus(GalaEvent, EventStatus.Closeout))
+            {
+                return ValidationProblem("Event must be in closeout");
+            }
+            // Update the specific data included in this patch
+            item.WinningBidderNumber = dto.WinningBidderNumber;
+            item.WinningBidAmount = dto.WinningBidAmount;
+
+            context.Entry(item).State = EntityState.Modified;
+
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ItemExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         // PUT: api/Items/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -248,6 +293,7 @@ namespace GalaAuction.Server.Controllers
 
             return NoContent();
         }
+
 
         private bool ItemExists(int id)
         {
