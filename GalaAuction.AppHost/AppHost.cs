@@ -31,6 +31,8 @@ var frontend = builder.AddJavaScriptApp("frontend", "../galaauction.client")
     .WithExternalHttpEndpoints()
     .WithReference(backend)
     .WithReference(keycloak)
+    .WithEnvironment("VITE_BACKEND_URL", backend.GetEndpoint("http"))
+    .WithEnvironment("VITE_KEYCLOAK_URL", keycloak.GetEndpoint("http"))
     .WaitFor(backend);
 
 var yarp = builder.AddYarp("gateway")
