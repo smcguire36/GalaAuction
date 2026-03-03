@@ -6,13 +6,6 @@ import loginImage from "../assets/login_background.png";
 const LoginPage = () => {
     const navigate = useNavigate();
 
-/*
-    const keycloak = new Keycloak({
-        url: import.meta.env.VITE_KEYCLOAK_URL,
-        realm: 'GalaAuction',
-        clientId: 'GalaAuction'
-    });
-*/
     const doLogin: SubmitEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
         alert("Logging in!");

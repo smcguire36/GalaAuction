@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path="galaauction-login.ftl" />
     <File Path="global.json" />
   </Folder>
   <Project Path="GalaAuction.AppHost/GalaAuction.AppHost.csproj" />

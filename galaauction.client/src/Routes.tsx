@@ -3,7 +3,7 @@ import App from "./App";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 
-export const routes = createBrowserRouter([
+const routes = createBrowserRouter([
     // Routes without the main layout
     {
         path: "login",
@@ -21,3 +21,5 @@ export const routes = createBrowserRouter([
         ],
     },
 ]);
+
+export default routes;

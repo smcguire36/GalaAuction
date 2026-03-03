@@ -1,20 +1,18 @@
-﻿import { Link, Outlet } from 'react-router-dom'
-import './App.css'
+﻿import { Outlet } from 'react-router-dom';
+import './App.css';
+import PrivateRoute from './PrivateRoute';
+import TopNavigation from './components/TopNavigation';
 
 function App() {
-    return (<>
-        <div className="w-screen">
-            <div>
-                <nav>
-                    <Link to="/">Home</Link> | <Link to="/login">Login</Link>
-                </nav>
-            </div>
+
+    return (<PrivateRoute>
+        <div className="w-screen p-5">
+            <TopNavigation />
+            <main>
+                <Outlet />
+            </main>
         </div>
-        <main>
-            <Outlet />
-        </main>
-    </>
-    )
+    </PrivateRoute>);
 }
 
 export default App

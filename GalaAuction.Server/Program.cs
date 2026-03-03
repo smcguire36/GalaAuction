@@ -54,7 +54,35 @@ builder.AddNpgsqlDbContext<GalaAuctionDBContext>(
     }
 );
 
+// Define a policy name
+const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+// Get the React frontend URL from Aspire environment variables
+// Note: "webfrontend" should match the name used in your AppHost project
+var frontendUrl = builder.Configuration["services:frontend:https:0"]
+                  ?? builder.Configuration["services:frontend:http:0"];
+
+if (frontendUrl != null)
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: MyAllowSpecificOrigins,
+            policy =>
+            {
+                policy
+                      .SetIsOriginAllowed(_ => true)    // Allow any origin temporarily
+//                      .WithOrigins(frontendUrl) // Dynamically allow the React app
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials(); // Required if using Keycloak/Cookies
+            });
+    });
+}
+
+
 var app = builder.Build();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.MapDefaultEndpoints();
 
@@ -77,8 +105,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
-
+//app.UseHttpsRedirection();
+app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
