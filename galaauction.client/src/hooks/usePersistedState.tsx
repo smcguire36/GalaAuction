@@ -7,15 +7,10 @@ const usePersistedState = (
   // use a function for the inital state calculation to run it only once
   const [data, setData] = useState<string>(() => {
     const storedData = localStorage.getItem(storageKey);
-    let newData: string = defaultData;
-
     if (storedData) {
-      const userData: string = storedData;
-      if (userData) {
-        newData = userData;
-      }
+        return storedData;
     }
-    return newData;
+    return defaultData;
   });
 
   // use useEffect to sync the state with localStorage whenever it changes

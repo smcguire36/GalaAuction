@@ -2,7 +2,12 @@
 import { createContext } from "react";
 
 export const ModalContext = createContext<{
-  openModal: () => void;
-  closeModal: () => void;
-  modalRef: React.RefObject<HTMLDialogElement | null>;
-} | null>(null);
+  open: (id: string) => void;
+  close: () => void;
+  activeId: string;
+}>({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  open: (_id: string) => {},
+  close: () => {},
+  activeId: ""
+});

@@ -12,5 +12,7 @@
         public bool OnlineBidderOnly { get; set; }
         public bool InPersonAutoGen { get; set; } = false;
         public bool OnlineAutoGen { get; set; } = false;
+        public string FullName { get; set; } = "";
+        public string FullNameReversed { get; set; } = "";
     }
 }

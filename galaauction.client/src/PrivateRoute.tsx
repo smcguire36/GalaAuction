@@ -6,8 +6,11 @@ const PrivateRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     // 1. Wait for Keycloak to finish initializing
     if (!initialized) {
-        return <div>Loading authentication...</div>;
         console.log(keycloak);
+        return (<div className='w-screen p-2 text-center'>
+            <h3 className='text-lg'>Gala Auctions</h3>
+            <p className='text-md'>Initializing, please wait</p>
+        </div>);
     }
 
     // 2. If not authenticated, redirect to Keycloak login

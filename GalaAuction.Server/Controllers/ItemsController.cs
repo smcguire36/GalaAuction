@@ -60,6 +60,7 @@ namespace GalaAuction.Server.Controllers
                 .Where(i => i.GalaEventId == GalaEvent!.GalaEventId)
                 .OrderBy(i => i.ItemNumber)
                 .Include(i => i.PaymentMethod)
+                .Include(i => i.Category)
                 .Select(i => i.ToDto());
             return await query.ToListAsync();
         }
@@ -71,6 +72,7 @@ namespace GalaAuction.Server.Controllers
             var query = context.Items.AsQueryable()
                 .Where(i => i.GalaEventId == GalaEvent!.GalaEventId && i.ItemId == id)
                 .Include(i => i.PaymentMethod)
+                .Include(i => i.Category)
                 .Select(i => i.ToDto());
             var item = await query.SingleOrDefaultAsync();
             if (item == null)

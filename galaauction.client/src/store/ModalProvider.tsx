@@ -1,14 +1,19 @@
-import { useRef, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { ModalContext } from "./ModalContext";
 
 const ModalProvider = ({ children }: { children: ReactNode }) => {
-  const modalRef = useRef<HTMLDialogElement>(null);
+  const [activeId, setActiveId] = useState("");
 
-  const openModal = () => modalRef.current?.showModal();
-  const closeModal = () => modalRef.current?.close();
+  const open = (id: string) => {
+    setActiveId(id);
+  };
+
+  const close = () => {
+    setActiveId("");
+  };
 
   return (
-    <ModalContext value={{ openModal, closeModal, modalRef }}>
+    <ModalContext value={{ open, close, activeId }}>
       {children}
     </ModalContext>
   );

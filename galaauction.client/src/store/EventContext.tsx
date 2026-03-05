@@ -4,6 +4,7 @@ import { type GalaEventType } from "../types/GalaEvent";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const EVENT_DEFAULTS = {
+    eventId: 0,
     event: {
         galaEventId: 0,
         eventName: "",
@@ -17,7 +18,8 @@ export const EVENT_DEFAULTS = {
 };
 
 export type EventState = {
-    event: GalaEventType;
+    eventId: number;
+    event: GalaEventType|null;
     theme: string;
     setEvent: (newEvent:GalaEventType) => void;
     setTheme: (newTheme:string) => void;
@@ -25,6 +27,7 @@ export type EventState = {
 };
 
 const EventContext = createContext<EventState>({
+    eventId: EVENT_DEFAULTS.eventId,
     event: EVENT_DEFAULTS.event,
     theme: EVENT_DEFAULTS.theme,
     setEvent: (event) => {},

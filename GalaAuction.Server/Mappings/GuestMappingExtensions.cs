@@ -14,7 +14,9 @@ namespace GalaAuction.Server.Mappings
                 FirstName = guest.FirstName,
                 LastName = guest.LastName,
                 TableNumber = guest.TableNumber,
-                GalaEventId = guest.GalaEventId
+                GalaEventId = guest.GalaEventId,
+                FullName = guest.FullName,
+                FullNameReversed = guest.FullNameReversed
             };
             var ipBidder = guest.Bidders.FirstOrDefault(item => item.IsOnline == false);
             if (ipBidder != null)

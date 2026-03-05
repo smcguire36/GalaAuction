@@ -13,11 +13,14 @@ namespace GalaAuction.Server.Mappings
                 ItemNumber = item.ItemNumber,
                 ItemName = item.ItemName,
                 WinningBidderNumber = item.WinningBidderNumber,
+                WinningBidderName = item.Bidder?.Guest.FullName ?? string.Empty,
                 WinningBidAmount = item.WinningBidAmount,
-                isPaid = item.IsPaid,
+                IsPaid = item.IsPaid,
                 PaymentMethodId = item.PaymentMethodId,
+                PaymentMethodName = item.PaymentMethod?.PaymentMethodName ?? string.Empty,
                 GalaEventId = item.GalaEventId,
-                CategoryId = item.CategoryId
+                CategoryId = item.CategoryId,
+                CategoryName = item.Category?.CategoryName ?? string.Empty
             };
         }
 

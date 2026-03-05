@@ -1,25 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import usePersistedState from "../hooks/usePersistedState";
 import { type GalaEventType } from "../types/GalaEvent";
 import EventContext, { type EventState, EVENT_DEFAULTS } from "./EventContext";
 
 const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [theme, setTheme] = usePersistedState("gala-auction-theme", EVENT_DEFAULTS.theme);
-    const [event, setEvent] = usePersistedState("gala-auction-event", JSON.stringify(EVENT_DEFAULTS.event as GalaEventType));
+    const [eventId, setEventId] = usePersistedState("gala-auction-event", "0");
+    const [event, setEvent] = useState<GalaEventType|null>(null);
 
     const setGalaEvent = (newEvent:GalaEventType) => {
-        setEvent(JSON.stringify(newEvent));
-    };
+        setEvent(newEvent);
+        setEventId(newEvent.galaEventId.toString());
+    }; 
 
     const setEventStatus = (newStatus: number, newStatusText: string) => {
-        const existing_event = JSON.parse(event);
+        if (event === null) {
+            return;
+        }
         const updated_event = 
         {
-            ...existing_event, 
+            ...event, 
             eventStatusId: newStatus,         // Update status value
             eventStatusText: newStatusText  // Update status text value
         };
-        setEvent(JSON.stringify(updated_event));
+        setEvent(updated_event as GalaEventType);
+        setEventId(updated_event.galaEventId.toString());
     };
 
     const setDaisyTheme = (newTheme: string) => {
@@ -31,7 +36,8 @@ const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     }, [theme]);
 
     const newState: EventState = {
-        event: JSON.parse(event),
+        eventId: +eventId,
+        event: event,
         theme: theme,
         setEvent: setGalaEvent,
         setTheme: setDaisyTheme,

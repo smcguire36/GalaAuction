@@ -2,15 +2,15 @@ import { useKeycloak } from '@react-keycloak/web';
 import { Link } from 'react-router-dom';
 import { Modal } from './common/Modal';
 import ThemeToggle from './ThemeToggle';
-import { useModal } from '../hooks/useModal';
-import { useContext } from 'react';
+import { use, useContext } from 'react';
 import EventContext from '../store/EventContext';
+import { ModalContext } from '../store/ModalContext';
+import SelectEvent from './SelectEvent';
 
 const TopNavigation = () => {
     const { keycloak } = useKeycloak();
-    const { modalRef:settingsModalRef, openModal:openSettingsModal } = useModal();
-    const { modalRef:selectEventModalRef, openModal:openSelectEventModal } = useModal();
-    const context = useContext(EventContext);
+    const { open } = use(ModalContext);
+    const { event } = useContext(EventContext);
 
     if (!keycloak.authenticated) {
         return (<p>Not authenticated...</p>);
@@ -18,7 +18,7 @@ const TopNavigation = () => {
     const username = keycloak.idTokenParsed!.preferred_username;
 
     const selectEvent = () => {
-        openSelectEventModal();
+        open("select-event");
     };
 
     const onSelectEventClosed = () => {
@@ -26,7 +26,7 @@ const TopNavigation = () => {
     };
 
     const openSettings = () => {
-        openSettingsModal();
+        open("settings");
     };
 
     const onSettingsClosed = () => {
@@ -34,23 +34,35 @@ const TopNavigation = () => {
     };
 
     const logoutUser = () => {
-        keycloak.logout();
+        keycloak.logout({
+            redirectUri: window.location.origin
+        });
     };
 
+    // Setup Event/Status button properties
     let selectedEvent:string = "Select Event";
-    if (context.event.galaEventId !== 0) {
-        selectedEvent = `${context.event.eventName} (${context.event.eventStatusText})`;
+    let selectedEventColor:string = "btn-warning";
+    if (event && event.galaEventId !== 0) {
+        selectedEvent = `${event?.eventName} (${event?.eventStatusText})`;
+        selectedEventColor = "btn-outline";
     }
     
     return (
         <>
-            <div className="navbar bg-base-200">
+            <div className="navbar border-b-2 border-b-accent relative z-50">
                 <div className="navbar-start flex-1">
-                    <button className="btn btn-outline" onClick={selectEvent}>{selectedEvent.toUpperCase()}</button>
+                    <button className={`btn ${selectedEventColor} rounded-lg`} onClick={selectEvent}>{selectedEvent.toUpperCase()}</button>
                 </div>
                 <div className="navbar-center">
-                    {}
-                    <Link className="btn btn-secondary" to="/login">MAKE ACTIVE</Link>
+                    {event?.galaEventId !== 0 && (<>
+                        {event?.eventStatusId === 0 && (
+                            <Link className="btn btn-primary rounded-lg" to="/login">MAKE ACTIVE</Link>
+                        )}
+                        {event?.eventStatusId === 1 && (<>
+                            <Link className="btn btn-secondary rounded-lg" to="/login">RETURN TO SETUP</Link>
+                            <Link className="btn btn-secondary rounded-lg" to="/login">START CLOSEOUT</Link>
+                        </>)}
+                    </>)}
                 </div>
                 <div className="navbar-end space-x-2">
                     <ul className="menu menu-horizontal px-1">
@@ -78,13 +90,13 @@ const TopNavigation = () => {
                     </ul>
                 </div>
             </div>
-        
-            <Modal ref={settingsModalRef} title="Settings" onClose={onSettingsClosed}>
+         
+            <Modal id="settings" title="Settings" onClose={onSettingsClosed}>
                 <ThemeToggle />
             </Modal>
 
-            <Modal ref={selectEventModalRef} title="Select Event" onClose={onSelectEventClosed}>
-                <p>Here</p>
+            <Modal id="select-event" title="Select Event" onClose={onSelectEventClosed}>
+                <SelectEvent />
             </Modal>
         </>
     );

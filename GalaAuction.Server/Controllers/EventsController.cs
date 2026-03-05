@@ -21,7 +21,7 @@ namespace GalaAuction.Server.Controllers
     public class EventsController(GalaAuctionDBContext context, EventService eventService) : ControllerBase
     {
 
-        // GET: api/GalaEvents
+        // GET: api/events
         [HttpGet]
         [Badge("New", color:"lightgreen")]
         public async Task<ActionResult<IEnumerable<EventDto>>> GetGalaEvents()
@@ -29,7 +29,7 @@ namespace GalaAuction.Server.Controllers
             return await context.GalaEvents.Select(e => e.ToDto(eventService)).ToListAsync();
         }
 
-        // GET: api/GalaEvents/5
+        // GET: api/events/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EventDto>> GetGalaEvent(int id)
         {
@@ -43,7 +43,7 @@ namespace GalaAuction.Server.Controllers
             return galaEvent.ToDto(eventService);
         }
 
-        // PATCH: api/GalaEvent/5
+        // PATCH: api/events/5/status/3
         [HttpPatch("{id}/status/{newStatus}")]
         public async Task<IActionResult> UpdateGalaEventStatus(int id, int newStatus)
         {
@@ -75,7 +75,7 @@ namespace GalaAuction.Server.Controllers
             return NoContent();
         }
 
-        // PUT: api/GalaEvents/5
+        // PUT: api/events/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGalaEvent(int id, EventDto dto)
@@ -119,7 +119,7 @@ namespace GalaAuction.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/GalaEvents
+        // POST: api/events
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<EventDto>> CreateGalaEvent(EventDto dto)
@@ -138,7 +138,7 @@ namespace GalaAuction.Server.Controllers
             return CreatedAtAction("GetGalaEvent", new { id = galaEvent.GalaEventId }, galaEvent.ToDto(eventService) );
         }
 
-        // DELETE: api/GalaEvents/5
+        // DELETE: api/events/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGalaEvent(int id)
         {

@@ -1,47 +1,43 @@
-import { useEffect, useState } from "react";
-import { useHttp } from "../hooks/useHttp";
-import type { GalaEventType } from "../types/GalaEvent";
-import { useKeycloak } from "@react-keycloak/web";
+import { useContext } from "react";
+import EventContext from "../store/EventContext";
+import { Navigate } from "react-router-dom";
+import { EventStatus } from "../types/EventStatus";
 
 const HomePage = () => {
-    const { request, isLoading, error } = useHttp();
-    const [ events, setEvents ] = useState<GalaEventType[]>();
-    const { keycloak, initialized } = useKeycloak();
+    const { event } = useContext(EventContext);
 
-    useEffect(() => {
-        const getEvents = async () => {
-            const eventData = await request('/api/events','GET');
-            setEvents(eventData);
-            console.log(eventData);
-        };
-        getEvents();
-    }, []);
+    if (event) {
+        switch (event.eventStatusId) {
+            case EventStatus.Setup:
+                return <Navigate to="/guests" />;
+                break;
+            case EventStatus.Active:
+                return <Navigate to="/guests" />;
+                break;
+            case EventStatus.Closeout:
+                return <Navigate to="/closeout" />;
+                break;
+            case EventStatus.Checkout:
+                return <Navigate to="/checkout" />;
+                break;
+            default:
+                return <Navigate to="/guests" />;
+                break;
+        }
+    }
 
     return (<>
         <span className="text-xl font-bold">Home Page</span>
 
         <div className="flex flex-col items-center gap-4 p-10">
             <h1 className="text-3xl font-bold">
-                Hello React + daisyUI!
+                Welcome to the Gala Auction Application!
             </h1>
-            <button className="btn btn-primary w-40">Click Me</button>
+            <h3 className="text-xl">
+                Please select an event by clicking on the button at the top left
+            </h3>
         </div>
 
-        { initialized && (
-            <p>token: {keycloak.token}</p>
-        )}
-
-        <div className="flex items-center gap-4 p-10">
-            { !isLoading && events && (events.map((event) => (
-                <p key={event.galaEventId}>{event.eventName}</p>
-            )))}
-            { isLoading && <>
-                <p>Events are loading...</p>
-            </>}
-            { error && (
-                <p>Error: {error}</p>
-            )}
-        </div>
     </>);
 }
 
