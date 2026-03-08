@@ -1,9 +1,9 @@
 import { use, useContext, useEffect, useState, type ChangeEvent } from "react";
-import { useHttp } from "../hooks/useHttp";
-import type { GalaEventType } from "../types/GalaEvent";
-import EventContext from "../store/EventContext";
 import { useNavigate } from "react-router-dom";
-import { ModalContext } from "../store/ModalContext";
+import { useHttp } from "../../hooks/useHttp";
+import EventContext from "../../store/EventContext";
+import { ModalContext } from "../../store/ModalContext";
+import type { GalaEventType } from "../../types/GalaEvent";
 
 const SelectEvent = () => {
     const { close } = use(ModalContext);

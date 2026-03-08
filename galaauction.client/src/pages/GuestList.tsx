@@ -1,13 +1,21 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import type { GuestType } from "../types/Guest";
 import { useHttp } from "../hooks/useHttp";
 import EventContext from "../store/EventContext";
 import TabNavigation from "../components/TabNavigation";
+import { EventStatus } from "../types/EventStatus";
+import AddGuestDialog from "../components/guests/AddGuestDialog";
+import type { ModalHandle } from "../components/common/Modal";
+import UploadGuestsDialog from "../components/guests/UploadGuestsDialog";
 
-const GuestListPage = () => {
+const GuestList = () => {
   const context = useContext(EventContext);
   const { request, isLoading, error } = useHttp();
   const [guests, setGuests] = useState<GuestType[]>([] as GuestType[]);
+  const addGuestRef = useRef<ModalHandle>(null);
+  const uploadGuestsRef = useRef<ModalHandle>(null);
+  const event = context.event;
+  const [ formSession, setFormSession ] = useState<number>(0);
 
   useEffect(() => {
     const getEvents = async (id: number) => {
@@ -28,6 +36,21 @@ const GuestListPage = () => {
     return <></>;
   }
 
+  const onOpenAddGuest = () => {
+    setFormSession((prev) => ++prev);
+    addGuestRef.current?.open();
+  };
+
+  const onOpenUploadGuests = () => {
+    setFormSession((prev) => ++prev);
+    uploadGuestsRef.current?.open();
+  };
+
+
+  const handleModalConfirm = () => {
+    console.log("Modal Dialog confirmed!  Let's reload the guest list now!");
+  };
+
   return (
     <>
       <div className="flex flex-row">
@@ -43,9 +66,9 @@ const GuestListPage = () => {
                 viewBox="0 0 24 24"
               >
                 <g
-                  stroke-linejoin="round"
-                  stroke-linecap="round"
-                  stroke-width="2.5"
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  strokeWidth="2.5"
                   fill="none"
                   stroke="currentColor"
                 >
@@ -55,7 +78,7 @@ const GuestListPage = () => {
               </svg>
               <input type="search" placeholder="Search Guests" />
             </label>
-            <button className="btn btn-outline rounded-lg">
+            <button className="btn btn-outline" onClick={onOpenAddGuest}>
               ADD GUEST
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +93,7 @@ const GuestListPage = () => {
                 />
               </svg>
             </button>
-            <button className="btn btn-outline rounded-lg">
+            <button className="btn btn-outline" onClick={onOpenUploadGuests}>
               UPLOAD CSV
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +111,7 @@ const GuestListPage = () => {
       <div className="grow overflow-y-auto border-2 border-accent rounded-lg shadow-md my-2">
         <table className="table table-zebra table-pin-rows w-full border-collapse">
           <thead>
-            <tr className="text-lg">
+            <tr className="text-lg bg-accent text-white/50">
               <th className="border-b-2 border-primary-800">Guest Name</th>
               <th>Table #</th>
               <th>Bidder #</th>
@@ -115,7 +138,7 @@ const GuestListPage = () => {
                     {guest.onlineBidderNumber ? guest.onlineBidderNumber : "--"}
                   </td>
                   <td className="flex flex-row gap-4 py-1">
-                    <button className="btn btn-outline px-2">
+                    <button className={`btn btn-outline px-2 ${event?.eventStatusId !== EventStatus.Setup?"btn-disabled":""}`}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
@@ -126,7 +149,7 @@ const GuestListPage = () => {
                         <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
                       </svg>
                     </button>
-                    <button className="btn btn-outline px-2 text-red-800">
+                    <button className={`btn btn-outline px-2 ${event?.eventStatusId !== EventStatus.Setup?"btn-disabled":"text-red-800"}`}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
@@ -150,8 +173,11 @@ const GuestListPage = () => {
           </tbody>
         </table>
       </div>
+      <AddGuestDialog key={`add-${formSession}`} ref={addGuestRef} onConfirm={handleModalConfirm} />
+      <UploadGuestsDialog key={`upload-${formSession}`} ref={uploadGuestsRef} onConfirm={handleModalConfirm} />
+
     </>
   );
 };
 
-export default GuestListPage;
+export default GuestList;

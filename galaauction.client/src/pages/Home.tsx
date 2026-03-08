@@ -3,7 +3,7 @@ import EventContext from "../store/EventContext";
 import { Navigate } from "react-router-dom";
 import { EventStatus } from "../types/EventStatus";
 
-const HomePage = () => {
+const Home = () => {
     const { event } = useContext(EventContext);
 
     if (event) {
@@ -41,4 +41,4 @@ const HomePage = () => {
     </>);
 }
 
-export default HomePage;
+export default Home;

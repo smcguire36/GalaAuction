@@ -52,7 +52,7 @@ namespace GalaAuction.Server.Controllers
             // Put any post action code here.
         }
 
-        // GET: api/Items
+        // GET: api/events/5/items
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ItemDto>>> GetItems(int eventId)
         {
@@ -65,7 +65,7 @@ namespace GalaAuction.Server.Controllers
             return await query.ToListAsync();
         }
 
-        // GET: api/Items/5
+        // GET: api/events/5/items/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemDto>> GetItem(int eventId, int id)
         {
@@ -82,8 +82,27 @@ namespace GalaAuction.Server.Controllers
             return item;
         }
 
+        // GET: api/events/5/items/closeout
+        [HttpGet("closeout")]
+        public async Task<ActionResult<IEnumerable<ItemDto>>> GetCloseoutItems(int eventId)
+        {
+            var query = context.Items.AsQueryable()
+                .Where(i => i.GalaEventId == GalaEvent!.GalaEventId)
+                .Include(i => i.Category)
+                .Include(i => i.PaymentMethod)
+                .OrderBy(i => i.CategoryId)
+                .ThenBy(i => i.ItemNumber)
+                .Select(i => i.ToDto());
+            var items = await query.ToListAsync();
+            if (items == null)
+            {
+                return NotFound();
+            }
+            return items;
+        }
+            
         [HttpPatch("{id}/closeout")]
-        public async Task<ActionResult> UpdateItemCloseout(int eventID, int id, ItemCloseoutDto dto)
+        public async Task<ActionResult> UpdateItemCloseout(int eventId, int id, ItemCloseoutDto dto)
         {
             if (id != dto.ItemId)
             {
@@ -127,7 +146,7 @@ namespace GalaAuction.Server.Controllers
             return NoContent();
         }
 
-        // PUT: api/Items/5
+        // PUT: api/events/5/items/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateItem(int eventId, int id, ItemDto dto)
@@ -151,7 +170,7 @@ namespace GalaAuction.Server.Controllers
             item.ItemName = dto.ItemName;
             item.WinningBidderNumber = dto.WinningBidderNumber;
             item.WinningBidAmount = dto.WinningBidAmount;
-            item.IsPaid = dto.isPaid;
+            item.IsPaid = dto.IsPaid;
             item.PaymentMethodId = dto.PaymentMethodId;
 
             context.Entry(item).State = EntityState.Modified;

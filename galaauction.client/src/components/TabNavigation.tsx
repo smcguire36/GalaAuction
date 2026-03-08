@@ -53,6 +53,7 @@ const TabNavigation = () => {
             <Link to="/items" role="tab" className={`tab ${isActive("items",thisPage)} ${isDisabled("items", event?.eventStatusId)}`}>Auction Items</Link>
             <Link to="/closeout" role="tab" className={`tab ${isActive("closeout",thisPage)} ${isDisabled("closeout", event?.eventStatusId)}`}>Closeout</Link>
             <Link to="/checkout" role="tab" className={`tab ${isActive("checkout",thisPage)} ${isDisabled("checkout", event?.eventStatusId)}`}>Checkout</Link>
+            <Link to="/audit" role="tab" className={`tab ${isActive("audit",thisPage)}`}>Audit Logs</Link>
         </div>
     );
 };

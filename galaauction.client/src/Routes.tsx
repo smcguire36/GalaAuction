@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import LoginPage from "./pages/LoginPage";
-import HomePage from "./pages/HomePage";
-import ManageEventsPage from "./pages/ManageEventsPage";
-import GuestListPage from "./pages/GuestListPage";
-import AuctionItemsPage from "./pages/AuctionItemsPage";
+import Home from "./pages/Home";
+import ManageEvents from "./pages/ManageEvents";
+import GuestList from "./pages/GuestList";
+import AuctionItems from "./pages/AuctionItems";
+import Closeout from "./pages/Closeout";
 
 const routes = createBrowserRouter([
     // Routes without the main layout
@@ -19,27 +20,31 @@ const routes = createBrowserRouter([
         children: [
             {
                 index: true, // Matches "/"
-                element: <HomePage />,
+                element: <Home />,
             },
             {
                 path: "manage-events",
-                element: <ManageEventsPage />
+                element: <ManageEvents />
             },
             {
                 path: "guests",
-                element: <GuestListPage />
+                element: <GuestList />
             },
             {
                 path: "items",
-                element: <AuctionItemsPage />
+                element: <AuctionItems />
             },
             {
                 path: "closeout",
-                element: <p>Closeout</p>
+                element: <Closeout />
             },
             {
                 path: "checkout",
                 element: <p>Checkout</p>
+            },
+            {
+                path: "audit",
+                element: <p>Audit Logs</p>
             }
         ],
     },

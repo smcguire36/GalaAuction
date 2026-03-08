@@ -43,8 +43,12 @@ export function useHttp() {
             throw new Error("Unauthorized");
         throw new Error("Error fetching data");
       }
-      const data = await response.json();
 
+      if (response.status === 204) {  // Status is no content
+        return response;
+      }
+      const data = await response.json();
+      // This just doesn't make any sense
       if (!response.ok) {
         throw new Error(data.message || 'Something went wrong');
       }

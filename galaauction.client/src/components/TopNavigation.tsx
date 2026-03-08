@@ -1,16 +1,23 @@
 import { useKeycloak } from '@react-keycloak/web';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Modal } from './common/Modal';
 import ThemeToggle from './ThemeToggle';
 import { use, useContext } from 'react';
 import EventContext from '../store/EventContext';
 import { ModalContext } from '../store/ModalContext';
-import SelectEvent from './SelectEvent';
+import { EventStatus } from '../types/EventStatus';
+import SelectEvent from './events/SelectEvent';
 
 const TopNavigation = () => {
     const { keycloak } = useKeycloak();
     const { open } = use(ModalContext);
-    const { event } = useContext(EventContext);
+    const context = useContext(EventContext);
+    const event = context.event;
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Setup Tabset properties
+    const thisPage = location.pathname.split("/").at(-1);
 
     if (!keycloak.authenticated) {
         return (<p>Not authenticated...</p>);
@@ -39,6 +46,16 @@ const TopNavigation = () => {
         });
     };
 
+    const setEventStatus = (statusId: number, statusText: string) => {
+        context.setStatus(statusId, statusText);
+        setTimeout(() => {
+            if ((statusId === EventStatus.Setup || statusId === EventStatus.Active) && (thisPage === "guests" || thisPage === "items")) {
+                return;
+            }
+            navigate("/");
+        }, 500);
+    };
+
     // Setup Event/Status button properties
     let selectedEvent:string = "Select Event";
     let selectedEventColor:string = "btn-warning";
@@ -51,19 +68,27 @@ const TopNavigation = () => {
         <>
             <div className="navbar border-b-2 border-b-accent relative z-50">
                 <div className="navbar-start flex-1">
-                    <button className={`btn ${selectedEventColor} rounded-lg`} onClick={selectEvent}>{selectedEvent.toUpperCase()}</button>
-                </div>
-                <div className="navbar-center">
-                    {event?.galaEventId !== 0 && (<>
-                        {event?.eventStatusId === 0 && (
-                            <Link className="btn btn-primary rounded-lg" to="/login">MAKE ACTIVE</Link>
-                        )}
-                        {event?.eventStatusId === 1 && (<>
-                            <Link className="btn btn-secondary rounded-lg" to="/login">RETURN TO SETUP</Link>
-                            <Link className="btn btn-secondary rounded-lg" to="/login">START CLOSEOUT</Link>
+                    <div className='flex flex-row gap-2'>
+                        <button className={`btn ${selectedEventColor}`} onClick={selectEvent}>{selectedEvent.toUpperCase()}</button>
+                        {event?.galaEventId !== 0 && (<>
+                            {event?.eventStatusId === EventStatus.Setup && (
+                                <button type='button' className="btn btn-accent" onClick={() => setEventStatus(EventStatus.Active, "Active")}>MAKE ACTIVE</button>
+                            )}
+                            {event?.eventStatusId === EventStatus.Active && (<>
+                                <button type='button' className="btn btn-warning" onClick={() => setEventStatus(EventStatus.Setup, "Setup")}>RETURN TO SETUP</button>
+                                <button type='button' className="btn btn-accent" onClick={() => setEventStatus(EventStatus.Closeout, "Closeout")}>START CLOSEOUT</button>
+                            </>)}
+                            {event?.eventStatusId === EventStatus.Closeout && (<>
+                                <button type='button' className="btn bg-warning/50 border-warning/50 text-warning-content hover:bg-warning" onClick={() => setEventStatus(EventStatus.Active, "Active")}>CANCEL CLOSEOUT</button>
+                                <button type='button' className="btn bg-accent/50 border-accent/50 text-accent-content hover:bg-accent" onClick={() => setEventStatus(EventStatus.Checkout, "Checkout")}>START CHECKOUT</button>
+                            </>)}
+                            {event?.eventStatusId === EventStatus.Checkout && (<>
+                                <button type='button' className="btn btn-warning" onClick={() => setEventStatus(EventStatus.Closeout, "Closeout")}>RETURN TO CLOSEOUT</button>
+                                <button type='button' className="btn btn-accent" onClick={() => setEventStatus(EventStatus.Closed, "Closed")}>CLOSE EVENT</button>
+                            </>)}
                         </>)}
-                    </>)}
-                </div>
+                    </div>
+                </div>                
                 <div className="navbar-end space-x-2">
                     <ul className="menu menu-horizontal px-1">
                       <li>
@@ -91,11 +116,11 @@ const TopNavigation = () => {
                 </div>
             </div>
          
-            <Modal id="settings" title="Settings" onClose={onSettingsClosed}>
+            <Modal id="settings" title="Settings" customVariant='close' onClose={onSettingsClosed}>
                 <ThemeToggle />
             </Modal>
 
-            <Modal id="select-event" title="Select Event" onClose={onSelectEventClosed}>
+            <Modal id="select-event" title="Select Event" customVariant='close' onClose={onSelectEventClosed}>
                 <SelectEvent />
             </Modal>
         </>

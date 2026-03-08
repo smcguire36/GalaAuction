@@ -19,7 +19,7 @@ namespace GalaAuction.Server.Controllers
     [Authorize]
     public class CategoriesController(GalaAuctionDBContext context) : ControllerBase
     {
-        // GET: api/Categories
+        // GET: api/categories
         [HttpGet]
         [Badge(name:"New", color:"lightgreen")]
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
@@ -27,7 +27,7 @@ namespace GalaAuction.Server.Controllers
             return await context.Categories.Select(c => c.ToDto()).ToListAsync();
         }
 
-        // GET: api/Categories/5
+        // GET: api/categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> GetCategory(int id)
         {
@@ -42,7 +42,7 @@ namespace GalaAuction.Server.Controllers
             return category;
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, CategoryDto dto)
@@ -79,7 +79,7 @@ namespace GalaAuction.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
+        // POST: api/categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Category>> CreateCategory(CategoryDto dto)
@@ -110,7 +110,7 @@ namespace GalaAuction.Server.Controllers
             return CreatedAtAction("GetCategory", new { id = category.CategoryId }, dto);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/categories/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {

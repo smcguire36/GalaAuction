@@ -48,7 +48,7 @@ namespace GalaAuction.Server.Controllers
             // Put any post action code here.
         }
 
-        // PATCH: api/GalaEvent/5
+        // PATCH: api/events/5
         [HttpGet("start")]
         public async Task<IActionResult> StartCheckout(int eventId)
         {
