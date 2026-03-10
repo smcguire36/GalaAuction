@@ -14,6 +14,7 @@ type EditGuestFormProps = {
   onSubmit: (data: GuestFormData) => void;
   guestId?: number;
   data: GuestFormData;
+  setData: React.Dispatch<React.SetStateAction<GuestFormData>>;
 };
 
 const TouchedDefaultState = {
@@ -40,18 +41,26 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
   ref,
   onSubmit,
   data,
+  setData,
 }) => {
   // State to track whether each field has been touched or not for validation styling purposes
   const [touched, setTouched] = useState(TouchedDefaultState);
   // State to track the validity of each field for validation styling purposes
   const [valid, setValid] = useState(ValidDefaultState);
   const formRef = useRef<HTMLFormElement>(null);
-  // Setup state for the checkboxes as other fields in the form depend on their values
-  const [onlineBidderOnly, setOnlineBidderOnly] = useState(
-    data.onlineBidderOnly,
-  );
-  const [inPersonAutoGen, setInPersonAutoGen] = useState(data.inPersonAutoGen);
-  const [onlineAutoGen, setOnlineAutoGen] = useState(data.onlineAutoGen);
+
+  // When the data prop changes (e.g., when opening the modal with new guest data),
+  // update the checkbox states so the form displays the new data
+  /*
+  useEffect(() => {
+    setOnlineBidderOnly(data.onlineBidderOnly);
+    setInPersonAutoGen(data.inPersonAutoGen);
+    setOnlineAutoGen(data.onlineAutoGen);
+    // Reset touched/valid states when new data loads
+    setTouched(TouchedDefaultState);
+    setValid(ValidDefaultState);
+  }, [data.guestId]); // Only reset when guestId changes
+*/
 
   useImperativeHandle(ref, () => ({
     submit: () => {
@@ -67,65 +76,14 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
    */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
-    console.log(name, e.target.checkValidity());
+    setData((prev) => ({
+      ...prev,
+      [name]: e.target.type === "checkbox" ? e.target.checked : e.target.value,
+    }));
     setValid((prev) => ({ ...prev, [name]: e.target.checkValidity() }));
   };
 
-  /**
-   * Handles the change event for the Online Bidder Only checkbox.
-   * @param e The change event object.
-   */
-  const handleOnlineBidderOnlyChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const isChecked = e.target.checked;
-    setOnlineBidderOnly(isChecked);
-    // If Online Bidder Only is checked, we should disable and clear the in-person bidder number
-    if (isChecked) {
-      setInPersonAutoGen(false);
-      setValid((prev) => ({ ...prev, inPersonBidderNumber: true }));
-    }
-  };
-
-  /**
-   * Handles the change event for the Online Auto Gen checkbox.
-   * @param e The change event object.
-   */
-  const handleOnlineAutoGenChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    // Update the onlineAutoGen state based on the checkbox value
-    const isChecked = e.target.checked;
-    setOnlineAutoGen(isChecked);
-    // Call the generic handleChange to update validity state
-    handleChange(e);
-  };
-
-  /**
-   * Handles the change event for the In-Person Auto Gen checkbox.
-   * @param e The change event object.
-   */
-  const handleInPersonAutoGenChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    // Update the inPersonAutoGen state based on the checkbox value
-    const isChecked = e.target.checked;
-    setInPersonAutoGen(isChecked);
-    // If In-Person Auto Gen is checked, we should clear the in-person bidder number
-    if (isChecked) {
-        const input = formRef.current?.querySelector<HTMLInputElement>(
-          'input[name="inPersonBidderNumber"]'
-        );
-        if (input) {
-            console.log(input);
-            input.value = "";
-        }
-    }
-
-    // Call the generic handleChange to update validity state
-    handleChange(e);
-  };
-
+  
   /**
    * Generic onBlur handler that updates the touched state for the input field based on its name attribute.
    * It also has logic to set touched to false if the field is not required and left blank so that validation
@@ -176,7 +134,7 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
             type="checkbox"
             name="onlineBidderOnly"
             defaultChecked={data.onlineBidderOnly}
-            onChange={handleOnlineBidderOnlyChange}
+            onChange={handleChange}
             className="checkbox checkbox-sm"
           />
           Online Bidder Only
@@ -189,7 +147,7 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
           label="First Name"
           name="firstName"
           required
-          defaultValue={data.firstName}
+          value={data.firstName}
           onChange={handleChange}
           onBlur={handleOnBlur}
           hint="First name is required."
@@ -202,7 +160,7 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
           label="Last Name"
           name="lastName"
           required
-          defaultValue={data.lastName}
+          value={data.lastName}
           onChange={handleChange}
           onBlur={handleOnBlur}
           hint="Last name is required."
@@ -216,7 +174,7 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
           type="number"
           label="Table #"
           name="tableNumber"
-          defaultValue={data.tableNumber?.toString()}
+          value={data.tableNumber?.toString()}
           min={1}
           max={50}
           onChange={handleChange}
@@ -233,12 +191,12 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
           type="number"
           label="Bidder #"
           name="inPersonBidderNumber"
-          defaultValue={data.inPersonBidderNumber?.toString()}
+          value={data.inPersonBidderNumber?.toString()}
           min={1}
           max={999}
           onChange={handleChange}
           onBlur={handleOnBlur}
-          disabled={inPersonAutoGen || onlineBidderOnly}
+          disabled={data.inPersonAutoGen || data.onlineBidderOnly}
           hint="In-person bidder number must be a number between 1 and 999 if entered."
           touched={touched.inPersonBidderNumber}
           valid={valid.inPersonBidderNumber}
@@ -248,9 +206,10 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
               <input
                 type="checkbox"
                 name="inPersonAutoGen"
-                checked={inPersonAutoGen}
-                disabled={onlineBidderOnly || data.inPersonBidderNumber !== null} // Disable if Online Bidder Only is checked or if there is already a bidder number since we don't want them to auto-gen and overwrite an existing number in that case
-                onChange={handleInPersonAutoGenChange}
+                value={1}
+                defaultChecked={data.inPersonAutoGen}
+                disabled={data.onlineBidderOnly || data.inPersonBidderNumber !== null} // Disable if Online Bidder Only is checked or if there is already a bidder number since we don't want them to auto-gen and overwrite an existing number in that case
+                onChange={handleChange}
                 className="checkbox checkbox-sm"
               />
               Auto
@@ -262,12 +221,12 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
           type="number"
           label="Online Bidder #"
           name="onlineBidderNumber"
-          defaultValue={data.onlineBidderNumber?.toString()}
+          value={data.onlineBidderNumber?.toString()}
           min={1000}
           max={1999}
           onChange={handleChange}
           onBlur={handleOnBlur}
-          disabled={onlineAutoGen}
+          disabled={data.onlineAutoGen}
           hint="Online bidder number must be a number between 1000 and 1999 if entered."
           touched={touched.onlineBidderNumber}
           valid={valid.onlineBidderNumber}
@@ -277,8 +236,10 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
               <input
                 type="checkbox"
                 name="onlineAutoGen"
-                checked={onlineAutoGen}
-                onChange={handleOnlineAutoGenChange}
+                value={1}
+                defaultChecked={data.onlineAutoGen}
+                disabled={data.onlineBidderNumber !== null} // Disable if there is already a bidder number since we don't want them to auto-gen and overwrite an existing number in that case
+                onChange={handleChange}
                 className="checkbox checkbox-sm"
               />
               Auto

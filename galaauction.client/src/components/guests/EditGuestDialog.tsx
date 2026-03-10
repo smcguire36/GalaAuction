@@ -1,26 +1,56 @@
-import { use, useImperativeHandle, useRef, useState, type Ref } from "react";
+import { use, /* useEffect, */ useImperativeHandle, useRef, useState, type Ref } from "react";
 import { ModalContext } from "../../store/ModalContext";
 import { Modal, type ModalHandle } from "../common/Modal";
 import EditGuestForm, { type EditGuestFormHandle } from "./EditGuestForm";
 import { GUESTFORMDEFAULTS, type GuestFormData } from "../../types/GuestFormData";
+import type { GuestType } from "../../types/Guest";
 
-type AddGuestProps = {
+type EditGuestProps = {
   ref: Ref<ModalHandle>;
   onConfirm: () => void;
+  guest: GuestType;
 };
 
 
-const EditGuestDialog = ({ ref, onConfirm }: AddGuestProps) => {
+const EditGuestDialog = ({ ref, onConfirm, guest }: EditGuestProps) => {
   const { open, close } = use(ModalContext);
   const formRef = useRef<EditGuestFormHandle>(null);
-  const [data, setData] = useState<GuestFormData>(GUESTFORMDEFAULTS);
-  
+  const [data, setData] = useState<GuestFormData>({
+     ...GUESTFORMDEFAULTS,
+     ...guest,
+     
+  });
+ 
+  /*
+  useEffect(() => {
+    const getGuestData = async (id: number) => {
 
-  useImperativeHandle(ref, () => ({
-    open: () => {
-      open("addGuest");
-    }
-  }));
+        // Eventually I will fetch the guest data from the server using the guestId
+
+
+        setData((prev) => ({
+          ...prev,
+          guestId: id
+        }));
+      };
+      if (guestId) {
+        getGuestData(guestId);
+      }
+  }, [guestId]);
+  */
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      open: () => {
+        console.log("in open of EditGuestDialog, guest:", guest);
+
+        // Open modal after setting data
+        open("editGuest");
+      },
+    }),
+    [guest, open]
+  );
  
   const handleConfirm = () => {
     console.log("in handleConfirm in EditGuestDialog");
@@ -28,7 +58,7 @@ const EditGuestDialog = ({ ref, onConfirm }: AddGuestProps) => {
   };
 
   const onClose = () => {
-    // What happens when the Add Guest modal is closed
+    // What happens when the Edit Guest modal is closed
     console.log("onClose in EditGuestDialog");
   };
 
@@ -57,7 +87,7 @@ const EditGuestDialog = ({ ref, onConfirm }: AddGuestProps) => {
       onClose={onClose}
       onConfirm={handleConfirm}
     >
-      <EditGuestForm data={data} ref={formRef} onSubmit={onSubmit}/>
+      <EditGuestForm key={data.guestId} data={data} ref={formRef} onSubmit={onSubmit}/>
     </Modal>
   );
 };

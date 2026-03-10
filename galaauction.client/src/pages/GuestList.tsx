@@ -7,15 +7,18 @@ import { EventStatus } from "../types/EventStatus";
 import AddGuestDialog from "../components/guests/AddGuestDialog";
 import type { ModalHandle } from "../components/common/Modal";
 import UploadGuestsDialog from "../components/guests/UploadGuestsDialog";
+import EditGuestDialog from "../components/guests/EditGuestDialog";
 
 const GuestList = () => {
   const context = useContext(EventContext);
   const { request, isLoading, error } = useHttp();
   const [guests, setGuests] = useState<GuestType[]>([] as GuestType[]);
+  const [selectedGuest, setSelectedGuest] = useState<GuestType>({} as GuestType);
   const addGuestRef = useRef<ModalHandle>(null);
+  const editGuestRef = useRef<ModalHandle>(null);
   const uploadGuestsRef = useRef<ModalHandle>(null);
   const event = context.event;
-  const [ formSession, setFormSession ] = useState<number>(0);
+  const [formSession, setFormSession] = useState<number>(0);
 
   useEffect(() => {
     const getEvents = async (id: number) => {
@@ -41,11 +44,16 @@ const GuestList = () => {
     addGuestRef.current?.open();
   };
 
+  const onOpenEditGuest = (guest: GuestType) => {
+    setFormSession((prev) => ++prev);
+    setSelectedGuest(guest);
+    editGuestRef.current?.open();
+  };
+
   const onOpenUploadGuests = () => {
     setFormSession((prev) => ++prev);
     uploadGuestsRef.current?.open();
   };
-
 
   const handleModalConfirm = () => {
     console.log("Modal Dialog confirmed!  Let's reload the guest list now!");
@@ -138,7 +146,10 @@ const GuestList = () => {
                     {guest.onlineBidderNumber ? guest.onlineBidderNumber : "--"}
                   </td>
                   <td className="flex flex-row gap-4 py-1">
-                    <button className={`btn btn-outline px-2 ${event?.eventStatusId !== EventStatus.Setup?"btn-disabled":""}`}>
+                    <button
+                      className={`btn btn-outline px-2 ${event?.eventStatusId !== EventStatus.Setup ? "btn-disabled" : ""}`}
+                      onClick={() => onOpenEditGuest(guest)}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
@@ -149,7 +160,9 @@ const GuestList = () => {
                         <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
                       </svg>
                     </button>
-                    <button className={`btn btn-outline px-2 ${event?.eventStatusId !== EventStatus.Setup?"btn-disabled":"text-red-800"}`}>
+                    <button
+                      className={`btn btn-outline px-2 ${event?.eventStatusId !== EventStatus.Setup ? "btn-disabled" : "text-red-800"}`}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
@@ -173,9 +186,22 @@ const GuestList = () => {
           </tbody>
         </table>
       </div>
-      <AddGuestDialog key={`add-${formSession}`} ref={addGuestRef} onConfirm={handleModalConfirm} />
-      <UploadGuestsDialog key={`upload-${formSession}`} ref={uploadGuestsRef} onConfirm={handleModalConfirm} />
-
+      <AddGuestDialog
+        key={`add-${formSession}`}
+        ref={addGuestRef}
+        onConfirm={handleModalConfirm}
+      />
+      <EditGuestDialog
+        key={`edit-${formSession}`}
+        ref={editGuestRef}
+        onConfirm={handleModalConfirm}
+        guest={selectedGuest}
+      />
+      <UploadGuestsDialog
+        key={`upload-${formSession}`}
+        ref={uploadGuestsRef}
+        onConfirm={handleModalConfirm}
+      />
     </>
   );
 };

@@ -8,7 +8,7 @@ import {
 import { ModalContext } from "../../store/ModalContext";
 
 export type ModalHandle = {
-  open: () => void;
+  open: (id?: number) => void;
 };
 
 interface ModalProps extends ComponentProps<"dialog"> {
