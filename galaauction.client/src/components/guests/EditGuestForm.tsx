@@ -2,7 +2,7 @@ import {
   GUESTFORMDEFAULTS,
   type GuestFormData,
 } from "../../types/GuestFormData";
-import { useImperativeHandle, useRef, useState, type Ref } from "react";
+import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 import { FloatingInput } from "../common/FloatingInput";
 
 export type EditGuestFormHandle = {
@@ -50,17 +50,15 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
   const formRef = useRef<HTMLFormElement>(null);
 
   // When the data prop changes (e.g., when opening the modal with new guest data),
-  // update the checkbox states so the form displays the new data
-  /*
+  // Check the contents of the first and last name fields and update the validity state for those fields since they are required and their validity depends on their contents
   useEffect(() => {
-    setOnlineBidderOnly(data.onlineBidderOnly);
-    setInPersonAutoGen(data.inPersonAutoGen);
-    setOnlineAutoGen(data.onlineAutoGen);
-    // Reset touched/valid states when new data loads
-    setTouched(TouchedDefaultState);
-    setValid(ValidDefaultState);
+    // Reset valid states when new data loads
+    setValid((prev) => ({
+      ...prev,
+      firstName: data.firstName.trim() !== "",
+      lastName: data.lastName.trim() !== "",
+    })); 
   }, [data.guestId]); // Only reset when guestId changes
-*/
 
   useImperativeHandle(ref, () => ({
     submit: () => {
@@ -75,15 +73,30 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
    * additional logic that needs to run when they are changed.
    */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = e.target;
+    const { name, type, value, checked } = e.target;
+    const nextValue =
+      type === "checkbox" ? checked : type === "number" ? (value === "" ? null : Number(value)) : value;
+
     setData((prev) => ({
       ...prev,
-      [name]: e.target.type === "checkbox" ? e.target.checked : e.target.value,
+      [name]: nextValue,
     }));
     setValid((prev) => ({ ...prev, [name]: e.target.checkValidity() }));
   };
 
-  
+  const handleOnlineBidderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    console.log("in handleOnlineBidderChange, checked:", checked);
+    console.log("data before change:", data.inPersonBidderNumber);
+    setData((prev) => ({
+      ...prev,
+      onlineBidderOnly: checked,
+      // If Online Bidder Only is checked, then we need to disable and uncheck the In-Person Auto Gen checkbox and clear the In-Person Bidder Number since those options don't make sense for online-only bidders
+      inPersonAutoGen: checked ? false : (prev.inPersonBidderNumber === null) ? true : false,
+    }));
+    setValid((prev) => ({ ...prev, [name]: true })); // Online Bidder Only is always valid since it's not required
+  };
+
   /**
    * Generic onBlur handler that updates the touched state for the input field based on its name attribute.
    * It also has logic to set touched to false if the field is not required and left blank so that validation
@@ -109,10 +122,25 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
    * @param formData The FormData object containing the form values.
    */
   const handleAction = (formData: FormData) => {
+    const parseOptionalInt = (value: FormDataEntryValue | null): number | null => {
+      if (typeof value !== "string" || value.trim() === "") {
+        return null;
+      }
+
+      const parsed = Number(value);
+      return Number.isNaN(parsed) ? null : parsed;
+    };
+
     // 1. Convert to a plain object and cast to GuestFormData type.
     const data: GuestFormData = {
       ...GUESTFORMDEFAULTS,
-      ...Object.fromEntries(formData),
+//      ...Object.fromEntries(formData),
+      guestId: parseOptionalInt(formData.get("guestId")) ?? GUESTFORMDEFAULTS.guestId,
+      firstName: formData.get("firstName") as string,
+      lastName: formData.get("lastName") as string,
+      tableNumber: parseOptionalInt(formData.get("tableNumber")),
+      inPersonBidderNumber: parseOptionalInt(formData.get("inPersonBidderNumber")),
+      onlineBidderNumber: parseOptionalInt(formData.get("onlineBidderNumber")),
       // The checkboxes are a special case since unchecked checkboxes won't be included in the FormData,
       // so we need to determine their values based on whether they are present in the FormData or not.
       onlineBidderOnly: formData.has("onlineBidderOnly"),
@@ -133,8 +161,9 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
           <input
             type="checkbox"
             name="onlineBidderOnly"
-            defaultChecked={data.onlineBidderOnly}
-            onChange={handleChange}
+            checked={data.onlineBidderOnly}
+            disabled={data.inPersonBidderNumber !== null} // Disable if there is already an in-person bidder number since it doesn't make sense to have both an in-person bidder number and be an online-only bidder
+            onChange={handleOnlineBidderChange}
             className="checkbox checkbox-sm"
           />
           Online Bidder Only
@@ -174,11 +203,12 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
           type="number"
           label="Table #"
           name="tableNumber"
-          value={data.tableNumber?.toString()}
+          value={data.tableNumber?.toString() ?? ""}
           min={1}
           max={50}
           onChange={handleChange}
           onBlur={handleOnBlur}
+          disabled={data.onlineBidderOnly} // Disable table number input if Online Bidder Only is checked since table number doesn't make sense for online-only bidders
           hint="Table number must be a number between 1 and 50 if entered."
           touched={touched.tableNumber}
           valid={valid.tableNumber}
@@ -191,7 +221,7 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
           type="number"
           label="Bidder #"
           name="inPersonBidderNumber"
-          value={data.inPersonBidderNumber?.toString()}
+          value={data.inPersonBidderNumber?.toString() ?? ""}
           min={1}
           max={999}
           onChange={handleChange}
@@ -207,8 +237,8 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
                 type="checkbox"
                 name="inPersonAutoGen"
                 value={1}
-                defaultChecked={data.inPersonAutoGen}
-                disabled={data.onlineBidderOnly || data.inPersonBidderNumber !== null} // Disable if Online Bidder Only is checked or if there is already a bidder number since we don't want them to auto-gen and overwrite an existing number in that case
+                checked={data.inPersonAutoGen}
+                disabled={data.onlineBidderOnly || data.inPersonBidderNumber != null} // Disable if Online Bidder Only is checked or if there is already a bidder number since we don't want them to auto-gen and overwrite an existing number in that case
                 onChange={handleChange}
                 className="checkbox checkbox-sm"
               />
@@ -221,7 +251,7 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
           type="number"
           label="Online Bidder #"
           name="onlineBidderNumber"
-          value={data.onlineBidderNumber?.toString()}
+          value={data.onlineBidderNumber?.toString() ?? ""}
           min={1000}
           max={1999}
           onChange={handleChange}
@@ -237,8 +267,8 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
                 type="checkbox"
                 name="onlineAutoGen"
                 value={1}
-                defaultChecked={data.onlineAutoGen}
-                disabled={data.onlineBidderNumber !== null} // Disable if there is already a bidder number since we don't want them to auto-gen and overwrite an existing number in that case
+                checked={data.onlineAutoGen}
+                disabled={data.onlineBidderNumber != null} // Disable if there is already a bidder number since we don't want them to auto-gen and overwrite an existing number in that case
                 onChange={handleChange}
                 className="checkbox checkbox-sm"
               />
@@ -253,36 +283,3 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
 
 export default EditGuestForm;
 
-/*
-          <div
-            className={`input validator ${touched.onlineBidderNumber && !valid.onlineBidderNumber ? "input-error" : ""}`}
-          >
-            <input
-              name="onlineBidderNumber"
-              type="number"
-              defaultValue={data.onlineBidderNumber?.toString()}
-              onChange={handleChange}
-              onBlur={handleOnBlur}
-              placeholder="Online Bidder #"
-              className="input-bordered"
-            />
-            <div className="flex flex-row">
-              <label className="label">
-                <input
-                  type="checkbox"
-                  name="onlineAutoGen"
-                  defaultChecked={data.onlineAutoGen}
-                  onChange={handleChange}
-                  className="checkbox checkbox-sm"
-                />
-                Auto
-              </label>
-            </div>
-          </div>
-          <div
-            className={`validator-hint ${touched.onlineBidderNumber && !valid.onlineBidderNumber ? "visible text-error" : ""}`}
-          >
-            Online bidder number must be a valid number if entered.
-          </div>
-
-*/

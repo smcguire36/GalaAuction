@@ -31,7 +31,7 @@ var backend = builder.AddProject<Projects.GalaAuction_Server>("galaauction-serve
 
 // Create the frontend container and reference the backend container and keycloak container
 var frontend = builder.AddJavaScriptApp("frontend", "../galaauction.client")
-    .WithNpm(true, "install")
+//    .WithNpm(true, "install")
     .WithHttpEndpoint(port: 5173, env: "VITE_PORT")
     .WithExternalHttpEndpoints()
     .WithReference(backend)

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { GuestType } from "../types/Guest";
 import { useHttp } from "../hooks/useHttp";
 import EventContext from "../store/EventContext";
@@ -19,6 +19,7 @@ const GuestList = () => {
   const uploadGuestsRef = useRef<ModalHandle>(null);
   const event = context.event;
   const [formSession, setFormSession] = useState<number>(0);
+  const [searchText, setSearchText] = useState<string>("");
 
   useEffect(() => {
     const getEvents = async (id: number) => {
@@ -31,12 +32,22 @@ const GuestList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const filteredItems = useMemo(() => {
+    return guests.filter(guest => {
+      if (searchText.trim() === "") {
+        return true; // If search text is empty, include all guests
+      }
+      return guest.firstName.toLowerCase().includes(searchText.toLowerCase()) || guest.lastName.toLowerCase().includes(searchText.toLowerCase());
+    }
+    );
+  }, [guests, searchText]);
+
   if (error) {
     return <div>Error Loading Guests ...</div>;
   }
 
-  if (guests.length === 0) {
-    return <></>;
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
   }
 
   const onOpenAddGuest = () => {
@@ -84,7 +95,7 @@ const GuestList = () => {
                   <path d="m21 21-4.3-4.3"></path>
                 </g>
               </svg>
-              <input type="search" placeholder="Search Guests" />
+              <input type="search" placeholder="Search Guests" value={searchText} onChange={handleSearchChange}/>
             </label>
             <button className="btn btn-outline" onClick={onOpenAddGuest}>
               ADD GUEST
@@ -135,9 +146,16 @@ const GuestList = () => {
                 </td>
               </tr>
             )}
+            {!isLoading && filteredItems.length === 0 && (  
+              <tr className="text-lg">
+                <td colSpan={5} className="text-lg font-bold text-center">
+                  No guests found.
+                </td>
+              </tr>
+            )}
             {!isLoading &&
-              guests.length > 0 &&
-              guests.map((guest) => (
+              filteredItems.length > 0 &&
+              filteredItems.map((guest) => (
                 <tr key={guest.guestId} className="text-lg">
                   <td className="py-1">{guest.fullName}</td>
                   <td className="py-1">{guest.tableNumber}</td>

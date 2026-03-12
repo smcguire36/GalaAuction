@@ -28,6 +28,10 @@ namespace GalaAuction.Server.Mappings
             {
                 dto.OnlineBidderNumber = olBidder.BidderNumber;
             }
+            if (ipBidder == null && olBidder != null)
+            {
+                dto.OnlineBidderOnly = true;
+            }
             return dto;
         }
 

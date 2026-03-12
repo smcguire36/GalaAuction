@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug AppHost Process Only",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/GalaAuction.AppHost/bin/Debug/net10.0/GalaAuction.AppHost.dll",
+      "cwd": "${workspaceFolder}/GalaAuction.AppHost",
+      "preLaunchTask": "dotnet: build GalaAuction.AppHost (GalaAuction)",
+      "stopAtEntry": false,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Attach to AppHost (after aspire run)",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:pickProcess}",
+      "justMyCode": true
+    },
+    {
+      "name": "Attach to GalaAuction.Server (after aspire run)",
+      "type": "coreclr",
+      "request": "attach",
+      "processName": "GalaAuction.Server",
+      "justMyCode": true,
+      "requireExactSource": false
+    }
+  ]
+}

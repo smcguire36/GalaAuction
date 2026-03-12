@@ -11,15 +11,21 @@ type EditGuestProps = {
   guest: GuestType;
 };
 
+const normalizeGuestData = (guest: GuestType): GuestFormData => ({
+  ...GUESTFORMDEFAULTS,
+  ...guest,
+  tableNumber: guest.tableNumber ?? null,
+  inPersonBidderNumber: guest.inPersonBidderNumber ?? null,
+  onlineBidderNumber: guest.onlineBidderNumber ?? null,
+  onlineBidderOnly: guest.onlineBidderOnly ?? GUESTFORMDEFAULTS.onlineBidderOnly,
+  inPersonAutoGen: guest.inPersonAutoGen ?? GUESTFORMDEFAULTS.inPersonAutoGen,
+  onlineAutoGen: guest.onlineAutoGen ?? GUESTFORMDEFAULTS.onlineAutoGen,
+});
 
 const EditGuestDialog = ({ ref, onConfirm, guest }: EditGuestProps) => {
   const { open, close } = use(ModalContext);
   const formRef = useRef<EditGuestFormHandle>(null);
-  const [data, setData] = useState<GuestFormData>({
-     ...GUESTFORMDEFAULTS,
-     ...guest,
-     
-  });
+  const [data, setData] = useState<GuestFormData>(normalizeGuestData(guest));
  
   /*
   useEffect(() => {
@@ -44,6 +50,7 @@ const EditGuestDialog = ({ ref, onConfirm, guest }: EditGuestProps) => {
     () => ({
       open: () => {
         console.log("in open of EditGuestDialog, guest:", guest);
+        setData(normalizeGuestData(guest));
 
         // Open modal after setting data
         open("editGuest");
@@ -87,7 +94,7 @@ const EditGuestDialog = ({ ref, onConfirm, guest }: EditGuestProps) => {
       onClose={onClose}
       onConfirm={handleConfirm}
     >
-      <EditGuestForm key={data.guestId} data={data} ref={formRef} onSubmit={onSubmit}/>
+      <EditGuestForm key={data.guestId} data={data} setData={setData} ref={formRef} onSubmit={onSubmit}/>
     </Modal>
   );
 };
