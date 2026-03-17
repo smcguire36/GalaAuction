@@ -165,13 +165,27 @@ namespace GalaAuction.Server.Controllers
             {
                 return BadRequest("Item does not belong to the specified event.");
             }
+            if (item.ItemNumber != dto.ItemNumber)
+            {
+                // If the item number is being changed, we need to validate that the new item number does not already exist for this event
+                if (context.Items.Any(i => i.GalaEventId == GalaEvent!.GalaEventId && i.ItemNumber == dto.ItemNumber))
+                {
+                    return BadRequest("An item with this item number already exists for this event.");
+                }
+            }
+            if (dto.ItemNumber == null)
+            {
+                return BadRequest("Item number is required.");
+            }
 
             // [TODO] Consider using AutoMapper for this kind of mapping
+            item.ItemNumber = (int)dto.ItemNumber;  // Item number is required, but just in case we want to allow it to be optional in the DTO in the future, we will fall back to the existing item number if it is not provided.
             item.ItemName = dto.ItemName;
             item.WinningBidderNumber = dto.WinningBidderNumber;
             item.WinningBidAmount = dto.WinningBidAmount;
             item.IsPaid = dto.IsPaid;
             item.PaymentMethodId = dto.PaymentMethodId;
+            item.CategoryId = dto.CategoryId;
 
             context.Entry(item).State = EntityState.Modified;
 
@@ -201,12 +215,20 @@ namespace GalaAuction.Server.Controllers
         {
             var item = new Item
             {
-                ItemNumber = itemService.GetNextItemNumber(eventId, dto.CategoryId),
+                ItemNumber = 0,
                 ItemName = dto.ItemName,
                 GalaEventId = dto.GalaEventId,
                 CategoryId = dto.CategoryId
             };
-            context.Item.Add(item);
+            if (dto.ItemNumberAutoGen)
+            {
+                item.ItemNumber = itemService.GetNextItemNumber(eventId, dto.CategoryId);
+            }
+            else if (dto.ItemNumber.HasValue)
+            {
+                item.ItemNumber = dto.ItemNumber!.Value;
+            }
+            context.Items.Add(item);
             try
             {
                 await context.SaveChangesAsync();
@@ -280,8 +302,12 @@ namespace GalaAuction.Server.Controllers
                     {
                         // Ensure the GalaEventId from the URL is used as it will not be coming from the CSV
                         dto.GalaEventId = eventId;
+                        // Figure out the category Id
+                        int categoryId = dto.ItemNumber / 100;
+
                         // Create the Item object from the DTO and add it to the context.
                         var item = dto.ToItem();
+                        item.CategoryId = categoryId;
                         context.Items.Add(item);
                     }
                     await context.SaveChangesAsync();

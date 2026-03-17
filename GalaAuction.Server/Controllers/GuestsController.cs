@@ -155,6 +155,10 @@ namespace GalaAuction.Server.Controllers
                         guestDto.GalaEventId = eventId;
                         // Create the Guest object from the DTO and add it to the context.
                         // The GuestService is used in the mapping to set the next available in person bidder number if one is not provided and OnlineBidderOnly is false.
+                        if (guestDto.InPersonBidderNumber == null)
+                        {
+                            guestDto.InPersonAutoGen = true;
+                        }
                         var guest = guestDto.ToGuest(guestService);
                         var existingGuest = await context.Guests
                             .Where(g => g.GalaEventId == eventId && g.FirstName == guest.FirstName && g.LastName == guest.LastName)
@@ -166,8 +170,8 @@ namespace GalaAuction.Server.Controllers
                         }
                         importedCount++;
                         context.Guests.Add(guest);
+                        await context.SaveChangesAsync();
                     }
-                    await context.SaveChangesAsync();
                     return Ok($"File uploaded and {importedCount} guests imported successfully. {skippedCount} guests already exist and were skipped.");
                 }
             }

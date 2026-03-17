@@ -26,13 +26,13 @@ const FloatingSelect = ({
         <select
           {...props}
           name={name}
-          className={`peer w-full border-0 bg-transparent placeholder-transparent outline-none focus:outline-none focus:ring-0 focus:outline-offset-0 ${inputClassName}`}
+          className={`peer w-full border-0 bg-transparent placeholder-transparent outline-none focus:outline-none focus:ring-0 focus:outline-offset-0 disabled:text-base-content/40 disabled:cursor-not-allowed ${inputClassName}`}
         >
           {children}
         </select>
         <label
           htmlFor={name}
-          className="absolute left-4 px-1 transition-all bg-base-100 text-base-content/50 pointer-events-none
+          className="absolute left-4 px-1 transition-all bg-base-100 text-base-content/50 pointer-events-none peer-disabled:text-base-content/40
                 /* Resting (Inside) State: Perfect Vertical Center */
                 top-1/2 -translate-y-1/2 text-base 
                 

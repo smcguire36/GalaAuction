@@ -66,10 +66,11 @@ const AddItemDialog = ({ ref, onConfirm }: AddItemProps) => {
         isPaid: formData.isPaid,
         paymentMethodId: formData.paymentMethodId,
         paymentMethodName: formData.paymentMethodName,
+        */
         categoryId: formData.categoryId,
         categoryName: formData.categoryName,
-        */
-        itemNumberAutoGen: formData.itemNumberAutoGen
+        itemNumberAutoGen: formData.itemNumberAutoGen,
+        galaEventId: eventId,
       });
 
       console.log("Response from save item", response);

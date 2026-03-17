@@ -12,22 +12,19 @@ import SortableHeader, {
   type SortState,
 } from "../components/common/SortableHeader";
 import Header from "../components/common/Header";
-import EditActionButton from "../components/common/EditActionButton";
-import DeleteActionButton from "../components/common/DeleteActionButton";
-import UploadCsvButton from "../components/common/UploadCsvButton";
-import AddActionButton from "../components/common/AddActionButton";
 import { useConfirm } from "../store/ConfirmProvider";
+import CheckoutActionButton from "../components/common/CheckoutActionButton";
+import type { CheckoutDto } from "../types/Checkout";
+import { currencyFormatter } from "../utilities/currencyFormatter";
 
-const GuestList = () => {
+const Checkout = () => {
   const context = useContext(EventContext);
   const { request, isLoading, error } = useHttp();
-  const [guests, setGuests] = useState<GuestType[]>([] as GuestType[]);
-  const [selectedGuest, setSelectedGuest] = useState<GuestType>(
-    {} as GuestType,
+  const [guests, setGuests] = useState<CheckoutDto[]>([] as CheckoutDto[]);
+  const [selectedGuest, setSelectedGuest] = useState<CheckoutDto>(
+    {} as CheckoutDto,
   );
-  const addGuestRef = useRef<ModalHandle>(null);
   const editGuestRef = useRef<ModalHandle>(null);
-  const uploadGuestsRef = useRef<ModalHandle>(null);
   const event = context.event;
   const [formSession, setFormSession] = useState<number>(0);
   const [searchText, setSearchText] = useState<string>("");
@@ -56,16 +53,17 @@ const GuestList = () => {
           return true; // If search text is empty, include all guests
         }
         return (
-          guest.firstName.toLowerCase().includes(searchText.toLowerCase()) ||
-          guest.lastName.toLowerCase().includes(searchText.toLowerCase())
+          guest.fullName.toLowerCase().includes(searchText.toLowerCase()) ||
+          guest.inPersonBidderNumber.toString().includes(searchText) ||
+          guest.onlineBidderNumber.toString().includes(searchText)
         );
       })
       .sort((a, b) => {
         if (!sortState.direction || sortState.name === "") {
           return 0; // No sorting applied
         }
-        const aValue = a[sortState.name as keyof GuestType];
-        const bValue = b[sortState.name as keyof GuestType];
+        const aValue = a[sortState.name as keyof CheckoutDto] ?? "";
+        const bValue = b[sortState.name as keyof CheckoutDto] ?? "";
         if (aValue < bValue) {
           return sortState.direction === "asc" ? -1 : 1;
         }
@@ -84,44 +82,10 @@ const GuestList = () => {
     setSearchText(e.target.value);
   };
 
-  const onOpenAddGuest = () => {
-    setFormSession(prev => ++prev);
-    addGuestRef.current?.open();
-  };
-
-  const onOpenEditGuest = (guest: GuestType) => {
+  const onOpenEditGuest = (guest: CheckoutDto) => {
     setFormSession(prev => ++prev);
     setSelectedGuest(guest);
     editGuestRef.current?.open();
-  };
-
-  const handleDeleteGuest = async (guest: GuestType) => {
-    const isConfirmed = await confirm({
-      title: "CONFIRMATION",
-      message: `Are you sure you want to delete the guest ${guest.firstName} ${guest.lastName}?`,
-    });
-
-    if (isConfirmed) {
-      console.log("in handleConfirm in DeleteGuestDialog");
-
-      try {
-        const response = await request(
-          `/api/events/${event!.galaEventId}/guests/${guest.guestId}`,
-          "DELETE",
-        );
-        if (response.ok && response.status === 204) {
-          getGuests(context.eventId);
-        }
-        //        console.log("Delete response:", response);
-      } catch (err: any) {
-        alert(`Error deleting guest... ${err.message ?? "Unknown error"}`);
-      }
-    }
-  };
-
-  const onOpenUploadGuests = () => {
-    setFormSession(prev => ++prev);
-    uploadGuestsRef.current?.open();
   };
 
   const handleModalConfirm = () => {
@@ -129,13 +93,6 @@ const GuestList = () => {
     getGuests(context.eventId);
   };
 
-  /**
-   * Changes the sort state based on the current state and the column header that was clicked.
-   * The SortableHeader component will call this function when a header is clicked,
-   * passing in the name of the column and the next sort direction.
-   * This function will update the sort state, which can then be used to sort the guest list accordingly.
-   * @param next
-   */
   const handleChangeSort = (next: SortState) => {
     setSortState(next);
   };
@@ -172,16 +129,6 @@ const GuestList = () => {
                 onChange={handleSearchChange}
               />
             </label>
-            <AddActionButton
-              label="ADD GUEST"
-              onClick={onOpenAddGuest}
-              disabled={event?.eventStatusId !== EventStatus.Setup}
-            />
-            <UploadCsvButton
-              label="UPLOAD GUESTS"
-              onClick={onOpenUploadGuests}
-              disabled={event?.eventStatusId !== EventStatus.Setup}
-            />
           </div>
         </div>
       </div>
@@ -190,41 +137,23 @@ const GuestList = () => {
           <thead>
             <tr className="text-lg bg-accent text-white/50">
               <SortableHeader
-                name="fullName"
-                label="Guest Name"
+                label="Paid"
+                name="isPaid"
                 changeSort={handleChangeSort}
                 sortDirection={
-                  sortState.name === "fullName"
-                    ? sortState.direction
-                    : undefined
+                  sortState.name === "isPaid" ? sortState.direction : undefined
                 }
               />
+              <Header label="Bidder #" />
+              <Header label="Online Bidder #" />
+              <Header label="Guest Name" />
+              <Header label="Total # of Items Won" />
               <SortableHeader
-                name="tableNumber"
-                label="Table #"
+                label="Total Amount Owed ($)"
+                name="totalOwed"
                 changeSort={handleChangeSort}
                 sortDirection={
-                  sortState.name === "tableNumber"
-                    ? sortState.direction
-                    : undefined
-                }
-              />
-              <SortableHeader
-                name="inPersonBidderNumber"
-                label="Bidder #"
-                changeSort={handleChangeSort}
-                sortDirection={
-                  sortState.name === "inPersonBidderNumber"
-                    ? sortState.direction
-                    : undefined
-                }
-              />
-              <SortableHeader
-                name="onlineBidderNumber"
-                label="Online Bidder #"
-                changeSort={handleChangeSort}
-                sortDirection={
-                  sortState.name === "onlineBidderNumber"
+                  sortState.name === "totalOwed"
                     ? sortState.direction
                     : undefined
                 }
@@ -251,19 +180,28 @@ const GuestList = () => {
               filteredItems.length > 0 &&
               filteredItems.map(guest => (
                 <tr key={guest.guestId} className="text-lg">
-                  <td className="py-1">{guest.fullName}</td>
-                  <td className="py-1">{guest.tableNumber}</td>
+                  <td className="py-1">
+                    <input
+                      type="checkbox"
+                      checked={guest.isPaid}
+                      className="checkbox checkbox-sm"
+                      readOnly
+                    />
+                  </td>
                   <td className="py-1">{guest.inPersonBidderNumber}</td>
                   <td className="py-1">
                     {guest.onlineBidderNumber ? guest.onlineBidderNumber : "--"}
                   </td>
+                  <td className="py-1">{guest.fullName}</td>
+                  <td className="py-1">{guest.totalItemsWon}</td>
+                  <td className="py-1">
+                    {guest.totalOwed && guest.totalOwed > 0
+                      ? currencyFormatter.format(guest.totalOwed)
+                      : ""}
+                  </td>
                   <td className="flex flex-row gap-4 py-1">
-                    <EditActionButton
+                    <CheckoutActionButton
                       onClick={() => onOpenEditGuest(guest)}
-                      disabled={event?.eventStatusId !== EventStatus.Setup}
-                    />
-                    <DeleteActionButton
-                      onClick={() => handleDeleteGuest(guest)}
                       disabled={event?.eventStatusId !== EventStatus.Setup}
                     />
                   </td>
@@ -276,24 +214,16 @@ const GuestList = () => {
           </tbody>
         </table>
       </div>
-      <AddGuestDialog
-        key={`add-${formSession}`}
-        ref={addGuestRef}
-        onConfirm={handleModalConfirm}
-      />
+      {/*
       <EditGuestDialog
         key={`edit-${formSession}`}
         ref={editGuestRef}
         onConfirm={handleModalConfirm}
         guest={selectedGuest}
       />
-      <UploadGuestsDialog
-        key={`upload-${formSession}`}
-        ref={uploadGuestsRef}
-        onConfirm={handleModalConfirm}
-      />
+      */}
     </>
   );
 };
 
-export default GuestList;
+export default Checkout;

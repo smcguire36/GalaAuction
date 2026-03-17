@@ -41,6 +41,8 @@ export function useHttp() {
       if (!response.ok) {
         if (response.status == 401)
             throw new Error("Unauthorized");
+        if (response.status == 400)
+            throw new Error(await response.text());
         throw new Error("Error fetching data");
       }
 

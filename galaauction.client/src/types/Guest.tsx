@@ -12,3 +12,4 @@ export type GuestType = {
     fullName: string;
     fullNameReversed: string;
 };
+

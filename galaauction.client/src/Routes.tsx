@@ -6,6 +6,7 @@ import ManageEvents from "./pages/ManageEvents";
 import GuestList from "./pages/GuestList";
 import AuctionItems from "./pages/AuctionItems";
 import Closeout from "./pages/Closeout";
+import Checkout from "./pages/Checkout";
 
 const routes = createBrowserRouter([
     // Routes without the main layout
@@ -40,7 +41,7 @@ const routes = createBrowserRouter([
             },
             {
                 path: "checkout",
-                element: <p>Checkout</p>
+                element: <Checkout />
             },
             {
                 path: "audit",

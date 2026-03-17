@@ -207,6 +207,16 @@ const EditItemForm: React.FC<EditItemFormProps> = ({
       setTouched(prev => ({ ...prev, itemNumber: false }));
       setValid(prev => ({ ...prev, itemNumber: true }));
     }
+    else {
+      setData(prev => ({
+        ...prev,
+        itemNumberAutoGen: false,
+        categoryId: null,
+        categoryName: "",
+      }));
+      setTouched(prev => ({ ...prev, categoryId: false }));
+      setValid(prev => ({ ...prev, categoryId: false }));
+    }
   };
 
   /**
@@ -238,7 +248,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({
    * when the form is submitted.
    * @param formData The FormData object containing the form values.
    */
-  const handleAction = (formData: FormData) => {
+  const handleAction = (_formData: FormData) => {
     const parseOptionalNumber = (
       value: FormDataEntryValue | null,
     ): number | null => {
@@ -253,20 +263,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({
     // 1. Convert to a plain object and cast to GuestFormData type.
     const newData: ItemFormData = {
       ...ITEMFORMDEFAULTS, // Start with default values to ensure all fields are present
-      ...data, // Next add existing data to preserve any fields not included in the form
-      itemId:
-        parseOptionalNumber(formData.get("itemId")) ?? ITEMFORMDEFAULTS.itemId,
-      itemNumber:
-        parseOptionalNumber(formData.get("itemNumber")) ??
-        ITEMFORMDEFAULTS.itemNumber,
-      itemName: formData.get("itemName") as string,
-      itemNumberAutoGen:
-        formData.get("itemNumberAutoGen") === "on" ||
-        formData.get("itemNumberAutoGen") === "true",
-      categoryId:
-        parseOptionalNumber(formData.get("categoryId")) ??
-        ITEMFORMDEFAULTS.categoryId,
-      categoryName: formData.get("categoryName") as string,
+      ...data, // Next add data from state to populate all fields including those not included in the form
     };
     console.log("In handleAction of EditItemForm", newData);
 
@@ -327,7 +324,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({
                 name="itemNumberAutoGen"
                 value={1}
                 checked={data.itemNumberAutoGen}
-                disabled={inputMode === "category"}
+                disabled={true}
                 onChange={handleItemNumberAutoGenChange}
                 className="checkbox checkbox-sm"
               />

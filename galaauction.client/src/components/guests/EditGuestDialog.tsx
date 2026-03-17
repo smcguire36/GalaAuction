@@ -1,9 +1,21 @@
-import { use, /* useEffect, */ useImperativeHandle, useRef, useState, type Ref } from "react";
+import {
+  use,
+  /* useEffect, */ useImperativeHandle,
+  useRef,
+  useState,
+  type Ref,
+} from "react";
 import { ModalContext } from "../../store/ModalContext";
 import { Modal, type ModalHandle } from "../common/Modal";
-import EditGuestForm, { type EditGuestFormHandle } from "./EditGuestForm";
-import { GUESTFORMDEFAULTS, type GuestFormData } from "../../types/GuestFormData";
+import EditGuestForm from "./EditGuestForm";
+import {
+  GUESTFORMDEFAULTS,
+  type GuestFormData,
+} from "../../types/GuestFormData";
 import type { GuestType } from "../../types/Guest";
+import type { ModalFormHandle } from "../../types/ModalFormHandle";
+import { useHttp } from "../../hooks/useHttp";
+import EventContext from "../../store/EventContext";
 
 type EditGuestProps = {
   ref: Ref<ModalHandle>;
@@ -17,33 +29,18 @@ const normalizeGuestData = (guest: GuestType): GuestFormData => ({
   tableNumber: guest.tableNumber ?? null,
   inPersonBidderNumber: guest.inPersonBidderNumber ?? null,
   onlineBidderNumber: guest.onlineBidderNumber ?? null,
-  onlineBidderOnly: guest.onlineBidderOnly ?? GUESTFORMDEFAULTS.onlineBidderOnly,
+  onlineBidderOnly:
+    guest.onlineBidderOnly ?? GUESTFORMDEFAULTS.onlineBidderOnly,
   inPersonAutoGen: guest.inPersonAutoGen ?? GUESTFORMDEFAULTS.inPersonAutoGen,
   onlineAutoGen: guest.onlineAutoGen ?? GUESTFORMDEFAULTS.onlineAutoGen,
 });
 
 const EditGuestDialog = ({ ref, onConfirm, guest }: EditGuestProps) => {
+  const { eventId } = use(EventContext);
   const { open, close } = use(ModalContext);
-  const formRef = useRef<EditGuestFormHandle>(null);
+  const formRef = useRef<ModalFormHandle>(null);
   const [data, setData] = useState<GuestFormData>(normalizeGuestData(guest));
- 
-  /*
-  useEffect(() => {
-    const getGuestData = async (id: number) => {
-
-        // Eventually I will fetch the guest data from the server using the guestId
-
-
-        setData((prev) => ({
-          ...prev,
-          guestId: id
-        }));
-      };
-      if (guestId) {
-        getGuestData(guestId);
-      }
-  }, [guestId]);
-  */
+  const { request, error } = useHttp();
 
   useImperativeHandle(
     ref,
@@ -56,9 +53,9 @@ const EditGuestDialog = ({ ref, onConfirm, guest }: EditGuestProps) => {
         open("editGuest");
       },
     }),
-    [guest, open]
+    [guest, open],
   );
- 
+
   const handleConfirm = () => {
     console.log("in handleConfirm in EditGuestDialog");
     formRef.current?.submit();
@@ -69,16 +66,35 @@ const EditGuestDialog = ({ ref, onConfirm, guest }: EditGuestProps) => {
     console.log("onClose in EditGuestDialog");
   };
 
-  const onSubmit = (data: GuestFormData) => {
-    console.log("In onSubmit of EditGuestDialog", data);
+  const onSubmit = async (formData: GuestFormData) => {
+    console.log("In onSubmit of EditGuestDialog", formData);
     // This is called once the form has determined that it is valid
-    // I will save the data back to the state for now
-    setData((prev) => ({
-      ...prev,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      onlineBidderOnly: data.onlineBidderOnly
-    }));
+
+    try {
+      const response = await request(
+        `/api/events/${eventId}/guests/${formData.guestId}`,
+        "PUT",
+        {
+          guestId: formData.guestId,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          tableNumber: formData.tableNumber,
+          galaEventId: eventId,
+          inPersonBidderNumber: formData.inPersonBidderNumber,
+          onlineBidderNumber: formData.onlineBidderNumber,
+          onlineBidderOnly: formData.onlineBidderOnly,
+          inPersonAutoGen: formData.inPersonAutoGen,
+          onlineAutoGen: formData.onlineAutoGen,
+        },
+      );
+
+      console.log("Response from save guest", response);
+      alert("Guest updated successfully!");
+      onConfirm();
+      close();
+    } catch (err: any) {
+      alert(`Error updating guest... ${err.message ?? "Unknown error"}`);
+    }
 
     // Tell parent component the guest list has changed
     onConfirm();
@@ -94,7 +110,13 @@ const EditGuestDialog = ({ ref, onConfirm, guest }: EditGuestProps) => {
       onClose={onClose}
       onConfirm={handleConfirm}
     >
-      <EditGuestForm key={data.guestId} data={data} setData={setData} ref={formRef} onSubmit={onSubmit}/>
+      <EditGuestForm
+        key={data.guestId}
+        data={data}
+        setData={setData}
+        ref={formRef}
+        onSubmit={onSubmit}
+      />
     </Modal>
   );
 };

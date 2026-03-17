@@ -15,6 +15,8 @@ import DeleteActionButton from "../components/common/DeleteActionButton";
 import UploadItemsDialog from "../components/items/UploadItemsDialog";
 import type { ModalHandle } from "../components/common/Modal";
 import AddItemDialog from "../components/items/AddItemDialog";
+import { useConfirm } from "../store/ConfirmProvider";
+import EditItemDialog from "../components/items/EditItemDialog";
 
 const AuctionItems = () => {
   const context = useContext(EventContext);
@@ -24,7 +26,6 @@ const AuctionItems = () => {
   const event = context.event;
   const addItemRef = useRef<ModalHandle>(null);
   const editItemRef = useRef<ModalHandle>(null);
-  const deleteItemRef = useRef<ModalHandle>(null);
   const uploadItemsRef = useRef<ModalHandle>(null);
   const [formSession, setFormSession] = useState<number>(0);
   const [searchText, setSearchText] = useState<string>("");
@@ -32,6 +33,7 @@ const AuctionItems = () => {
     name: "",
     direction: undefined,
   });
+  const confirm = useConfirm();
 
   useEffect(() => {
     if (context.eventId && context.eventId !== 0) {
@@ -107,12 +109,30 @@ const AuctionItems = () => {
      editItemRef.current?.open();
    };
  
-   const handleDeleteItem = (item: ItemType) => {
-     setFormSession((prev) => ++prev);
-     setSelectedItem(item);
-     deleteItemRef.current?.open();
-   };
-  
+   const handleDeleteItem = async (item: ItemType) => {
+    const isConfirmed = await confirm({
+      title: "CONFIRMATION",
+      message: `Are you sure you want to delete the item ${item.itemName}?`,
+    });
+
+    if (isConfirmed) {
+      console.log("in handleConfirm in DeleteItemDialog");
+
+      try {
+        const response = await request(
+          `/api/events/${event!.galaEventId}/items/${item.itemId}`,
+          "DELETE",
+        );
+        if (response.ok && response.status === 204) {
+          getItems(context.eventId);
+        }
+        //        console.log("Delete response:", response);
+      } catch (err: any) {
+        alert(`Error deleting item... ${err.message ?? "Unknown error"}`);
+      }
+    }
+  };
+
   const handleModalConfirm = () => {
     console.log("Modal Dialog confirmed!  Let's reload the items list now!");
     getItems(context.eventId);
@@ -233,7 +253,7 @@ const AuctionItems = () => {
             {isLoading && (
               <tr className="text-lg">
                 <td colSpan={7} className="text-lg font-bold text-center">
-                  Loading guests ... please wait
+                  Loading auction items ... please wait
                 </td>
               </tr>
             )}
@@ -246,33 +266,33 @@ const AuctionItems = () => {
             )}
             {!isLoading &&
               filteredItems.length > 0 &&
-              filteredItems.map(items => (
-                <tr key={items.itemId} className="text-lg">
+              filteredItems.map(item => (
+                <tr key={item.itemId} className="text-lg">
                   <td className="py-1">
                     <input
                       type="checkbox"
-                      checked={items.isPaid}
+                      checked={item.isPaid}
                       className="checkbox checkbox-sm"
                       readOnly
                     />
                   </td>
-                  <td className="py-1 font-bold">{items.itemNumber}</td>
-                  <td className="py-1">{items.categoryName}</td>
-                  <td className="py-1">{items.itemName}</td>
-                  <td className="py-1">{items.winningBidderNumber}</td>
-                  <td className="py-1">{items.winningBidderName}</td>
+                  <td className="py-1 font-bold">{item.itemNumber}</td>
+                  <td className="py-1">{item.categoryName}</td>
+                  <td className="py-1">{item.itemName}</td>
+                  <td className="py-1">{item.winningBidderNumber}</td>
+                  <td className="py-1">{item.winningBidderName}</td>
                   <td className="py-1">
-                    {items.winningBidAmount > 0
-                      ? currencyFormatter.format(items.winningBidAmount)
+                    {item.winningBidAmount > 0
+                      ? currencyFormatter.format(item.winningBidAmount)
                       : ""}
                   </td>
                   <td className="flex flex-row gap-4 py-1">
                     <EditActionButton
-                      onClick={() => {}}
+                      onClick={() => handleEditItem(item)}
                       disabled={event?.eventStatusId !== EventStatus.Setup}
                     />
                     <DeleteActionButton
-                      onClick={() => {}}
+                      onClick={() => handleDeleteItem(item)}
                       disabled={event?.eventStatusId !== EventStatus.Setup}
                     />
                   </td>
@@ -290,20 +310,12 @@ const AuctionItems = () => {
         ref={addItemRef}
         onConfirm={handleModalConfirm}
       />
-      {/*}
       <EditItemDialog
         key={`editItem-${formSession}`}
         ref={editItemRef}
         onConfirm={handleModalConfirm}
         item={selectedItem}
       />
-      <DeleteItemDialog
-        key={`deleteItem-${formSession}`}
-        ref={deleteItemRef}
-        onConfirm={handleModalConfirm}
-        item={selectedItem}
-      />
-      */}
       <UploadItemsDialog
         key={`upload-${formSession}`}
         ref={uploadItemsRef}
