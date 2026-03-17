@@ -86,6 +86,12 @@ light, dark, cupcake, bumblebee, emerald, corporate, synthwave, retro, cyberpunk
         @apply border-base-content/20 bg-base-100;
     }
 
+    .input > input[type="file"]::file-selector-button {
+        height: 1.75rem;
+        margin: 0 0.5rem 0 0;
+        align-self: center;
+    }
+
     /* Improve the actual dropdown list (if using .dropdown-content) */
     .dropdown-content {
         @apply border border-base-content/90 bg-base-300 shadow-lg;

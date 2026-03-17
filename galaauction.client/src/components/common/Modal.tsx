@@ -17,6 +17,7 @@ interface ModalProps extends ComponentProps<"dialog"> {
   customVariant: "close" | "confirm";
   onConfirm?: () => void;
   onCancel?: () => void;
+  className?: string;
   children: ReactNode;
 }
 
@@ -26,6 +27,7 @@ export function Modal({
   customVariant = "close",
   onConfirm,
   children,
+  className = "",
   ...props
 }: ModalProps) {
   const { activeId, close } = use(ModalContext);
@@ -63,7 +65,7 @@ export function Modal({
 
   return (
     <dialog ref={localRef} className="modal" onClose={handleClose} {...props}>
-      <div className="modal-box bg-base-100 shadow-xl border border-base-300 p-4">
+      <div className={`modal-box bg-base-100 shadow-xl border border-base-300 p-4 ${className}`}>
         <h3 className="text-lg font-bold absolute left-4 top-2">{title}</h3>
         {customVariant === "close" && (
           <form method="dialog">

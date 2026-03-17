@@ -5,6 +5,5 @@
         public int ItemNumber { get; set; }
         public required string ItemName { get; set; }
         public int GalaEventId { get; set; }
-
     }
 }

@@ -134,6 +134,9 @@ namespace GalaAuction.Server.Controllers
         [HttpPost("uploadcsv")]
         public async Task<ActionResult> UploadGuestCsv(int eventId, IFormFile file)
         {
+            var importedCount = 0;
+            var skippedCount = 0;
+
             if (file == null || file.Length == 0)
             {
                 return BadRequest("No file uploaded.");
@@ -153,15 +156,24 @@ namespace GalaAuction.Server.Controllers
                         // Create the Guest object from the DTO and add it to the context.
                         // The GuestService is used in the mapping to set the next available in person bidder number if one is not provided and OnlineBidderOnly is false.
                         var guest = guestDto.ToGuest(guestService);
+                        var existingGuest = await context.Guests
+                            .Where(g => g.GalaEventId == eventId && g.FirstName == guest.FirstName && g.LastName == guest.LastName)
+                            .FirstOrDefaultAsync();
+                        if (existingGuest != null)                        {
+                            // Guest already exists, do not update it. Skip to the next one.
+                            skippedCount++;
+                            continue;
+                        }
+                        importedCount++;
                         context.Guests.Add(guest);
                     }
                     await context.SaveChangesAsync();
-                    return Ok($"File uploaded and {guestsFromCsv.Count} guests imported successfully.");
+                    return Ok($"File uploaded and {importedCount} guests imported successfully. {skippedCount} guests already exist and were skipped.");
                 }
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, $"An error occurred while processing the file: {ex.Message}");
+                return StatusCode((int)HttpStatusCode.InternalServerError, $"An error occurred while processing the file: {ex.Message}\n{ex.StackTrace}");
             }
         }
 

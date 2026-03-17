@@ -8,6 +8,7 @@ import ModalProvider from "./store/ModalProvider.tsx";
 
 import "./index.css";
 import PrivateRoute from "./PrivateRoute.tsx";
+import { ConfirmProvider } from "./store/ConfirmProvider.tsx";
 
 export const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -21,9 +22,11 @@ createRoot(document.getElementById("root")!).render(
   <ReactKeycloakProvider authClient={keycloak} initOptions={initOptions}>
     <PrivateRoute>
       <EventProvider>
+        <ConfirmProvider>
         <ModalProvider>
           <RouterProvider router={routes} />
         </ModalProvider>
+      </ConfirmProvider>
       </EventProvider>
     </PrivateRoute>
   </ReactKeycloakProvider>,

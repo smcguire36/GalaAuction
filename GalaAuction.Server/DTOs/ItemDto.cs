@@ -14,5 +14,6 @@
         public required int GalaEventId { get; set; }
         public int CategoryId { get; set; }
         public string? CategoryName { get; set; }
+        public bool ItemNumberAutoGen { get; set; } = false;
     }
 }

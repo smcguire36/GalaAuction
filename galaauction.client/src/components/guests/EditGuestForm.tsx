@@ -4,13 +4,10 @@ import {
 } from "../../types/GuestFormData";
 import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 import { FloatingInput } from "../common/FloatingInput";
-
-export type EditGuestFormHandle = {
-  submit: () => void;
-};
+import type { ModalFormHandle } from "../../types/ModalFormHandle";
 
 type EditGuestFormProps = {
-  ref: Ref<EditGuestFormHandle>;
+  ref: Ref<ModalFormHandle>;
   onSubmit: (data: GuestFormData) => void;
   guestId?: number;
   data: GuestFormData;

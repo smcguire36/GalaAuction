@@ -1,4 +1,4 @@
-export const FloatingInput = ({
+const FloatingSelect = ({
   label,
   name,
   children,
@@ -17,21 +17,19 @@ export const FloatingInput = ({
   valid?: boolean;
   className?: string;
   inputClassName?: string;
-} & React.ComponentProps<"input">) => {
-  const isFileInput = props.type === "file";
-
+} & React.ComponentProps<"select">) => {
   return (
     <div className={`flex flex-col ${className}`}>
       <div
         className={`relative flex flex-row input w-auto ${hint ? "validator" : ""} ${touched && !valid ? "input-error" : ""}`}
       >
-        <input
+        <select
           {...props}
           name={name}
-          placeholder=" " /* Required for peer-placeholder-shown to work */
-          className={`peer input-bordered w-full placeholder-transparent focus:outline-offset-0 ${inputClassName}`}
-          style={isFileInput ? { height: "auto" } : undefined}
-        />
+          className={`peer w-full border-0 bg-transparent placeholder-transparent outline-none focus:outline-none focus:ring-0 focus:outline-offset-0 ${inputClassName}`}
+        >
+          {children}
+        </select>
         <label
           htmlFor={name}
           className="absolute left-4 px-1 transition-all bg-base-100 text-base-content/50 pointer-events-none
@@ -51,7 +49,6 @@ export const FloatingInput = ({
         >
           {label}
         </label>
-        {children}
       </div>
       {hint && (
         <div
@@ -63,3 +60,5 @@ export const FloatingInput = ({
     </div>
   );
 };
+
+export default FloatingSelect;

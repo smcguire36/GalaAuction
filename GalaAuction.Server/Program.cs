@@ -1,6 +1,7 @@
 using GalaAuction.Server.Data;
 using GalaAuction.Server.Mappings;
 using GalaAuction.Server.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -39,8 +40,66 @@ builder.Services.AddAuthentication()
                 "http://id.GalaAuction.local/realms/GalaAuction",
                 "https://id.GalaAuction.local/realms/GalaAuction"
             ],
-            ClockSkew = TimeSpan.Zero
+            ClockSkew = TimeSpan.FromMinutes(2)
         };
+
+        if (builder.Environment.IsDevelopment())
+        {
+            options.Events = new JwtBearerEvents
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    var logger = context.HttpContext.RequestServices
+                        .GetRequiredService<ILoggerFactory>()
+                        .CreateLogger("AuthDiagnostics");
+
+                    logger.LogWarning(
+                        context.Exception,
+                        "JWT authentication failed. Path: {Path}, Message: {Message}",
+                        context.HttpContext.Request.Path,
+                        context.Exception.Message
+                    );
+
+                    return Task.CompletedTask;
+                },
+                OnChallenge = context =>
+                {
+                    var logger = context.HttpContext.RequestServices
+                        .GetRequiredService<ILoggerFactory>()
+                        .CreateLogger("AuthDiagnostics");
+
+                    var hasAuthorizationHeader = context.Request.Headers.ContainsKey("Authorization");
+
+                    logger.LogWarning(
+                        "JWT challenge issued. Path: {Path}, Error: {Error}, Description: {Description}, HasAuthorizationHeader: {HasAuthorizationHeader}",
+                        context.Request.Path,
+                        context.Error,
+                        context.ErrorDescription,
+                        hasAuthorizationHeader
+                    );
+
+                    return Task.CompletedTask;
+                },
+                OnTokenValidated = context =>
+                {
+                    var logger = context.HttpContext.RequestServices
+                        .GetRequiredService<ILoggerFactory>()
+                        .CreateLogger("AuthDiagnostics");
+
+                    var subject = context.Principal?.Identity?.Name ?? "unknown";
+                    var expiration = context.SecurityToken?.ValidTo;
+
+                    logger.LogDebug(
+                        "JWT token validated. Path: {Path}, Subject: {Subject}, ValidToUtc: {ValidToUtc}",
+                        context.HttpContext.Request.Path,
+                        subject,
+                        expiration
+                    );
+
+                    return Task.CompletedTask;
+                }
+            };
+        }
     });
 
 builder.AddNpgsqlDbContext<GalaAuctionDBContext>(
@@ -107,6 +166,7 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

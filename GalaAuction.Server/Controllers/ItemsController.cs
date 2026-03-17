@@ -239,7 +239,7 @@ namespace GalaAuction.Server.Controllers
                 using (var reader = new StreamReader(file.OpenReadStream(), Encoding.UTF8))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    csv.Context.RegisterClassMap<GuestImportMap>();
+                    csv.Context.RegisterClassMap<ItemImportMap>();
                     var itemsFromCsv = csv.GetRecords<ItemImportDto>().ToList();
                     // Loop over new items to validate item numbers
                     // 1. Item numbers cannot be duplicated in the CSV file
@@ -280,18 +280,17 @@ namespace GalaAuction.Server.Controllers
                     {
                         // Ensure the GalaEventId from the URL is used as it will not be coming from the CSV
                         dto.GalaEventId = eventId;
-                        // Create the Guest object from the DTO and add it to the context.
-                        // The GuestService is used in the mapping to set the next available in person bidder number if one is not provided and OnlineBidderOnly is false.
+                        // Create the Item object from the DTO and add it to the context.
                         var item = dto.ToItem();
                         context.Items.Add(item);
                     }
                     await context.SaveChangesAsync();
-                    return Ok($"File uploaded and {itemsFromCsv.Count} guests imported successfully.");
+                    return Ok($"File uploaded and {itemsFromCsv.Count} items imported successfully.");
                 }
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, $"An error occurred while processing the file: {ex.Message}");
+                return StatusCode((int)HttpStatusCode.InternalServerError, $"An error occurred while processing the file: {ex.Message}\n{ex.StackTrace}");
             }
         }
 

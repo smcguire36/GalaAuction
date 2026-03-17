@@ -11,7 +11,7 @@ namespace GalaAuction.Server.Mappings
             Map(m => m.FirstName);
             Map(m => m.LastName);
             Map(m => m.TableNumber);
-            Map(m => m.InPersonBidderNumber);
+            Map(m => m.InPersonBidderNumber).Optional();
             Map(m => m.OnlineBidderNumber).Optional();
             Map(m => m.OnlineBidderOnly).Optional();
         }

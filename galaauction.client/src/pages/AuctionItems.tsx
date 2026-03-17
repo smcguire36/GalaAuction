@@ -1,35 +1,122 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useHttp } from "../hooks/useHttp";
 import EventContext from "../store/EventContext";
 import type { ItemType } from "../types/Item";
 import TabNavigation from "../components/TabNavigation";
 import { currencyFormatter } from "../utilities/currencyFormatter";
 import { EventStatus } from "../types/EventStatus";
+import type { SortState } from "../components/common/SortableHeader";
+import SortableHeader from "../components/common/SortableHeader";
+import Header from "../components/common/Header";
+import UploadCsvButton from "../components/common/UploadCsvButton";
+import AddActionButton from "../components/common/AddActionButton";
+import EditActionButton from "../components/common/EditActionButton";
+import DeleteActionButton from "../components/common/DeleteActionButton";
+import UploadItemsDialog from "../components/items/UploadItemsDialog";
+import type { ModalHandle } from "../components/common/Modal";
+import AddItemDialog from "../components/items/AddItemDialog";
 
 const AuctionItems = () => {
   const context = useContext(EventContext);
   const { request, isLoading, error } = useHttp();
   const [items, setItems] = useState<ItemType[]>([] as ItemType[]);
+  const [selectedItem, setSelectedItem] = useState<ItemType>({} as ItemType);
   const event = context.event;
+  const addItemRef = useRef<ModalHandle>(null);
+  const editItemRef = useRef<ModalHandle>(null);
+  const deleteItemRef = useRef<ModalHandle>(null);
+  const uploadItemsRef = useRef<ModalHandle>(null);
+  const [formSession, setFormSession] = useState<number>(0);
+  const [searchText, setSearchText] = useState<string>("");
+  const [sortState, setSortState] = useState<SortState>({
+    name: "",
+    direction: undefined,
+  });
 
   useEffect(() => {
-    const getEvents = async (id: number) => {
-      const data = await request(`/api/events/${id}/items`, "GET");
-      setItems(data);
-    };
     if (context.eventId && context.eventId !== 0) {
-      getEvents(context.eventId);
+      getItems(context.eventId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const getItems = async (id: number) => {
+    const itemsData = await request(`/api/events/${id}/items`, "GET");
+    setItems(itemsData);
+  };
+
+  const filteredItems = useMemo(() => {
+    return items
+      .filter(item => {
+        if (searchText.trim() === "") {
+          return true; // If search text is empty, include all items
+        }
+        return (
+          item.itemName.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.categoryName.toLowerCase().includes(searchText.toLowerCase())
+        );
+      })
+      .sort((a, b) => {
+        if (!sortState.direction || sortState.name === "") {
+          return 0; // No sorting applied
+        }
+        const aValue = a[sortState.name as keyof ItemType];
+        const bValue = b[sortState.name as keyof ItemType];
+        if (aValue < bValue) {
+          return sortState.direction === "asc" ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortState.direction === "asc" ? 1 : -1;
+        }
+        return 0;
+      });
+  }, [items, searchText, sortState]);
+
   if (error) {
-    return <div>Error Loading Guests ...</div>;
+    return <div>Error Loading Auction Items ...</div>;
   }
 
-  if (items.length === 0) {
-    return <></>;
-  }
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
+  /**
+   * Changes the sort state based on the current state and the column header that was clicked.
+   * The SortableHeader component will call this function when a header is clicked,
+   * passing in the name of the column and the next sort direction.
+   * This function will update the sort state, which can then be used to sort the auction items accordingly.
+   * @param next
+   */
+  const handleChangeSort = (next: SortState) => {
+    setSortState(next);
+  };
+
+  const handleOpenUploadItems = () => {
+    setFormSession(prev => ++prev);
+    uploadItemsRef.current?.open();
+  };
+
+  const handleAddItem = () => {
+    setFormSession(prev => ++prev);
+    addItemRef.current?.open();
+  };
+
+   const handleEditItem = (item: ItemType) => {
+     setFormSession((prev) => ++prev);
+     setSelectedItem(item);
+     editItemRef.current?.open();
+   };
+ 
+   const handleDeleteItem = (item: ItemType) => {
+     setFormSession((prev) => ++prev);
+     setSelectedItem(item);
+     deleteItemRef.current?.open();
+   };
+  
+  const handleModalConfirm = () => {
+    console.log("Modal Dialog confirmed!  Let's reload the items list now!");
+    getItems(context.eventId);
+  };
 
   return (
     <>
@@ -56,35 +143,23 @@ const AuctionItems = () => {
                   <path d="m21 21-4.3-4.3"></path>
                 </g>
               </svg>
-              <input type="search" placeholder="Search Auction Items" />
+              <input
+                type="search"
+                placeholder="Search Auction Items"
+                value={searchText}
+                onChange={handleSearchChange}
+              />
             </label>
-            <button className="btn btn-outline">
-              ADD ITEM
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="size-5"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-            <button className="btn btn-outline">
-              UPLOAD CSV
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="size-5"
-              >
-                <path d="M9.25 13.25a.75.75 0 0 0 1.5 0V4.636l2.955 3.129a.75.75 0 0 0 1.09-1.03l-4.25-4.5a.75.75 0 0 0-1.09 0l-4.25 4.5a.75.75 0 1 0 1.09 1.03L9.25 4.636v8.614Z" />
-                <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-              </svg>
-            </button>
+            <AddActionButton
+              label="ADD ITEM"
+              onClick={handleAddItem}
+              disabled={event?.eventStatusId !== EventStatus.Setup}
+            />
+            <UploadCsvButton
+              label="UPLOAD ITEMS"
+              onClick={handleOpenUploadItems}
+              disabled={event?.eventStatusId !== EventStatus.Setup}
+            />
           </div>
         </div>
       </div>
@@ -92,14 +167,66 @@ const AuctionItems = () => {
         <table className="table table-zebra table-pin-rows w-full border-collapse">
           <thead>
             <tr className="text-lg bg-accent text-white/50">
-              <th className="border-b-2 border-primary-800 py-1">Paid</th>
-              <th className="py-1">Item #</th>
-              <th className="py-1">Category</th>
-              <th className="py-1">Auction Item</th>
-              <th className="py-1">Winning Bidder #</th>
-              <th className="py-1">Winning Bidder</th>
-              <th className="py-1">Winning Amount</th>
-              <th className="py-1">Actions</th>
+              <SortableHeader
+                name="isPaid"
+                label="Paid"
+                changeSort={handleChangeSort}
+                sortDirection={
+                  sortState.name === "isPaid" ? sortState.direction : undefined
+                }
+              />
+              <SortableHeader
+                name="itemNumber"
+                label="Item #"
+                changeSort={handleChangeSort}
+                sortDirection={
+                  sortState.name === "itemNumber"
+                    ? sortState.direction
+                    : undefined
+                }
+              />
+              <SortableHeader
+                name="categoryName"
+                label="Category"
+                changeSort={handleChangeSort}
+                sortDirection={
+                  sortState.name === "categoryName"
+                    ? sortState.direction
+                    : undefined
+                }
+              />
+              <SortableHeader
+                name="itemName"
+                label="Auction Item"
+                changeSort={handleChangeSort}
+                sortDirection={
+                  sortState.name === "itemName"
+                    ? sortState.direction
+                    : undefined
+                }
+              />
+              <SortableHeader
+                name="winningBidderNumber"
+                label="Winning Bidder #"
+                changeSort={handleChangeSort}
+                sortDirection={
+                  sortState.name === "winningBidderNumber"
+                    ? sortState.direction
+                    : undefined
+                }
+              />
+              <SortableHeader
+                name="winningBidderName"
+                label="Winning Bidder"
+                changeSort={handleChangeSort}
+                sortDirection={
+                  sortState.name === "winningBidderName"
+                    ? sortState.direction
+                    : undefined
+                }
+              />
+              <Header label="Winning Amount" />
+              <Header label="Actions" />
             </tr>
           </thead>
           <tbody>
@@ -110,14 +237,21 @@ const AuctionItems = () => {
                 </td>
               </tr>
             )}
+            {!isLoading && filteredItems.length === 0 && (
+              <tr className="text-lg">
+                <td colSpan={7} className="text-lg font-bold text-center">
+                  No auction items found.
+                </td>
+              </tr>
+            )}
             {!isLoading &&
-              items.length > 0 &&
-              items.map((items) => (
+              filteredItems.length > 0 &&
+              filteredItems.map(items => (
                 <tr key={items.itemId} className="text-lg">
                   <td className="py-1">
                     <input
                       type="checkbox"
-                      checked={true}
+                      checked={items.isPaid}
                       className="checkbox checkbox-sm"
                       readOnly
                     />
@@ -127,19 +261,20 @@ const AuctionItems = () => {
                   <td className="py-1">{items.itemName}</td>
                   <td className="py-1">{items.winningBidderNumber}</td>
                   <td className="py-1">{items.winningBidderName}</td>
-                  <td className="py-1">{items.winningBidAmount > 0 ? currencyFormatter.format(items.winningBidAmount) : ""}</td>
+                  <td className="py-1">
+                    {items.winningBidAmount > 0
+                      ? currencyFormatter.format(items.winningBidAmount)
+                      : ""}
+                  </td>
                   <td className="flex flex-row gap-4 py-1">
-                    <button className={`btn btn-outline px-2 ${event?.eventStatusId !== EventStatus.Setup?"btn-disabled":""}`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
-                        <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
-                        <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
-                        </svg>
-                    </button>
-                    <button className={`btn btn-outline px-2 ${event?.eventStatusId !== EventStatus.Setup?"btn-disabled":"text-red-800"}`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
-                            <path fillRule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" clipRule="evenodd" />
-                        </svg>
-                    </button>
+                    <EditActionButton
+                      onClick={() => {}}
+                      disabled={event?.eventStatusId !== EventStatus.Setup}
+                    />
+                    <DeleteActionButton
+                      onClick={() => {}}
+                      disabled={event?.eventStatusId !== EventStatus.Setup}
+                    />
                   </td>
                 </tr>
               ))}
@@ -150,6 +285,30 @@ const AuctionItems = () => {
           </tbody>
         </table>
       </div>
+      <AddItemDialog
+        key={`addItem-${formSession}`}
+        ref={addItemRef}
+        onConfirm={handleModalConfirm}
+      />
+      {/*}
+      <EditItemDialog
+        key={`editItem-${formSession}`}
+        ref={editItemRef}
+        onConfirm={handleModalConfirm}
+        item={selectedItem}
+      />
+      <DeleteItemDialog
+        key={`deleteItem-${formSession}`}
+        ref={deleteItemRef}
+        onConfirm={handleModalConfirm}
+        item={selectedItem}
+      />
+      */}
+      <UploadItemsDialog
+        key={`upload-${formSession}`}
+        ref={uploadItemsRef}
+        onConfirm={handleModalConfirm}
+      />
     </>
   );
 };

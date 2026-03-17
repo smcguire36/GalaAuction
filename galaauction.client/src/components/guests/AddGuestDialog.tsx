@@ -1,10 +1,11 @@
 import { use, useImperativeHandle, useRef, useState, type Ref } from "react";
 import { ModalContext } from "../../store/ModalContext";
 import { Modal, type ModalHandle } from "../common/Modal";
-import EditGuestForm, { type EditGuestFormHandle } from "./EditGuestForm";
+import EditGuestForm from "./EditGuestForm";
 import { GUESTFORMDEFAULTS, type GuestFormData } from "../../types/GuestFormData";
 import { useHttp } from "../../hooks/useHttp";
 import EventContext from "../../store/EventContext";
+import type { ModalFormHandle } from "../../types/ModalFormHandle";
 
 type AddGuestProps = {
   ref: Ref<ModalHandle>;
@@ -15,7 +16,7 @@ type AddGuestProps = {
 const AddGuestDialog = ({ ref, onConfirm }: AddGuestProps) => {
   const { eventId } = use(EventContext);
   const { open, close } = use(ModalContext);
-  const formRef = useRef<EditGuestFormHandle>(null);
+  const formRef = useRef<ModalFormHandle>(null);
   const [data, setData] = useState<GuestFormData>(GUESTFORMDEFAULTS);
   const { request, error } = useHttp();
   
@@ -25,16 +26,27 @@ const AddGuestDialog = ({ ref, onConfirm }: AddGuestProps) => {
     }
   }));
  
+  /**
+   * handleConfirm is called when the user clicks the confirm button on the modal. It triggers the form submission.
+   */
   const handleConfirm = () => {
-    console.log("in handleConfirm in AddGuestDialog");
     formRef.current?.submit();
   };
 
+  /**
+   * onClose is called when the modal is closed. This can be used to reset any state or perform any cleanup necessary when the modal is closed.
+   */
   const onClose = () => {
     // What happens when the Add Guest modal is closed
     console.log("onClose in AddGuestDialog");
   };
 
+  /**
+   * onSubmit is called when the form is submitted and valid. It sends a POST request to the server to create a new guest with the provided form data. 
+   * If the request is successful, it calls the onConfirm callback and closes the modal. If there is an error, it displays an alert with the error message.
+   * @param formData 
+   * @returns 
+   */
   const onSubmit = async (formData: GuestFormData) => {
     console.log("In onSubmit of AddGuestDialog", formData);
     // This is called once the form has determined that it is valid

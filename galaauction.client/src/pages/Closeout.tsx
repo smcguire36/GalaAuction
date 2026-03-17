@@ -85,26 +85,11 @@ const Closeout = () => {
               </svg>
               <input type="search" placeholder="Search Auction Items" />
             </label>
-            <button className="btn btn-outline">
-              ADD ITEM
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="size-5"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
           </div>
         </div>
       </div>
       <div className="grow overflow-y-auto border-2 border-accent rounded-lg shadow-md my-2">
-        <table className="table table-zebra table-pin-rows w-full border-collapse">
+        <table className="table table-pin-rows w-full border-collapse">
           {isLoading && (
             <tbody>
               <tr className="text-lg">
@@ -120,8 +105,8 @@ const Closeout = () => {
             categories.map((cat) => (
               <Fragment key={cat.categoryId}>
                 <thead>
-                  <tr className="text-lg bg-accent text-white/50">
-                    <th className="text-white">{cat.categoryName}</th>
+                  <tr className="text-lg text-accent-content bg-base-300">
+                    <th>{cat.categoryName}</th>
                     <th>Item #</th>
                     <th>Auction Item</th>
                     <th>Winning Bidder #</th>
