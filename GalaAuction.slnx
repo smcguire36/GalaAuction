@@ -1,7 +1,15 @@
 <Solution>
+  <Folder Name="/Infra/">
+    <File Path="Infra/.env" />
+    <File Path="Infra/docker-compose.yaml" />
+  </Folder>
+  <Folder Name="/Realms/">
+    <File Path="realms/GalaAuction-realm.json" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path="galaauction-login.ftl" />
     <File Path="global.json" />
+    <File Path="README.MD" />
   </Folder>
   <Project Path="GalaAuction.AppHost/GalaAuction.AppHost.csproj" />
   <Project Path="galaauction.client/galaauction.client.esproj">

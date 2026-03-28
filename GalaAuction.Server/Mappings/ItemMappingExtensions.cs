@@ -13,7 +13,7 @@ namespace GalaAuction.Server.Mappings
                 ItemNumber = item.ItemNumber,
                 ItemName = item.ItemName,
                 WinningBidderNumber = item.WinningBidderNumber,
-                WinningBidderName = item.Bidder?.Guest.FullName ?? string.Empty,
+                WinningBidderName = item.WinningBidder?.Guest.FullName ?? string.Empty,
                 WinningBidAmount = item.WinningBidAmount,
                 IsPaid = item.IsPaid,
                 PaymentMethodId = item.PaymentMethodId,
@@ -45,7 +45,8 @@ namespace GalaAuction.Server.Mappings
                 ItemNumber = item.ItemNumber,
                 ItemName = item.ItemName,
                 WinningBidderNumber = item.WinningBidderNumber,
-                WinningBidAmount = item.WinningBidAmount
+                WinningBidAmount = item.WinningBidAmount,
+                IsPaid = item.IsPaid
             };
         }
 

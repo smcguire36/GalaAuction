@@ -2,9 +2,9 @@ import { use, useImperativeHandle, useRef, type Ref } from "react";
 import { ModalContext } from "../../store/ModalContext";
 import { Modal, type ModalHandle } from "../common/Modal";
 import UploadCsvForm, { type UploadCsvData } from "../common/UploadCsvForm";
-import type { EditGuestFormHandle } from "./EditGuestForm";
 import EventContext from "../../store/EventContext";
 import { useFileUpload } from "../../hooks/useFileUpload";
+import type { ModalFormHandle } from "../../types/ModalFormHandle";
 
 type UploadGuestsProps = {
   ref: Ref<ModalHandle>;
@@ -13,9 +13,9 @@ type UploadGuestsProps = {
 
 const UploadGuestsDialog = ({ ref, onConfirm }: UploadGuestsProps) => {
   const { eventId } = use(EventContext);
-  const formRef = useRef<EditGuestFormHandle>(null);
+  const formRef = useRef<ModalFormHandle>(null);
   const { open, close } = use(ModalContext);
-  const { uploadFile, error } = useFileUpload();
+  const { uploadFile } = useFileUpload();
 
   useImperativeHandle(ref, () => ({
     open: () => {
@@ -46,6 +46,7 @@ const UploadGuestsDialog = ({ ref, onConfirm }: UploadGuestsProps) => {
       onConfirm();
       close();
     } 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     catch (err: any) {
       alert(`Error adding guest... ${err?.message ?? "Unknown error"}`);
     }

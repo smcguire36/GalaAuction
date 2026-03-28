@@ -19,7 +19,7 @@ namespace GalaAuction.Server.Controllers
         GalaAuctionDBContext context, 
         EventService eventService, 
         GuestService guestService
-    ) : ControllerBase
+    ) : ControllerBase, IAsyncActionFilter
     {
         public GalaEvent? GalaEvent { get; set; }
 
@@ -46,6 +46,18 @@ namespace GalaAuction.Server.Controllers
             }
             await next();
             // Put any post action code here.
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CheckoutDto>>> GetCheckoutList(int eventId)
+        {
+            var query = context.Guests.AsQueryable()
+                    .Where(g => g.GalaEventId == GalaEvent!.GalaEventId)
+                    .OrderBy(g => g.LastName)
+                    .Include(g => g.Bidders)
+                    .ThenInclude(b => b!.ItemsWon)
+                    .Select(g => g.ToCheckoutDto());
+            return await query.ToListAsync();
         }
 
         // PATCH: api/events/5
@@ -94,38 +106,25 @@ namespace GalaAuction.Server.Controllers
             return NoContent();
         }
 
-        [HttpGet("{bidderNumber}")]
-        public async Task<ActionResult<CheckoutDto>> GetCheckoutForBidder(int eventId, int bidderNumber)
+        [HttpGet("{guestId}")]
+        public async Task<ActionResult<CheckoutDto>> GetCheckoutForBidder(int eventId, int guestId)
         {
             if (eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
             {
                 return BadRequest("Bidder checkout only available when the event is in Checkout");
             }
 
-            var bidder = await context.Bidders.AsQueryable()
-                .Where(b => b.BidderNumber == bidderNumber && b.Guest.GalaEventId == eventId)
-                .Include(b => b.Guest)
-                .FirstOrDefaultAsync();
-            if (bidder == null)
+            var guest = await context.Guests.AsQueryable()
+                                .Where(g => g.GalaEventId == GalaEvent!.GalaEventId && g.GuestId == guestId)
+                                .Include(g => g.Bidders)
+                                .ThenInclude(b => b!.ItemsWon)
+                                .FirstOrDefaultAsync();
+
+            if (guest == null)
             {
-                return NotFound("Bidder not found");
+                return NotFound("Guest not found");
             }
-            var guest = bidder.Guest.ToDto();
-
-            var dto = new CheckoutDto
-            {
-                GuestId = guest.GuestId,
-                FullName = bidder.Guest.FullName,
-                InPersonBidderNumber = guest.InPersonBidderNumber,
-                OnlineBidderNumber = guest.OnlineBidderNumber
-            };
-            var items = await context.Items.AsQueryable()
-                .Where(i => i.GalaEventId == eventId && i.WinningBidderNumber == bidderNumber)
-                .OrderBy(i => i.ItemNumber)
-                .Select(i => i.ToCheckoutItemDto())
-                .ToListAsync();
-            dto.ItemsWon = items.ToArray();
-
+            var dto = guest.ToCheckoutDto();
             return Ok(dto);
         }
 

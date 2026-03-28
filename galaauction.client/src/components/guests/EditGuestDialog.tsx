@@ -40,7 +40,7 @@ const EditGuestDialog = ({ ref, onConfirm, guest }: EditGuestProps) => {
   const { open, close } = use(ModalContext);
   const formRef = useRef<ModalFormHandle>(null);
   const [data, setData] = useState<GuestFormData>(normalizeGuestData(guest));
-  const { request, error } = useHttp();
+  const { request } = useHttp();
 
   useImperativeHandle(
     ref,
@@ -92,6 +92,7 @@ const EditGuestDialog = ({ ref, onConfirm, guest }: EditGuestProps) => {
       alert("Guest updated successfully!");
       onConfirm();
       close();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(`Error updating guest... ${err.message ?? "Unknown error"}`);
     }

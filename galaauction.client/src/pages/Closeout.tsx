@@ -1,20 +1,23 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useHttp } from "../hooks/useHttp";
 import EventContext from "../store/EventContext";
-import type { ItemType } from "../types/Item";
+import { type ItemType } from "../types/Item";
 import TabNavigation from "../components/TabNavigation";
 //import { currencyFormatter } from "../utilities/currencyFormatter";
-import type { CategoriesType } from "../types/Categories";
+import { type CategoryTypeDto } from "../dto/CategoryTypeDto";
 import { FloatingInput } from "../components/common/FloatingInput";
 
 const Closeout = () => {
   const context = useContext(EventContext);
   const { request, isLoading, error } = useHttp();
   const [items, setItems] = useState<ItemType[]>([] as ItemType[]);
-  const [categories, setCategories] = useState<CategoriesType[]>(
-    [] as CategoriesType[],
+  const [categories, setCategories] = useState<CategoryTypeDto[]>(
+    [] as CategoryTypeDto[],
   );
-  const [bidders, setBidders] = useState([] as any[]);
+  const [bidders, setBidders] = useState([] as { bidderId: number; bidderNumber: number; isOnline: boolean; fullName: string }[]);
+  const [winningBidderNames, setWinningBidderNames] = useState<
+    Record<number, string>
+  >({});
   //  const event = context.event;
 
   useEffect(() => {
@@ -29,14 +32,14 @@ const Closeout = () => {
       );
       setBidders(data);
     };
-    const getEvents = async (id: number) => {
+    const getItems = async (id: number) => {
       const data = await request(`/api/events/${id}/items/closeout`, "GET");
       setItems(data);
     };
     if (context.eventId && context.eventId !== 0) {
       getCategories();
       getBidders();
-      getEvents(context.eventId);
+      getItems(context.eventId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -49,7 +52,7 @@ const Closeout = () => {
     return <></>;
   }
 
-  const handleRowBlur = (
+  const handleRowBlur = async (
     e: React.FocusEvent<HTMLTableRowElement>,
     itemId: number,
   ) => {
@@ -75,8 +78,7 @@ const Closeout = () => {
           ? Number(bidAmount)
           : null;
 
-      let bidderName =
-        bidders.find(b => b.bidderNumber == winningBidder)?.fullName ?? "";
+      let bidderName = bidders.find((b) => b.bidderNumber == parsedWinningBidder)?.fullName ?? "";
       if (winningBidder !== "" && bidderName === "") {
         // Set the validation to false on the bidder number field
         bidderName = "Unknown Bidder";
@@ -88,21 +90,31 @@ const Closeout = () => {
         bidderName,
         bidAmount,
       });
-      // Store the bidder information in the state for now.
-      setItems(prevItems =>
-        prevItems.map(item => {
-          if (item.itemId === itemId) {
-            return {
-              ...item,
-              winningBidderNumber:
-                parsedWinningBidder ?? item.winningBidderNumber,
-              winningBidderName: bidderName,
-              winningBidAmount: parsedBidAmount ?? item.winningBidAmount,
-            };
-          }
-          return item;
-        }),
-      );
+      setWinningBidderNames((prev) => ({
+        ...prev,
+        [itemId]: bidderName,
+      }));
+
+      // Send the updated Dto to the API to update the item in the database
+      if (parsedWinningBidder !== null || parsedBidAmount !== null) {
+        const closeoutDto = {
+          itemId: itemId,
+          winningBidderNumber: parsedWinningBidder,
+          winningBidAmount: parsedBidAmount,
+        };
+        try {
+          await request(
+            `/api/events/${context.eventId}/items/${itemId}/closeout`,
+            "PATCH",
+            closeoutDto,
+            {},
+            { showLoading: false },
+          );
+          console.log(`Item ${itemId} updated successfully`, closeoutDto);
+        } catch (patchError) {
+          console.error("Failed to update item", patchError);
+        }
+      }
     }
   };
 
@@ -127,7 +139,7 @@ const Closeout = () => {
 
           {!isLoading &&
             categories.length > 0 &&
-            categories.map(cat => (
+            categories.map((cat) => (
               <Fragment key={cat.categoryId}>
                 <thead>
                   <tr className="text-lg text-accent-content bg-base-300">
@@ -143,39 +155,39 @@ const Closeout = () => {
                   {!isLoading &&
                     items.length > 0 &&
                     items
-                      .filter(item => item.categoryId == cat.categoryId)
-                      .map(item => (
+                      .filter((item) => item.categoryId == cat.categoryId)
+                      .map((item) => (
                         <tr
                           key={item.itemId}
                           className="text-lg"
-                          onBlur={e => handleRowBlur(e, item.itemId)}
+                          onBlur={(e) => handleRowBlur(e, item.itemId)}
                         >
-                          <td className="py-1"></td>
-                          <td className="py-1 font-bold text-2xl">
+                          <td className="py-2"></td>
+                          <td className="py-2 font-bold text-2xl">
                             {item.itemNumber}
                           </td>
-                          <td className="py-1">{item.itemName}</td>
-                          <td className="py-1">
+                          <td className="py-2">{item.itemName}</td>
+                          <td className="py-2">
                             <FloatingInput
                               label={`Winning Bidder # for ${item.itemNumber}`}
                               type="number"
                               name={`winbidnum_${item.itemId}`}
                               defaultValue={item.winningBidderNumber ?? ""}
-                              className="text-lg"
+                              inputClassName="text-lg font-bold"
                             />
                           </td>
                           <td
-                            className={`py-1 ${item.winningBidderName === "Unknown Bidder" ? "text-red-500" : ""}`}
+                            className={`py-2 ${(winningBidderNames[item.itemId] ?? item.winningBidderName) === "Unknown Bidder" ? "text-red-500" : ""}`}
                           >
-                            {item.winningBidderName}
+                            {winningBidderNames[item.itemId] ?? item.winningBidderName}
                           </td>
-                          <td className="py-1">
+                          <td className="py-2">
                             <FloatingInput
                               label={`Winning Bid Amount for ${item.itemNumber}`}
                               type="number"
                               name={`winbidamt_${item.itemId}`}
                               defaultValue={item.winningBidAmount ?? ""}
-                              className="text-lg"
+                              inputClassName="text-lg font-bold"
                             />
                           </td>
                         </tr>

@@ -249,6 +249,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({
    * @param formData The FormData object containing the form values.
    */
   const handleAction = (_formData: FormData) => {
+/*
     const parseOptionalNumber = (
       value: FormDataEntryValue | null,
     ): number | null => {
@@ -259,7 +260,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({
       const parsed = Number(value);
       return Number.isNaN(parsed) ? null : parsed;
     };
-
+*/
     // 1. Convert to a plain object and cast to GuestFormData type.
     const newData: ItemFormData = {
       ...ITEMFORMDEFAULTS, // Start with default values to ensure all fields are present
@@ -332,6 +333,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({
             </label>
           </div>
         </FloatingInput>
+        <div className="divider divider-horizontal">OR</div>
         <FloatingSelect
           className="flex-1"
           label="Category"

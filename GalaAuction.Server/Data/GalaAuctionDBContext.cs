@@ -17,6 +17,14 @@ namespace GalaAuction.Server.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Item.WinningBidderNumber references Bidder.BidderNumber (not the PK),
+            // so we configure this as an alternate-key relationship via Fluent API.
+            modelBuilder.Entity<Item>()
+                .HasOne(i => i.WinningBidder)
+                .WithMany(b => b.ItemsWon)
+                .HasForeignKey(i => i.WinningBidderNumber)
+                .HasPrincipalKey(b => b.BidderNumber);
+
             // This data wil always seed tables in any environment,
             // ensuring that essential reference data is available in both development and production.
             modelBuilder.SeedProductionData();

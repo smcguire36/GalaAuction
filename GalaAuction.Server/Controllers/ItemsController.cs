@@ -61,6 +61,8 @@ namespace GalaAuction.Server.Controllers
                 .OrderBy(i => i.ItemNumber)
                 .Include(i => i.PaymentMethod)
                 .Include(i => i.Category)
+                .Include(i => i.WinningBidder)
+                .ThenInclude(b => b!.Guest)
                 .Select(i => i.ToDto());
             return await query.ToListAsync();
         }
@@ -73,6 +75,8 @@ namespace GalaAuction.Server.Controllers
                 .Where(i => i.GalaEventId == GalaEvent!.GalaEventId && i.ItemId == id)
                 .Include(i => i.PaymentMethod)
                 .Include(i => i.Category)
+                .Include(i => i.WinningBidder)
+                .ThenInclude(b => b!.Guest)
                 .Select(i => i.ToDto());
             var item = await query.SingleOrDefaultAsync();
             if (item == null)
@@ -90,6 +94,8 @@ namespace GalaAuction.Server.Controllers
                 .Where(i => i.GalaEventId == GalaEvent!.GalaEventId)
                 .Include(i => i.Category)
                 .Include(i => i.PaymentMethod)
+                .Include(i => i.WinningBidder)
+                .ThenInclude(b => b!.Guest)
                 .OrderBy(i => i.CategoryId)
                 .ThenBy(i => i.ItemNumber)
                 .Select(i => i.ToDto());
@@ -117,7 +123,7 @@ namespace GalaAuction.Server.Controllers
             {
                 return BadRequest("Item does not belong to the specified event.");
             }
-            if (eventService.ValidateEventStatus(GalaEvent, EventStatus.Closeout))
+            if (!eventService.ValidateEventStatus(GalaEvent, EventStatus.Closeout))
             {
                 return ValidationProblem("Event must be in closeout");
             }

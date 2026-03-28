@@ -7,5 +7,6 @@
         public required string ItemName { get; set; }
         public int? WinningBidderNumber { get; set; }
         public decimal? WinningBidAmount { get; set; }
+        public bool IsPaid { get; set; } = false;
     }
 }

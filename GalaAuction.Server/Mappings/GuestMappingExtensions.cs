@@ -52,6 +52,34 @@ namespace GalaAuction.Server.Mappings
             return dto;
         }
 
+        public static CheckoutDto ToCheckoutDto(this Guest guest)
+        {
+            var dto = new CheckoutDto
+            {
+                GuestId = guest.GuestId,
+                FullName = guest.FullName,
+                GalaEventId = guest.GalaEventId,
+            };
+            var ipBidder = guest.Bidders.FirstOrDefault(item => item.IsOnline == false);
+            if (ipBidder != null)
+            {
+                dto.InPersonBidderNumber = ipBidder.BidderNumber;
+                var ipItems = ipBidder.ItemsWon.Select(i => i.ToCheckoutItemDto()).ToArray();
+                dto.ItemsWon = dto.ItemsWon.Concat(ipItems).ToArray();
+            }
+            var olBidder = guest.Bidders.FirstOrDefault(item => item.IsOnline == true);
+            if (olBidder != null)
+            {
+                dto.OnlineBidderNumber = olBidder.BidderNumber;
+                var olItems = olBidder.ItemsWon.Select(i => i.ToCheckoutItemDto()).ToArray();
+                dto.ItemsWon = dto.ItemsWon.Concat(olItems).ToArray();
+            }
+            dto.TotalItemsWon = dto.ItemsWon.Length;
+            dto.TotalOwed = dto.ItemsWon.Sum(i => i.WinningBidAmount ?? 0);
+            dto.IsPaid = dto.ItemsWon.Length > 0 && dto.ItemsWon.All(i => i.IsPaid);
+
+            return dto;
+        }
 
         public static Guest ToGuest(this GuestDto dto, GuestService guestService)
         {

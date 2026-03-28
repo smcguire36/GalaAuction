@@ -19,5 +19,8 @@ namespace GalaAuction.Server.Models
         [ForeignKey("GuestId")]
         [JsonIgnore]
         public Guest Guest { get; set; } = null!;
+
+        // Navigation property for related Items won by this bidder
+        public List<Item> ItemsWon { get; set; } = [];
     }
 }

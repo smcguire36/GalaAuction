@@ -5,6 +5,7 @@ import {
 import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 import { FloatingInput } from "../common/FloatingInput";
 import type { ModalFormHandle } from "../../types/ModalFormHandle";
+import { parseOptionalInt } from "../../utilities/parseInteger";
 
 type EditGuestFormProps = {
   ref: Ref<ModalFormHandle>;
@@ -50,6 +51,7 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
   // Check the contents of the first and last name fields and update the validity state for those fields since they are required and their validity depends on their contents
   useEffect(() => {
     // Reset valid states when new data loads
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setValid((prev) => ({
       ...prev,
       firstName: data.firstName.trim() !== "",
@@ -119,15 +121,6 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
    * @param formData The FormData object containing the form values.
    */
   const handleAction = (formData: FormData) => {
-    const parseOptionalInt = (value: FormDataEntryValue | null): number | null => {
-      if (typeof value !== "string" || value.trim() === "") {
-        return null;
-      }
-
-      const parsed = Number(value);
-      return Number.isNaN(parsed) ? null : parsed;
-    };
-
     // 1. Convert to a plain object and cast to GuestFormData type.
     const data: GuestFormData = {
       ...GUESTFORMDEFAULTS,

@@ -33,7 +33,7 @@ const EditItemDialog = ({ ref, onConfirm, item }: EditItemProps) => {
   const { open, close } = use(ModalContext);
   const formRef = useRef<ModalFormHandle>(null);
   const [data, setData] = useState<ItemFormData>(normalizeItemData(item));
-  const { request, error } = useHttp();
+  const { request } = useHttp();
   
   useImperativeHandle(
     ref,
@@ -86,6 +86,7 @@ const EditItemDialog = ({ ref, onConfirm, item }: EditItemProps) => {
       alert("Item updated successfully!");
       onConfirm();
       close();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(`Error updating item... ${err.message ?? "Unknown error"}`);
     }

@@ -13,14 +13,19 @@ export function useHttp() {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' = 'GET', 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any = null, 
-    headers: Record<string, string> = {}
+    headers: Record<string, string> = {},
+    options: { showLoading?: boolean } = {}
   ) => {
+    const { showLoading = true } = options;
+
     // Ensure Keycloak is initialized and user is authenticated
     if (!initialized || !keycloak.authenticated) {
       throw new Error("User is not authenticated");
     }
 
-    setIsLoading(true);
+    if (showLoading) {
+      setIsLoading(true);
+    }
     setError(null);
 
     try {
@@ -61,7 +66,9 @@ export function useHttp() {
       setError(err.message);
       throw err;
     } finally {
-      setIsLoading(false);
+      if (showLoading) {
+        setIsLoading(false);
+      }
     }
   }, []);
 

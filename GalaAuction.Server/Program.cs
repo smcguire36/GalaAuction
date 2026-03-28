@@ -27,21 +27,28 @@ builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<ItemService>();
 builder.Services.AddScoped<GuestService>();
 
+// Resolve the Keycloak base URL from config (set in appsettings.Development.json).
+// We use plain AddJwtBearer instead of AddKeycloakJwtBearer because the latter
+// sets up Aspire service-discovery URLs (https+http://keycloak) for the backchannel
+// HTTP client, which resolves to a dynamic Aspire proxy port that is unreachable.
+var keycloakUrl = builder.Configuration["Keycloak:BaseUrl"]
+                  ?? "http://localhost:6001";
+var keycloakRealmUrl = $"{keycloakUrl.TrimEnd('/')}/realms/GalaAuction";
+
 builder.Services.AddAuthentication()
-    .AddKeycloakJwtBearer(serviceName: "keycloak", realm: "GalaAuction", options =>
+    .AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata = false;
         options.Audience = "GalaAuction";
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidIssuers = [
-                "http://localhost:6001/realms/GalaAuction",
-                "http://keycloak:8080/realms/GalaAuction",
-                "http://id.GalaAuction.local/realms/GalaAuction",
-                "https://id.GalaAuction.local/realms/GalaAuction"
-            ],
-            ClockSkew = TimeSpan.FromMinutes(2)
-        };
+        options.Authority = keycloakRealmUrl;
+        options.MetadataAddress = $"{keycloakRealmUrl}/.well-known/openid-configuration";
+        options.TokenValidationParameters.ValidIssuers = [
+            "http://localhost:6001/realms/GalaAuction",
+            "http://keycloak:8080/realms/GalaAuction",
+            "http://id.GalaAuction.local/realms/GalaAuction",
+            "https://id.GalaAuction.local/realms/GalaAuction"
+        ];
+        options.TokenValidationParameters.ClockSkew = TimeSpan.FromMinutes(2);
 
         if (builder.Environment.IsDevelopment())
         {
@@ -55,9 +62,11 @@ builder.Services.AddAuthentication()
 
                     logger.LogWarning(
                         context.Exception,
-                        "JWT authentication failed. Path: {Path}, Message: {Message}",
+                        "JWT authentication failed. Path: {Path}, Message: {Message}, Authority: {Authority}, MetadataAddress: {MetadataAddress}",
                         context.HttpContext.Request.Path,
-                        context.Exception.Message
+                        context.Exception.Message,
+                        context.Options.Authority,
+                        context.Options.MetadataAddress
                     );
 
                     return Task.CompletedTask;

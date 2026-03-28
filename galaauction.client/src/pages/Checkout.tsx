@@ -1,21 +1,18 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import type { GuestType } from "../types/Guest";
 import { useHttp } from "../hooks/useHttp";
 import EventContext from "../store/EventContext";
 import TabNavigation from "../components/TabNavigation";
 import { EventStatus } from "../types/EventStatus";
-import AddGuestDialog from "../components/guests/AddGuestDialog";
 import type { ModalHandle } from "../components/common/Modal";
-import UploadGuestsDialog from "../components/guests/UploadGuestsDialog";
-import EditGuestDialog from "../components/guests/EditGuestDialog";
 import SortableHeader, {
   type SortState,
 } from "../components/common/SortableHeader";
 import Header from "../components/common/Header";
-import { useConfirm } from "../store/ConfirmProvider";
+//import { useConfirm } from "../store/ConfirmProvider";
 import CheckoutActionButton from "../components/common/CheckoutActionButton";
-import type { CheckoutDto } from "../types/Checkout";
 import { currencyFormatter } from "../utilities/currencyFormatter";
+import CheckoutDialog from "../components/checkout/CheckoutDialog";
+import type { CheckoutDto } from "../dto/CheckoutDto";
 
 const Checkout = () => {
   const context = useContext(EventContext);
@@ -24,7 +21,7 @@ const Checkout = () => {
   const [selectedGuest, setSelectedGuest] = useState<CheckoutDto>(
     {} as CheckoutDto,
   );
-  const editGuestRef = useRef<ModalHandle>(null);
+  const checkoutRef = useRef<ModalHandle>(null);
   const event = context.event;
   const [formSession, setFormSession] = useState<number>(0);
   const [searchText, setSearchText] = useState<string>("");
@@ -32,7 +29,7 @@ const Checkout = () => {
     name: "",
     direction: undefined,
   });
-  const confirm = useConfirm();
+//  const confirm = useConfirm();
 
   useEffect(() => {
     if (context.eventId && context.eventId !== 0) {
@@ -42,7 +39,7 @@ const Checkout = () => {
   }, []);
 
   const getGuests = async (id: number) => {
-    const guestsData = await request(`/api/events/${id}/guests`, "GET");
+    const guestsData = await request(`/api/events/${id}/checkout`, "GET");
     setGuests(guestsData);
   };
 
@@ -54,8 +51,8 @@ const Checkout = () => {
         }
         return (
           guest.fullName.toLowerCase().includes(searchText.toLowerCase()) ||
-          guest.inPersonBidderNumber.toString().includes(searchText) ||
-          guest.onlineBidderNumber.toString().includes(searchText)
+          guest.inPersonBidderNumber?.toString().includes(searchText) ||
+          guest.onlineBidderNumber?.toString().includes(searchText)
         );
       })
       .sort((a, b) => {
@@ -75,21 +72,20 @@ const Checkout = () => {
   }, [guests, searchText, sortState]);
 
   if (error) {
-    return <div>Error Loading Guests ...</div>;
+    return <div>Error Loading Guests for Checkout ...</div>;
   }
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
-  const onOpenEditGuest = (guest: CheckoutDto) => {
+  const handleGuestCheckout = (guest: CheckoutDto) => {
     setFormSession(prev => ++prev);
     setSelectedGuest(guest);
-    editGuestRef.current?.open();
+    checkoutRef.current?.open();
   };
 
   const handleModalConfirm = () => {
-    console.log("Modal Dialog confirmed!  Let's reload the guest list now!");
     getGuests(context.eventId);
   };
 
@@ -188,8 +184,8 @@ const Checkout = () => {
                       readOnly
                     />
                   </td>
-                  <td className="py-1">{guest.inPersonBidderNumber}</td>
-                  <td className="py-1">
+                  <td className="py-1 text-lg font-bold">{guest.inPersonBidderNumber}</td>
+                  <td className="py-1 text-lg font-bold">
                     {guest.onlineBidderNumber ? guest.onlineBidderNumber : "--"}
                   </td>
                   <td className="py-1">{guest.fullName}</td>
@@ -201,8 +197,8 @@ const Checkout = () => {
                   </td>
                   <td className="flex flex-row gap-4 py-1">
                     <CheckoutActionButton
-                      onClick={() => onOpenEditGuest(guest)}
-                      disabled={event?.eventStatusId !== EventStatus.Setup}
+                      onClick={() => handleGuestCheckout(guest)}
+                      disabled={event?.eventStatusId === EventStatus.Setup}
                     />
                   </td>
                 </tr>
@@ -214,14 +210,14 @@ const Checkout = () => {
           </tbody>
         </table>
       </div>
-      {/*
-      <EditGuestDialog
-        key={`edit-${formSession}`}
-        ref={editGuestRef}
+
+      <CheckoutDialog
+        key={`checkout-${formSession}`}
+        ref={checkoutRef}
         onConfirm={handleModalConfirm}
         guest={selectedGuest}
       />
-      */}
+
     </>
   );
 };

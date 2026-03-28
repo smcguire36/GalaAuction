@@ -1,6 +1,6 @@
 import { useImperativeHandle, useRef, type Ref } from "react";
 import { FloatingInput } from "./FloatingInput";
-import type { EditGuestFormHandle } from "../guests/EditGuestForm";
+import type { ModalFormHandle } from "../../types/ModalFormHandle";
 
 export type UploadCsvData = {
   uploadFile: File;
@@ -12,7 +12,7 @@ const UploadCsvForm = ({
   onSubmit,
 }: {
   label: string;
-  ref: Ref<EditGuestFormHandle>;
+  ref: Ref<ModalFormHandle>;
   onSubmit: (data: UploadCsvData) => void;
 }) => {
   const formRef = useRef<HTMLFormElement>(null);

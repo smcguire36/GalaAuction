@@ -30,9 +30,9 @@ const EventContext = createContext<EventState>({
     eventId: EVENT_DEFAULTS.eventId,
     event: EVENT_DEFAULTS.event,
     theme: EVENT_DEFAULTS.theme,
-    setEvent: (event) => {},
-    setTheme: (newTheme) => {},
-    setStatus: (newStatus, newStatusText) => {}
+    setEvent: (_newEvent) => {},
+    setTheme: (_newTheme) => {},
+    setStatus: (_newStatus, _newStatusText) => {}
 });
 
 export default EventContext;

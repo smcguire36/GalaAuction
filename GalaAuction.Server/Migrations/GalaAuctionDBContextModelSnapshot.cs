@@ -506,7 +506,8 @@ namespace GalaAuction.Server.Migrations
 
                     b.HasOne("GalaAuction.Server.Models.Bidder", "Bidder")
                         .WithMany()
-                        .HasForeignKey("WinningBidderNumber");
+                        .HasForeignKey("WinningBidderNumber")
+                        .HasPrincipalKey("BidderNumber");
 
                     b.Navigation("Bidder");
 

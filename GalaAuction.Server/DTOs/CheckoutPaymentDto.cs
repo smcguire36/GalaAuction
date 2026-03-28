@@ -6,6 +6,6 @@
         public required string PaymentMethodId { get; set; }
         public required decimal AmountPaid { get; set; }
         public required int[] ItemsPaid { get; set; }
-        public Guid CheckoutLockId { get; set; }
+        public Guid CheckoutLock { get; set; }
     }
 }

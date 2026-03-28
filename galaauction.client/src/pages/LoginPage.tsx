@@ -1,4 +1,4 @@
-﻿import React, { type SubmitEventHandler } from "react";
+﻿import { type SubmitEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/login_background.png";
 // import Keycloak, { type KeycloakLoginOptions } from "keycloak-js";

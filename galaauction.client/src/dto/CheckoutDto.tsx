@@ -1,10 +1,4 @@
-export type CheckoutItemsDto = {
-    itemId: number;
-    itemNumber: string;
-    itemName: string;
-    winningBidderNumber: number;
-    winningBidAmount: number;
-};
+import type { CheckoutItemDto } from "./CheckoutItemDto";
 
 export type CheckoutDto = {
     guestId: number;
@@ -15,5 +9,5 @@ export type CheckoutDto = {
     totalItemsWon: number | null;
     totalOwed: number | null;
     isPaid: boolean;
-    itemsWon: CheckoutItemsDto[];
+    itemsWon: CheckoutItemDto[];
 };

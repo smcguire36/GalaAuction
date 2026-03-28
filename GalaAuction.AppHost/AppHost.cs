@@ -1,17 +1,22 @@
+using Aspire.Hosting.Docker;
 using Aspire.Hosting.Yarp;
 using Aspire.Hosting.Yarp.Transforms;
 
 var builder = DistributedApplication.CreateBuilder(args);
+
+var compose = builder.AddDockerComposeEnvironment("production")
+    .WithDashboard(dashboard => dashboard.WithHostPort(8081));
 
 // Create the keycloak container
 #pragma warning disable ASPIRECERTIFICATES001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 var keycloak = builder.AddKeycloak("keycloak", 6001)
     .WithoutHttpsCertificate()
     .WithDataVolume("keycloak-galaauction")
+    .WithRealmImport("../Realms")
     .WithExternalHttpEndpoints()
     .WithEnvironment("KC_HTTP_ENABLED", "true")
     .WithEnvironment("KC_HOSTNAME_STRICT", "false")
-    .WithEnvironment("VIRTUAL_HOST", "id.GalaAuction.local")
+    .WithEnvironment("VIRTUAL_HOST", "id.galaauction.local")
     .WithEnvironment("VIRTUAL_PORT", "8080");
 #pragma warning restore ASPIRECERTIFICATES001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
@@ -22,7 +27,7 @@ var galaAuctionDb = postgres.AddDatabase("GalaAuctionDb");
 
 // Create the backend container and reference the keycloak container
 var backend = builder.AddProject<Projects.GalaAuction_Server>("galaauction-server")
-    .WithHttpEndpoint(7001, 8080, "auctionApi")
+    .WithHttpEndpoint(7001, 8082, "auctionApi")
     .WithExternalHttpEndpoints()
     .WithReference(keycloak)
     .WithReference(galaAuctionDb)
@@ -39,6 +44,7 @@ var frontend = builder.AddJavaScriptApp("frontend", "../galaauction.client")
     .WithEnvironment("VITE_BACKEND_URL", backend.GetEndpoint("auctionApi"))
     .WithEnvironment("VITE_KEYCLOAK_URL", keycloak.GetEndpoint("http"))
     .WithArgs("--host")
+    .PublishAsDockerFile()
     .WaitFor(backend);
 
 /*
@@ -75,14 +81,11 @@ var yarp = builder.AddYarp("gateway")
             .WithOrder(2);
     })
     .WithEnvironment("ASPNETCORE_URLS", "http://*:8001")
+    .WithEndpoint(port: 8001, targetPort: 8001, scheme: "http", name: "gateway", isExternal: true)
+    .WithEnvironment("VIRTUAL_HOST", "api.galaauction.local")
+    .WithEnvironment("VIRTUAL_PORT", "8002")
     .WithEnvironment("Logging__LogLevel__Microsoft.ReverseProxy", "Debug")
     .WithEnvironment("Logging__LogLevel__Default", "Debug")
-    // Host port 8001 is used by the local Aspire control process (dcpctrl.exe),
-    // publish the gateway on an alternate host port (8002) while the container
-    // still listens on 8001 internally.
-    .WithEndpoint(port: 8002, targetPort: 8001, scheme: "http", name: "gateway", isExternal: true)
-    .WithEnvironment("VIRTUAL_HOST", "api.GalaAuction.local")
-    .WithEnvironment("VIRTUAL_PORT", "8002")
     .WithReference(frontend)
     .WithReference(keycloak)
     .WithExternalHttpEndpoints();
