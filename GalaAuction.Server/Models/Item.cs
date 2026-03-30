@@ -28,6 +28,7 @@ namespace GalaAuction.Server.Models
         // Foreign key to PaymentMethods
         [AllowNull]
         public string? PaymentMethodId { get; set; }
+        public DateTime? PaymentDate { get; set; }
         // Navigation property back to PaymentMethod
         [ForeignKey("PaymentMethodId")]
         public PaymentMethod? PaymentMethod { get; set; }

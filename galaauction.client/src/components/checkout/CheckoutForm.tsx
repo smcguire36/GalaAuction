@@ -121,15 +121,23 @@ const CheckoutForm = ({
             )}
           </tbody>
           <tfoot>
-            <tr className="font-bold flex flex-row w-full py-2">
-              <th className="w-16 py-1 text-left shrink-0 align-middle">PAID BY</th>
+            <tr className="font-bold flex flex-row items-center w-full py-2">
+              <th className="w-16 py-1 text-left flex flex-col items-center">
+                <div>PAID BY</div>
+                <div>&nbsp;</div>
+              </th>
               <th className="flex-1 py-1 min-w-0 align-middle">
-                <div className="flex flex-wrap gap-1 items-center">
+                <div className="grid grid-cols-4 gap-2">
                   <input type="radio" id="pm-cash" name="paymentMethodId" value="Cash" className="sr-only peer/cash validator" required onInvalid={(e) => e.preventDefault()}/>
                   <label htmlFor="pm-cash" className="flex-1 btn btn-sm peer-checked/cash:btn-primary cursor-pointer">CASH</label>
 
                   <input type="radio" id="pm-check" name="paymentMethodId" value="Chk" className="sr-only peer/check validator" onInvalid={(e) => e.preventDefault()}/>
                   <label htmlFor="pm-check" className="flex-1 btn btn-sm peer-checked/check:btn-primary cursor-pointer">CHECK</label>
+      
+                  <div className="col-span-2 flex">
+                    <input type="radio" id="pm-other" name="paymentMethodId" value="Other" className="sr-only peer/other validator" onInvalid={(e) => e.preventDefault()}/>
+                    <label htmlFor="pm-other" className="flex-1 btn btn-sm peer-checked/other:btn-primary cursor-pointer">OTHER</label>
+                  </div>
 
                   <input type="radio" id="pm-mc" name="paymentMethodId" value="MC" className="sr-only peer/mc validator" onInvalid={(e) => e.preventDefault()}/>
                   <label htmlFor="pm-mc" className="flex-1 btn btn-sm peer-checked/mc:btn-primary cursor-pointer">MASTERCARD</label>
@@ -142,16 +150,13 @@ const CheckoutForm = ({
 
                   <input type="radio" id="pm-discover" name="paymentMethodId" value="Disc" className="sr-only peer/discover validator" onInvalid={(e) => e.preventDefault()}/>
                   <label htmlFor="pm-discover" className="flex-1 btn btn-sm peer-checked/discover:btn-primary cursor-pointer">DISCOVER</label>
-
-                  <input type="radio" id="pm-other" name="paymentMethodId" value="Other" className="sr-only peer/other validator" onInvalid={(e) => e.preventDefault()}/>
-                  <label htmlFor="pm-other" className="flex-1 btn btn-sm peer-checked/other:btn-primary cursor-pointer">OTHER</label>
                   <p className="validator-hint">Please select a payment method.</p>
                 </div>
               </th>
             </tr>
           </tfoot>
           <tfoot>
-            <tr className="border-y-2 border-accent font-bold flex flex-row w-full py-0">
+            <tr className="border-y-2 border-accent font-bold flex flex-row w-full py-0 text-lg">
               <th className="w-16 py-1 text-left shrink-0">TOTAL</th>
               <th className="flex-2 py-1 min-w-0"></th>
               <th className="flex-1 py-1 text-left min-w-fit">{data.totalOwed ? currencyFormatter.format(data.totalOwed) : "--"}</th>

@@ -13,32 +13,41 @@ import EventContext from "../../store/EventContext";
 import CheckoutForm from "./CheckoutForm";
 import type { CheckoutDto } from "../../dto/CheckoutDto";
 import type { CheckoutPaymentDto } from "../../dto/CheckoutPaymentDto";
+import AddIcon from "../common/icons/AddIcon";
+import PrintIcon from "../common/icons/PrintIcon";
 
 type CheckoutDialogProps = {
   ref: Ref<ModalHandle>;
   onConfirm: () => void;
-  guest: CheckoutDto;
+  guestId: number;
 };
 
-const CheckoutDialog = ({ ref, onConfirm, guest }: CheckoutDialogProps) => {
+const CheckoutDialog = ({ ref, onConfirm, guestId }: CheckoutDialogProps) => {
   const { eventId } = use(EventContext);
   const { open, close } = use(ModalContext);
   const formRef = useRef<ModalFormHandle>(null);
-  const [data, setData] = useState<CheckoutDto>(guest);
+  const [data, setData] = useState<CheckoutDto>(null as unknown as CheckoutDto);
   const { request } = useHttp();
+  const [modalVariant, setModalVariant] = useState<"confirm" | "close">("confirm");
+
+  const fetchGuestData = async () => {
+    const guestData = await request(`/api/events/${eventId}/checkout/${guestId}`, "GET");
+    setData(guestData);
+  };
 
   useImperativeHandle(
     ref,
     () => ({
       open: () => {
-        console.log("in open of CheckoutDialog, guest:", guest);
-        setData(guest);
+        console.log("in open of CheckoutDialog, guestId:", guestId);
+        // Fetch guest data based on guestId
+        fetchGuestData();
 
         // Open modal after setting data
         open("checkoutGuest");
       },
     }),
-    [guest, open],
+    [fetchGuestData, guestId, open],
   );
 
   const handleConfirm = () => {
@@ -54,7 +63,8 @@ const CheckoutDialog = ({ ref, onConfirm, guest }: CheckoutDialogProps) => {
   const onSubmit = async (formData: CheckoutPaymentDto) => {
     console.log("In onSubmit of CheckoutDialog", formData);
     // This is called once the form has determined that it is valid
-return;
+    setModalVariant("close"); // Change to close variant to allow modal to be closed by user after successful submission
+    return;
 
     try {
       const response = await request(
@@ -67,28 +77,53 @@ return;
       );
 
       console.log("Response from save guest", response);
-      alert("Guest updated successfully!");
       onConfirm();
-      close();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(`Error updating guest... ${err.message ?? "Unknown error"}`);
     }
 
     // Tell parent component the guest list has changed
     onConfirm();
-    // Close the Modal
-    close();
   };
+
+  const handlePrintReceipt = () => {
+    console.log("handlePrintReceipt for guest:", data);
+    alert("Printing receipt for " + data.fullName);
+  };
+
+  const handleAddOrchid = () => {
+    alert("Adding orchid to " + data.fullName);
+  };
+
+  const buttons = (
+    <>
+      <button className="btn btn-ghost"
+        onClick={handlePrintReceipt}
+        disabled={modalVariant !== "close"}
+      >
+        PRINT RECEIPT
+        <PrintIcon />
+      </button>
+      <button className="btn btn-ghost"
+        onClick={handleAddOrchid}
+        disabled={modalVariant === "close"}
+      >
+        ADD ORCHID
+        <AddIcon />
+      </button>
+    </>
+  );
 
   return (
     <Modal
       className="w-8/12 max-w-4xl"
       id="checkoutGuest"
       title="BIDDER PAYMENT"
-      customVariant="confirm"
+      customVariant={modalVariant}
       onClose={onClose}
       onConfirm={handleConfirm}
+      extraButtons={buttons}
     >
       <CheckoutForm
         key={data.guestId}

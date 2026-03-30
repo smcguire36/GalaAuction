@@ -27,7 +27,7 @@ namespace GalaAuction.Server.Controllers
     [Route("api/events/{eventId}/[controller]")]
     [ApiController]
     [Authorize]
-    public class BiddersController(GalaAuctionDBContext context, EventService eventService, GuestService guestService) : ControllerBase, IAsyncActionFilter
+    public class BiddersController(GalaAuctionDBContext context, EventService eventService) : ControllerBase, IAsyncActionFilter
     {
         public GalaEvent? GalaEvent { get; set; }
 

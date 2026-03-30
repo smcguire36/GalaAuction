@@ -1884,6 +1884,9 @@
       border-end-end-radius: var(--tabcontent-radius-ee);
     }
   }
+  .col-span-2 {
+    grid-column: span 2 / span 2;
+  }
   .hero {
     @layer daisyui.l1.l2.l3 {
       display: grid;
@@ -2282,6 +2285,9 @@
   .flex {
     display: flex;
   }
+  .grid {
+    display: grid;
+  }
   .hidden {
     display: none;
   }
@@ -2495,6 +2501,9 @@
   }
   .resize {
     resize: both;
+  }
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .flex-col {
     flex-direction: column;

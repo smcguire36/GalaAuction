@@ -34,7 +34,7 @@ namespace GalaAuction.Server.Services
                 // If the lock is less than 10 minutes old, then return an error
                 if (diff.Duration().TotalMinutes < 10)
                 {
-                    throw new Exception("Bidder is already locked for checkout");
+                    throw new Exception("Guest is already locked for checkout");
                 }
                 // Otherwise, clear the old lock
                 guest.CheckoutLock = null;

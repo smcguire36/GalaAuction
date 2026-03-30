@@ -49,14 +49,14 @@ namespace GalaAuction.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CheckoutDto>>> GetCheckoutList(int eventId)
+        public async Task<ActionResult<IEnumerable<CheckoutListDto>>> GetCheckoutList(int eventId)
         {
             var query = context.Guests.AsQueryable()
                     .Where(g => g.GalaEventId == GalaEvent!.GalaEventId)
                     .OrderBy(g => g.LastName)
                     .Include(g => g.Bidders)
                     .ThenInclude(b => b!.ItemsWon)
-                    .Select(g => g.ToCheckoutDto());
+                    .Select(g => g.ToCheckoutListDto());
             return await query.ToListAsync();
         }
 
@@ -111,7 +111,7 @@ namespace GalaAuction.Server.Controllers
         {
             if (eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
             {
-                return BadRequest("Bidder checkout only available when the event is in Checkout");
+                return BadRequest("Guest checkout only available when the event is in Checkout");
             }
 
             var guest = await context.Guests.AsQueryable()
@@ -124,13 +124,28 @@ namespace GalaAuction.Server.Controllers
             {
                 return NotFound("Guest not found");
             }
+
+            // Set a checkout lock on the guest
+            var lockId = Guid.Empty;
+            try
+            {
+                lockId = await guestService.GetCheckoutLockAsync(guest);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             var dto = guest.ToCheckoutDto();
             return Ok(dto);
         }
 
-        [HttpPost("{bidderNumber}")]
-        public async Task<ActionResult> SaveCheckoutForBidder(int eventId, int bidderNumber, CheckoutPaymentDto dto)
+        [HttpPost("{guestId}")]
+        public async Task<ActionResult> SaveCheckoutForGuest(int eventId, int guestId, CheckoutPaymentDto dto)
         {
+            if (eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
+            {
+                return BadRequest("Guest checkout only available when the event is in Checkout");
+            }
             // Get the guest entity and verify that it was found
             var guest = await context.Guests.AsQueryable()
                 .Where(g => g.GuestId == dto.GuestId)
@@ -140,7 +155,7 @@ namespace GalaAuction.Server.Controllers
                 return BadRequest("Guest not attending given event");
             }
             // Validate checkout lock
-            if (!guestService.ValidateCheckoutLock(guest, dto.CheckoutLockId, out string message))
+            if (!guestService.ValidateCheckoutLock(guest, dto.CheckoutLock, out string message))
             {
                 return BadRequest(message);
             }

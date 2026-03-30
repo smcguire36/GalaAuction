@@ -3,23 +3,22 @@ import { useHttp } from "../hooks/useHttp";
 import EventContext from "../store/EventContext";
 import TabNavigation from "../components/TabNavigation";
 import { EventStatus } from "../types/EventStatus";
-import type { ModalHandle } from "../components/common/Modal";
-import SortableHeader, {
-  type SortState,
-} from "../components/common/SortableHeader";
+import { type ModalHandle } from "../components/common/Modal";
+import SortableHeader, { type SortState } from "../components/common/SortableHeader";
 import Header from "../components/common/Header";
 //import { useConfirm } from "../store/ConfirmProvider";
 import CheckoutActionButton from "../components/common/CheckoutActionButton";
 import { currencyFormatter } from "../utilities/currencyFormatter";
 import CheckoutDialog from "../components/checkout/CheckoutDialog";
-import type { CheckoutDto } from "../dto/CheckoutDto";
+import { type CheckoutListDto } from "../dto/CheckoutListDto";
+import PrintReceiptButton from "../components/common/PrintReceiptButton";
 
 const Checkout = () => {
   const context = useContext(EventContext);
   const { request, isLoading, error } = useHttp();
-  const [guests, setGuests] = useState<CheckoutDto[]>([] as CheckoutDto[]);
-  const [selectedGuest, setSelectedGuest] = useState<CheckoutDto>(
-    {} as CheckoutDto,
+  const [guests, setGuests] = useState<CheckoutListDto[]>([] as CheckoutListDto[]);
+  const [selectedGuest, setSelectedGuest] = useState<CheckoutListDto>(
+    {} as CheckoutListDto,
   );
   const checkoutRef = useRef<ModalHandle>(null);
   const event = context.event;
@@ -59,8 +58,8 @@ const Checkout = () => {
         if (!sortState.direction || sortState.name === "") {
           return 0; // No sorting applied
         }
-        const aValue = a[sortState.name as keyof CheckoutDto] ?? "";
-        const bValue = b[sortState.name as keyof CheckoutDto] ?? "";
+        const aValue = a[sortState.name as keyof CheckoutListDto] ?? "";
+        const bValue = b[sortState.name as keyof CheckoutListDto] ?? "";
         if (aValue < bValue) {
           return sortState.direction === "asc" ? -1 : 1;
         }
@@ -79,7 +78,7 @@ const Checkout = () => {
     setSearchText(e.target.value);
   };
 
-  const handleGuestCheckout = (guest: CheckoutDto) => {
+  const handleGuestCheckout = (guest: CheckoutListDto) => {
     setFormSession(prev => ++prev);
     setSelectedGuest(guest);
     checkoutRef.current?.open();
@@ -92,6 +91,11 @@ const Checkout = () => {
   const handleChangeSort = (next: SortState) => {
     setSortState(next);
   };
+
+  function handlePrintReceipt(guest: CheckoutListDto) {
+    console.log("handlePrintReceipt for guest:", guest);
+    alert("Printing receipt for " + guest.fullName);
+  }
 
   return (
     <>
@@ -200,6 +204,10 @@ const Checkout = () => {
                       onClick={() => handleGuestCheckout(guest)}
                       disabled={event?.eventStatusId === EventStatus.Setup}
                     />
+                    <PrintReceiptButton
+                      onClick={() => handlePrintReceipt(guest)}
+                      disabled={!guest.isPaid}
+                    />
                   </td>
                 </tr>
               ))}
@@ -215,7 +223,7 @@ const Checkout = () => {
         key={`checkout-${formSession}`}
         ref={checkoutRef}
         onConfirm={handleModalConfirm}
-        guest={selectedGuest}
+        guestId={selectedGuest.guestId ?? 0}
       />
 
     </>
