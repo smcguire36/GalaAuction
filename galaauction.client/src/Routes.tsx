@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 import App from "./App";
 import LoginPage from "./pages/LoginPage";
 import Home from "./pages/Home";
@@ -13,6 +13,12 @@ const routes = createBrowserRouter([
     {
         path: "login",
         element: <LoginPage />,
+    },
+    {
+        path: "print-receipt/:guestId",
+        element: <>
+            <p>Print Receipt Page (to be implemented)</p> 
+        </>,
     },
     // Routes with the main layout
     {

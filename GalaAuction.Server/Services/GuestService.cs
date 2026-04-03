@@ -30,7 +30,7 @@ namespace GalaAuction.Server.Services
             // Check to see if this bidder/guest is already locked for checkout
             if (guest.CheckoutLock != null)
             {
-                TimeSpan diff = (TimeSpan)(DateTime.Now - guest.CheckoutLockedAt!);
+                TimeSpan diff = (TimeSpan)(DateTime.UtcNow - guest.CheckoutLockedAt!);
                 // If the lock is less than 10 minutes old, then return an error
                 if (diff.Duration().TotalMinutes < 10)
                 {
@@ -43,7 +43,7 @@ namespace GalaAuction.Server.Services
             // Create new Lock
             var lockId = Guid.NewGuid();
             guest.CheckoutLock = lockId;
-            guest.CheckoutLockedAt = DateTime.Now;
+            guest.CheckoutLockedAt = DateTime.UtcNow;
             await context.SaveChangesAsync();
 
             return lockId;
@@ -72,15 +72,33 @@ namespace GalaAuction.Server.Services
             return true;
         }
 
-        public async void ClearCheckoutLockAsync(Guest guest, Guid lockToClear)
+        public async Task ClearCheckoutLockAsync(Guest guest, Guid? lockToClear)
         {
-            if (!ValidateCheckoutLock(guest, lockToClear, out string message))
+            if (lockToClear is not { } lockValue)
+            {
+                return;
+            }
+            if (!ValidateCheckoutLock(guest, lockValue, out string message))
             {
                 throw new Exception(message);
             }
             guest.CheckoutLock = null;
             guest.CheckoutLockedAt = null;
             await context.SaveChangesAsync();
+        }
+
+        public void ClearCheckoutLock(Guest guest, Guid? lockToClear)
+        {
+            if (lockToClear is not { } lockValue)
+            {
+                return;
+            }
+            if (!ValidateCheckoutLock(guest, lockValue, out string message))
+            {
+                throw new Exception(message);
+            }
+            guest.CheckoutLock = null;
+            guest.CheckoutLockedAt = null;
         }
     }
 }

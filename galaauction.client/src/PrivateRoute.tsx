@@ -10,7 +10,7 @@ const PrivateRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
     // 1. Set a minimum splash screen duration (e.g., 2 seconds)
     const timer = setTimeout(() => {
       setMinTimeElapsed(true);
-    }, 2500);
+    }, 100);
 
     return () => clearTimeout(timer); // Cleanup timer
     // eslint-disable-next-line react-hooks/exhaustive-deps

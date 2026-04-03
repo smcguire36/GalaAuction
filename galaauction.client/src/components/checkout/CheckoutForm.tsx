@@ -75,7 +75,7 @@ const CheckoutForm = ({
       <input type="hidden" name="galaEventId" value={data.galaEventId} />
       <input type="hidden" name="amountPaid" value={data.totalOwed ?? 0} />
       <input type="hidden" name="itemsPaid" value={data.itemsWon?.map(i => i.itemId).join(",") ?? ""} />
-      <input type="hidden" name="checkoutLock" value={0} />
+      <input type="hidden" name="checkoutLock" value={data.checkoutLock ?? ""} />
       <div className="flex flex-row gap-2">
         <FloatingInput  
           className="flex-1 font-bold"

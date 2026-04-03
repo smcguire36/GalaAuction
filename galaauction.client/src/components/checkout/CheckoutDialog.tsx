@@ -1,5 +1,6 @@
 import {
   use,
+  useCallback,
   /* useEffect, */ useImperativeHandle,
   useRef,
   useState,
@@ -19,35 +20,43 @@ import PrintIcon from "../common/icons/PrintIcon";
 type CheckoutDialogProps = {
   ref: Ref<ModalHandle>;
   onConfirm: () => void;
-  guestId: number;
 };
 
-const CheckoutDialog = ({ ref, onConfirm, guestId }: CheckoutDialogProps) => {
+const EMPTY_CHECKOUT_DATA: CheckoutDto = { guestId: -1 } as CheckoutDto;
+
+const CheckoutDialog = ({ ref, onConfirm }: CheckoutDialogProps) => {
   const { eventId } = use(EventContext);
   const { open, close } = use(ModalContext);
   const formRef = useRef<ModalFormHandle>(null);
-  const [data, setData] = useState<CheckoutDto>(null as unknown as CheckoutDto);
+  const [data, setData] = useState<CheckoutDto>(EMPTY_CHECKOUT_DATA);
   const { request } = useHttp();
   const [modalVariant, setModalVariant] = useState<"confirm" | "close">("confirm");
 
-  const fetchGuestData = async () => {
-    const guestData = await request(`/api/events/${eventId}/checkout/${guestId}`, "GET");
-    setData(guestData);
-  };
 
   useImperativeHandle(
     ref,
     () => ({
-      open: () => {
-        console.log("in open of CheckoutDialog, guestId:", guestId);
-        // Fetch guest data based on guestId
-        fetchGuestData();
+      open: async (id: number = 0) => {
+        console.log("in open of CheckoutDialog, guestId:", id);
+        setModalVariant("confirm");
+        setData(EMPTY_CHECKOUT_DATA);
 
-        // Open modal after setting data
-        open("checkoutGuest");
+        try {
+          const guestData = await request(`/api/events/${eventId}/checkout/${id}`, "GET");
+          setData(guestData as CheckoutDto);
+          open("checkoutGuest");
+        } 
+        catch (err: unknown) {
+          if (err instanceof Error && err.message === "Guest is already locked for checkout") {
+            alert("This guest is currently being checked out by another user. Please try again later.");
+          }
+          else {
+            console.error("Unable to load checkout guest", err);
+          }
+        }
       },
     }),
-    [fetchGuestData, guestId, open],
+    [eventId, open, request],
   );
 
   const handleConfirm = () => {
@@ -64,17 +73,20 @@ const CheckoutDialog = ({ ref, onConfirm, guestId }: CheckoutDialogProps) => {
     console.log("In onSubmit of CheckoutDialog", formData);
     // This is called once the form has determined that it is valid
     setModalVariant("close"); // Change to close variant to allow modal to be closed by user after successful submission
-    return;
 
     try {
       const response = await request(
         `/api/events/${eventId}/checkout/${formData.guestId}`,
         "PUT",
         {
-          galaEventId: eventId,
           guestId: formData.guestId,
-        },
-      );
+          galaEventId: eventId,
+          paymentMethodId: formData.paymentMethodId,
+          amountPaid: formData.amountPaid,
+          itemsPaid: formData.itemsPaid,
+          checkoutLock: formData.checkoutLock
+        } as CheckoutPaymentDto,
+      );          
 
       console.log("Response from save guest", response);
       onConfirm();

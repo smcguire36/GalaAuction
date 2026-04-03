@@ -89,6 +89,7 @@ namespace GalaAuction.Server.Mappings
                 GuestId = guest.GuestId,
                 FullName = guest.FullName,
                 GalaEventId = guest.GalaEventId,
+                CheckoutLock = guest.CheckoutLock
             };
             var ipBidder = guest.Bidders.FirstOrDefault(item => item.IsOnline == false);
             if (ipBidder != null)

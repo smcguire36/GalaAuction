@@ -17,12 +17,8 @@ const Checkout = () => {
   const context = useContext(EventContext);
   const { request, isLoading, error } = useHttp();
   const [guests, setGuests] = useState<CheckoutListDto[]>([] as CheckoutListDto[]);
-  const [selectedGuest, setSelectedGuest] = useState<CheckoutListDto>(
-    {} as CheckoutListDto,
-  );
   const checkoutRef = useRef<ModalHandle>(null);
   const event = context.event;
-  const [formSession, setFormSession] = useState<number>(0);
   const [searchText, setSearchText] = useState<string>("");
   const [sortState, setSortState] = useState<SortState>({
     name: "",
@@ -79,9 +75,7 @@ const Checkout = () => {
   };
 
   const handleGuestCheckout = (guest: CheckoutListDto) => {
-    setFormSession(prev => ++prev);
-    setSelectedGuest(guest);
-    checkoutRef.current?.open();
+    checkoutRef.current?.open(guest.guestId);
   };
 
   const handleModalConfirm = () => {
@@ -202,7 +196,7 @@ const Checkout = () => {
                   <td className="flex flex-row gap-4 py-1">
                     <CheckoutActionButton
                       onClick={() => handleGuestCheckout(guest)}
-                      disabled={event?.eventStatusId === EventStatus.Setup}
+                      disabled={event?.eventStatusId !== EventStatus.Checkout || guest.isPaid}
                     />
                     <PrintReceiptButton
                       onClick={() => handlePrintReceipt(guest)}
@@ -219,12 +213,7 @@ const Checkout = () => {
         </table>
       </div>
 
-      <CheckoutDialog
-        key={`checkout-${formSession}`}
-        ref={checkoutRef}
-        onConfirm={handleModalConfirm}
-        guestId={selectedGuest.guestId ?? 0}
-      />
+      <CheckoutDialog ref={checkoutRef} onConfirm={handleModalConfirm} />
 
     </>
   );

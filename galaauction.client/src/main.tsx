@@ -23,10 +23,10 @@ createRoot(document.getElementById("root")!).render(
     <PrivateRoute>
       <EventProvider>
         <ConfirmProvider>
-        <ModalProvider>
-          <RouterProvider router={routes} />
-        </ModalProvider>
-      </ConfirmProvider>
+          <ModalProvider>
+            <RouterProvider router={routes} />
+          </ModalProvider>
+        </ConfirmProvider>
       </EventProvider>
     </PrivateRoute>
   </ReactKeycloakProvider>,

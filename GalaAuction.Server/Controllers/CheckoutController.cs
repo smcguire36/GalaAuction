@@ -107,9 +107,9 @@ namespace GalaAuction.Server.Controllers
         }
 
         [HttpGet("{guestId}")]
-        public async Task<ActionResult<CheckoutDto>> GetCheckoutForBidder(int eventId, int guestId)
+        public async Task<ActionResult<CheckoutDto>> GetGuestCheckout(int eventId, int guestId, [FromQuery] bool noLock=false)
         {
-            if (eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
+            if (!eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
             {
                 return BadRequest("Guest checkout only available when the event is in Checkout");
             }
@@ -129,7 +129,10 @@ namespace GalaAuction.Server.Controllers
             var lockId = Guid.Empty;
             try
             {
-                lockId = await guestService.GetCheckoutLockAsync(guest);
+                if (!noLock)
+                {
+                    lockId = await guestService.GetCheckoutLockAsync(guest);
+                }
             }
             catch (Exception ex)
             {
@@ -139,10 +142,10 @@ namespace GalaAuction.Server.Controllers
             return Ok(dto);
         }
 
-        [HttpPost("{guestId}")]
-        public async Task<ActionResult> SaveCheckoutForGuest(int eventId, int guestId, CheckoutPaymentDto dto)
+        [HttpPut("{guestId}")]
+        public async Task<ActionResult> SaveGuestCheckout(int eventId, int guestId, CheckoutPaymentDto dto)
         {
-            if (eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
+            if (!eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
             {
                 return BadRequest("Guest checkout only available when the event is in Checkout");
             }
@@ -152,7 +155,7 @@ namespace GalaAuction.Server.Controllers
                 .FirstOrDefaultAsync();
             if (guest == null)
             {
-                return BadRequest("Guest not attending given event");
+                return BadRequest("Guest not attending this event");
             }
             // Validate checkout lock
             if (!guestService.ValidateCheckoutLock(guest, dto.CheckoutLock, out string message))
@@ -174,6 +177,7 @@ namespace GalaAuction.Server.Controllers
                 item.PaymentMethodId = dto.PaymentMethodId;
                 context.Items.Update(item);
             });
+            guestService.ClearCheckoutLock(guest, guest.CheckoutLock);
             await context.SaveChangesAsync();
 
             return NoContent();
