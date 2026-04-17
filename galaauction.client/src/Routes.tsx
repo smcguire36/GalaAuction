@@ -14,12 +14,6 @@ const routes = createBrowserRouter([
         path: "login",
         element: <LoginPage />,
     },
-    {
-        path: "print-receipt/:guestId",
-        element: <>
-            <p>Print Receipt Page (to be implemented)</p> 
-        </>,
-    },
     // Routes with the main layout
     {
         path: "/",

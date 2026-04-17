@@ -1,83 +1,83 @@
-﻿"ItemNumber","ItemName"
-"201","Adirondack Get-away"
-"202","The Bunker Hill Inn"
-"203","Intercontinental New York Barclay Hotel"
-"204","Intercontinental Times Square Hotel #1"
-"205","Intercontinental Times Square Hotel #2"
-"206","Orlando Hilton Hotel"
-"207","Seven-night stay at La Mourrade in Provence, France"
-"301","Veuve Cliquot Champagne Brut, with flutes"
-"302","Veuve Cliquot Champagne Rosé Brut with flutes"
-"303","Crate of Summer Wines"
-"304","Willet Pot Bourbon with glasses"
-"305","Portuguese Wine Case"
-"306","Bourbon Tasting"
-"307","Wine Crate with Select Wines!"
-"308","Mediterranean Booze!"
-"309","Rosé Tasting w/3 Bottles"
-"401","Kittle House Inn"
-"402","Horse and Hound Inn #1"
-"403","Horse and Hound Inn #2"
-"404","Le Bernardin"
-"405","Lincoln Restaurant"
-"406","Tea at the Plaza"
-"407","Three Bottles of Superior Olive Oil from Portugal"
-"408","Bangkok Republic"
-"501","American Ballet"
-"502","American Symphony Orchestra"
-"503","Caramoor"
-"504","The New York Philharmonic with Hélenè Grimaud"
-"505","The Metropolitan Opera"
-"506","Music Before 1800"
-"507","Orchestra Lumos"
-"508","Parthenia Viol Concerts"
-"509","The Orchestra of St. Luke’s"
-"510","The Ridgefield Symphony"
-"511","Music at St. Thomas"
-"512","Gotham Early Music Scene Concert Tickets"
-"513","Musica Sacra"
-"514","The Symphony of Westchester Tickets"
-"515","Chamber Music Society of Lincoln Center"
-"516","Broadway Show!"
-"517","Nikita Galaktionov Piano Recital"
-"518","Two tickets to the 2025 Bard Music Festival"
-"519","Family Membership to the Ridgefield Playhouse"
-"601","Golf Outing"
-"602","Yankees Tickets (4)"
-"603","Yankees Tickets (2)"
-"701","Painting by Tess Dennis"
-"702","Katonah Art and Frame"
-"703","Tiffany Daffodil Needlepoint"
-"704","Exquisite Peacock Needlepoint"
-"705","Pet Portrait"
-"801","Bradford Portraits"
-"802","Breathing Coordination"
-"803","Choral Conducting Workshop Auditor"
-"804","Organ Lesson – Gregory D’Agostino"
-"805","Confidential Consultation – Ben Pologe, Ph.D."
-"806","Gossett Nursery Gift Card"
-"807","Piano Lesson - Will Healy"
-"808","Historic Hudson Valley"
-"809","Study with the Maestro"
-"810","Thai Massage"
-"811","Voice Lessons – Ellen Sisson"
-"812","Voice Lesson or Coaching - Ellen Lang"
-"813","Tour of the Aaron Copland Historic Landmark home"
-"814","Houseplant Plant Spa gift pack"
-"815","Mary Mogil Fitness"
-"816","1-Hour Nutrition Tune-Up Service"
-"817","James Bassi - Piano or Composition Lesson"
-"901","ORCHID"
-"902","ORCHID"
-"903","ORCHID"
-"904","ORCHID"
-"905","ORCHID"
-"906","ORCHID"
-"907","ORCHID"
-"908","ORCHID"
-"909","ORCHID"
-"910","ORCHID"
-"911","ORCHID"
-"912","ORCHID"
-"913","ORCHID"
-"914","ORCHID"
+﻿"ItemNumber","ItemName","OpeningBid"
+"201","Adirondack Get-away",0
+"202","The Bunker Hill Inn",0
+"203","Intercontinental New York Barclay Hotel",0
+"204","Intercontinental Times Square Hotel #1",0
+"205","Intercontinental Times Square Hotel #2",0
+"206","Orlando Hilton Hotel",0
+"207","Seven-night stay at La Mourrade in Provence, France",0
+"301","Veuve Cliquot Champagne Brut, with flutes",0
+"302","Veuve Cliquot Champagne Rosé Brut with flutes",0
+"303","Crate of Summer Wines",0
+"304","Willet Pot Bourbon with glasses",0
+"305","Portuguese Wine Case",0
+"306","Bourbon Tasting",0
+"307","Wine Crate with Select Wines!",0
+"308","Mediterranean Booze!",0
+"309","Rosé Tasting w/3 Bottles",0
+"401","Kittle House Inn",0
+"402","Horse and Hound Inn #1",0
+"403","Horse and Hound Inn #2",0
+"404","Le Bernardin",0
+"405","Lincoln Restaurant",0
+"406","Tea at the Plaza",0
+"407","Three Bottles of Superior Olive Oil from Portugal",0
+"408","Bangkok Republic",0
+"501","American Ballet",0
+"502","American Symphony Orchestra",0
+"503","Caramoor",0
+"504","The New York Philharmonic with Hélenè Grimaud",0
+"505","The Metropolitan Opera",0  
+"506","Music Before 1800",0
+"507","Orchestra Lumos",0
+"508","Parthenia Viol Concerts",0
+"509","The Orchestra of St. Luke’s",0
+"510","The Ridgefield Symphony",0
+"511","Music at St. Thomas",0
+"512","Gotham Early Music Scene Concert Tickets",0
+"513","Musica Sacra",0
+"514","The Symphony of Westchester Tickets",0
+"515","Chamber Music Society of Lincoln Center",0
+"516","Broadway Show!",0
+"517","Nikita Galaktionov Piano Recital",0
+"518","Two tickets to the 2025 Bard Music Festival",0
+"519","Family Membership to the Ridgefield Playhouse",0
+"601","Golf Outing",0
+"602","Yankees Tickets (4)",0
+"603","Yankees Tickets (2)",0
+"701","Painting by Tess Dennis",0
+"702","Katonah Art and Frame",0
+"703","Tiffany Daffodil Needlepoint",0
+"704","Exquisite Peacock Needlepoint",0
+"705","Pet Portrait",0
+"801","Bradford Portraits",0
+"802","Breathing Coordination",0
+"803","Choral Conducting Workshop Auditor",0
+"804","Organ Lesson – Gregory D’Agostino",0
+"805","Confidential Consultation – Ben Pologe, Ph.D.",0
+"806","Gossett Nursery Gift Card",0
+"807","Piano Lesson - Will Healy",0
+"808","Historic Hudson Valley",0
+"809","Study with the Maestro",0
+"810","Thai Massage",0
+"811","Voice Lessons – Ellen Sisson",0
+"812","Voice Lesson or Coaching - Ellen Lang",0
+"813","Tour of the Aaron Copland Historic Landmark home",0
+"814","Houseplant Plant Spa gift pack",0
+"815","Mary Mogil Fitness",0
+"816","1-Hour Nutrition Tune-Up Service",0
+"817","James Bassi - Piano or Composition Lesson",0
+"901","ORCHID",35
+"902","ORCHID",35
+"903","ORCHID",35
+"904","ORCHID",35
+"905","ORCHID",35
+"906","ORCHID",35
+"907","ORCHID",35
+"908","ORCHID",35
+"909","ORCHID",35
+"910","ORCHID",35
+"911","ORCHID",35
+"912","ORCHID",35
+"913","ORCHID",35
+"914","ORCHID",35

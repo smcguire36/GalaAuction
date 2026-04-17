@@ -16,6 +16,7 @@ const initOptions = {
   onLoad: "check-sso", // Silently check if the user is already logged in
   pkceMethod: "S256", // Mandatory for Authorization Code Flow
   silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
+  checkLoginIframe: false, // Disable cross-origin iframe session check (blocked by third-party cookie policies)
 };
 
 createRoot(document.getElementById("root")!).render(

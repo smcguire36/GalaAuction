@@ -12,18 +12,22 @@ import { currencyFormatter } from "../utilities/currencyFormatter";
 import CheckoutDialog from "../components/checkout/CheckoutDialog";
 import { type CheckoutListDto } from "../dto/CheckoutListDto";
 import PrintReceiptButton from "../components/common/PrintReceiptButton";
+import PrintReceiptDialog from "../components/checkout/PrintReceiptDialog";
+//import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const context = useContext(EventContext);
   const { request, isLoading, error } = useHttp();
   const [guests, setGuests] = useState<CheckoutListDto[]>([] as CheckoutListDto[]);
   const checkoutRef = useRef<ModalHandle>(null);
+  const printReceiptRef = useRef<ModalHandle>(null);
   const event = context.event;
   const [searchText, setSearchText] = useState<string>("");
   const [sortState, setSortState] = useState<SortState>({
     name: "",
     direction: undefined,
   });
+//  const navigate = useNavigate();
 //  const confirm = useConfirm();
 
   useEffect(() => {
@@ -86,9 +90,9 @@ const Checkout = () => {
     setSortState(next);
   };
 
-  function handlePrintReceipt(guest: CheckoutListDto) {
-    console.log("handlePrintReceipt for guest:", guest);
-    alert("Printing receipt for " + guest.fullName);
+  function handlePrintReceipt(guestId: number) {
+    console.log("handlePrintReceipt for guest:", guestId);
+    printReceiptRef.current?.open(guestId);
   }
 
   return (
@@ -199,7 +203,7 @@ const Checkout = () => {
                       disabled={event?.eventStatusId !== EventStatus.Checkout || guest.isPaid}
                     />
                     <PrintReceiptButton
-                      onClick={() => handlePrintReceipt(guest)}
+                      onClick={() => handlePrintReceipt(guest.guestId)}
                       disabled={!guest.isPaid}
                     />
                   </td>
@@ -213,7 +217,8 @@ const Checkout = () => {
         </table>
       </div>
 
-      <CheckoutDialog ref={checkoutRef} onConfirm={handleModalConfirm} />
+      <CheckoutDialog ref={checkoutRef} onConfirm={handleModalConfirm} onPrintReceipt={handlePrintReceipt} />
+      <PrintReceiptDialog ref={printReceiptRef} />
 
     </>
   );

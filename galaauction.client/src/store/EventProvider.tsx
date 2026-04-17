@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import usePersistedState from "../hooks/usePersistedState";
-import { type GalaEventType } from "../types/GalaEvent";
 import EventContext, { type EventState, EVENT_DEFAULTS } from "./EventContext";
 import { useHttp } from "../hooks/useHttp";
+import { type GalaEventDto } from "../dto/GalaEventDto";
 
 const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [theme, setTheme] = usePersistedState("gala-auction-theme", EVENT_DEFAULTS.theme);
     const [eventId, setEventId] = usePersistedState("gala-auction-event", "0");
-    const [event, setEvent] = useState<GalaEventType|null>(null);
+    const [event, setEvent] = useState<GalaEventDto|null>(null);
     const { request } = useHttp();
 
     /**************************************************************
@@ -16,12 +16,11 @@ const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     useEffect(() => {
         const getEvent = async (id:number) => {
             const existingEvent = await request(`/api/events/${id}`, "GET");
-            console.log(existingEvent);
             if (existingEvent) {
-                setEvent(existingEvent as GalaEventType);
+                setEvent(existingEvent as GalaEventDto);
             }
             else {
-                setEvent(EVENT_DEFAULTS.event as GalaEventType);
+                setEvent(EVENT_DEFAULTS.event as GalaEventDto);
             }
         };
         if (+eventId !== 0) {
@@ -30,7 +29,7 @@ const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const setGalaEvent = (newEvent:GalaEventType) => {
+    const setGalaEvent = (newEvent:GalaEventDto) => {
         setEvent(newEvent);
         setEventId(newEvent.galaEventId.toString());
     }; 
@@ -49,7 +48,7 @@ const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     eventStatusId: newStatus,         // Update status value
                     eventStatusText: newStatusText  // Update status text value
                 };
-                setEvent(updated_event as GalaEventType);
+                setEvent(updated_event as GalaEventDto);
                 setEventId(updated_event.galaEventId.toString());                
             }
             else {

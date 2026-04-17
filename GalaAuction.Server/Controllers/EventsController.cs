@@ -147,6 +147,10 @@ namespace GalaAuction.Server.Controllers
             {
                 return NotFound();
             }
+            if (galaEvent.EventStatus != (int)EventStatus.Setup && galaEvent.EventStatus != (int)EventStatus.Closed)
+            {
+                return BadRequest("Active events may not be deleted");
+            }
 
             context.GalaEvents.Remove(galaEvent);
             await context.SaveChangesAsync();

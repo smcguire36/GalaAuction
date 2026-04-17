@@ -49,8 +49,8 @@ namespace GalaAuction.Server.Data
                     new GalaEvent
                     {
                         GalaEventId = 1,
-                        EventName = "Gala 2026",
-                        OrganizationName = "Canticorum Virtuosi, Inc.",
+                        EventName = "Test Auction",
+                        OrganizationName = "My Test Organization",
                         ThankYouMessage = "Thank you for your support!",
                         EventStatus = 0,    // 0 = Setup
                         CreatedAt = new DateTime(2026,2,15,23,0,0,DateTimeKind.Utc)
@@ -138,14 +138,6 @@ namespace GalaAuction.Server.Data
                     },
                     new Guest
                     {
-                        GuestId = -2,
-                        FirstName = "Elisabeth",
-                        LastName = "McDonald",
-                        TableNumber = 2,
-                        GalaEventId = 1
-                    },
-                    new Guest
-                    {
                         GuestId = -3,
                         FirstName = "Edie",
                         LastName = "Rosenbaum",
@@ -178,20 +170,6 @@ namespace GalaAuction.Server.Data
                         GuestId = -1,
                         BidderNumber = 1,
                         IsOnline = false
-                    },
-                    new Bidder
-                    {
-                        BidderId = -2,
-                        GuestId = -2,
-                        BidderNumber = 2,
-                        IsOnline = false
-                    },
-                    new Bidder
-                    {
-                        BidderId = -3,
-                        GuestId = -2,
-                        BidderNumber = 1001,
-                        IsOnline = true
                     },
                     new Bidder
                     {

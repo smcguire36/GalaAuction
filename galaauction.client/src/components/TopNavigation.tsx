@@ -2,12 +2,12 @@ import { useKeycloak } from "@react-keycloak/web";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Modal } from "./common/Modal";
 import ThemeToggle from "./ThemeToggle";
-import { use, useContext } from "react";
+import { use, useContext, useRef, useState } from "react";
 import EventContext from "../store/EventContext";
 import { ModalContext } from "../store/ModalContext";
 import { EventStatus } from "../types/EventStatus";
-import SelectEvent from "./events/SelectEvent";
 import { useConfirm } from "../store/ConfirmProvider";
+import SelectEventDialog from "./events/SelectEventDialog";
 
 const TopNavigation = () => {
   const { keycloak } = useKeycloak();
@@ -17,9 +17,11 @@ const TopNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const confirm = useConfirm();
-
   // Setup Tabset properties
   const thisPage = location.pathname.split("/").at(-1);
+  const showStatus = (thisPage !== "manage-events");
+  const selectEventDialogRef = useRef<{ open: () => void }>(null);
+  const [selectEventSession, setSelectEventSession] = useState(0); // Used to force remounting of SelectEventDialog to reset its internal state when opening it multiple times in a row without selecting a different event in between
 
   if (!keycloak.authenticated) {
     return <p>Not authenticated...</p>;
@@ -27,11 +29,13 @@ const TopNavigation = () => {
   const username = keycloak.idTokenParsed!.preferred_username;
 
   const selectEvent = () => {
-    open("select-event");
+    setSelectEventSession((prev) => prev + 1); // Increment the session to force remounting
+    selectEventDialogRef.current?.open();
   };
 
-  const onSelectEventClosed = () => {
-    // Put any after event modal closed actions here
+  const handleSelectEventConfirm = () => {
+    // Navigate to home page after selecting event
+    navigate("/");
   };
 
   const openSettings = () => {
@@ -99,10 +103,18 @@ const TopNavigation = () => {
             <button
               className={`btn ${selectedEventColor}`}
               onClick={selectEvent}
+              hidden={!showStatus}
             >
               {selectedEvent.toUpperCase()}
             </button>
-            {event?.galaEventId !== 0 && (
+            <button
+              className="btn btn-outline"
+              onClick={selectEvent}
+              hidden={showStatus}
+            >
+              SELECT EVENT
+            </button>
+            {event?.galaEventId !== 0 && showStatus && (
               <>
                 {event?.eventStatusId === EventStatus.Setup && (
                   <button
@@ -239,14 +251,7 @@ const TopNavigation = () => {
         <ThemeToggle />
       </Modal>
 
-      <Modal
-        id="select-event"
-        title="Select Event"
-        customVariant="close"
-        onClose={onSelectEventClosed}
-      >
-        <SelectEvent />
-      </Modal>
+      <SelectEventDialog key={selectEventSession} ref={selectEventDialogRef} onConfirm={handleSelectEventConfirm} />
     </>
   );
 };

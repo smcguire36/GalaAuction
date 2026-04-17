@@ -1,0 +1,2814 @@
+[
+  {
+    "Title": "Gossett Brothers Nursery Gift Card",
+    "TermsAndConditions": "",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "6570ab09-abf6-4f12-8d29-85014b32fba6.jpg",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 50,
+    "BidIncrement": 10,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "e932f38f-6341-45d2-873d-f09ededd9eac",
+    "ItemOptions": [],
+    "Number": "804",
+    "NumberOrder": "0000804",
+    "VisibleId": "Item# 804",
+    "EffTicketTitle": "Gossett Brothers Nursery Gift Card",
+    "EffValue": 150,
+    "EffValueStr": "$150.00",
+    "EffValueAsCost": 150,
+    "HasCoupons": false,
+    "EffCatalogDescription": "Gossett Brothers Nursery Gift Card.  The Nursery is located in South Salem, New York.",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "6570ab09-abf6-4f12-8d29-85014b32fba6.jpg"
+    ],
+    "FullImages": [
+      "6570ab09-abf6-4f12-8d29-85014b32fba6.jpg"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 70,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": true,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": true,
+    "WinningBids_Count": 1,
+    "WinningBids_Amount": 60,
+    "WinningBid_Maximum": 60,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "Gossett Brothers Nursery",
+    "OnlineWinningBids": [
+      {
+        "Id": "0001e816-40e8-4dba-89b2-aed1f8160a38",
+        "Amount": 60,
+        "Quantity": 1,
+        "CreatedAt": "2026-04-14T17:56:20Z",
+        "IsCurrentBidder": false,
+        "Online_BidderNumber": "",
+        "Online_BidderFirstName": "",
+        "Online_BidderLastName": "",
+        "Online_BidderPseudonym": "",
+        "WasProxyTriggered": false,
+        "WasTriggeringBidderCurrentBidder": false,
+        "Online_TriggeringBidderNumber": "",
+        "Online_TriggeringBidderFirstName": "",
+        "Online_TriggeringBidderLastName": "",
+        "Online_TriggeringBidderPseudonym": "",
+        "IsReserveMet": true,
+        "Origin": "Bidder",
+        "Item_EventStartTime": null,
+        "Item_EventStartTimeText": "",
+        "Item_EventLocation": ""
+      }
+    ],
+    "OnlineBidHistory": [
+      {
+        "Id": "0001e816-40e8-4dba-89b2-aed1f8160a38",
+        "Amount": 60,
+        "Quantity": 1,
+        "CreatedAt": "2026-04-14T17:56:20Z",
+        "Winning": true,
+        "IsCurrentBidder": false,
+        "Online_BidderNumber": "",
+        "Online_BidderFirstName": "",
+        "Online_BidderLastName": "",
+        "Online_BidderPseudonym": "",
+        "WasProxyTriggered": false,
+        "WasTriggeringBidderCurrentBidder": false,
+        "Online_TriggeringBidderNumber": "",
+        "Online_TriggeringBidderFirstName": "",
+        "Online_TriggeringBidderLastName": "",
+        "Online_TriggeringBidderPseudonym": "",
+        "IsReserveMet": true,
+        "Origin": "Bidder",
+        "Item_EventStartTime": null,
+        "Item_EventStartTimeText": "",
+        "Item_EventLocation": ""
+      },
+      {
+        "Id": "a2479e46-7922-4c09-86be-0f770e97da16",
+        "Amount": 50,
+        "Quantity": 1,
+        "CreatedAt": "2026-04-09T19:50:24Z",
+        "Winning": false,
+        "IsCurrentBidder": false,
+        "Online_BidderNumber": "",
+        "Online_BidderFirstName": "",
+        "Online_BidderLastName": "",
+        "Online_BidderPseudonym": "",
+        "WasProxyTriggered": false,
+        "WasTriggeringBidderCurrentBidder": false,
+        "Online_TriggeringBidderNumber": "",
+        "Online_TriggeringBidderFirstName": "",
+        "Online_TriggeringBidderLastName": "",
+        "Online_TriggeringBidderPseudonym": "",
+        "IsReserveMet": true,
+        "Origin": "Bidder",
+        "Item_EventStartTime": null,
+        "Item_EventStartTimeText": "",
+        "Item_EventLocation": ""
+      }
+    ],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "9085ed00-3eb7-4db3-b20f-9eb49e34bfd2"
+  },
+  {
+    "Title": "Historic Hudson Valley Family Membership",
+    "TermsAndConditions": "",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "9cf9e308-2933-4ac0-b201-2e60fe0cf93d.jpg",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 65,
+    "BidIncrement": 10,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "9c4b04f2-670d-4df4-a7e2-c2c4d4260169",
+    "ItemOptions": [],
+    "Number": "805",
+    "NumberOrder": "0000805",
+    "VisibleId": "Item# 805",
+    "EffTicketTitle": "Historic Hudson Valley Family Membership",
+    "EffValue": 195,
+    "EffValueStr": "$195.00",
+    "EffValueAsCost": 195,
+    "HasCoupons": false,
+    "EffCatalogDescription": "Your Historic Hudson Valley Family Membership entitles you to a full year of special access and valuable benefits:\nFamily Membership (2 adults and 2 children)\nThe Great Jack O'Lantern Blaze, the historic site tours - Philipsburg Manor, Washington Irving's Sunnyside, and Union Church of Pocantico Hills.  Discounted tickets to Kykuit, the Rockefeller Estate, discounts to performance's of Irving's 'Legend' and Dickens's 'Christmas Carol'. A subscription to the Sketchbook, a digital newsletter for HHV supporters including stories about our sites, collecitons, preservation work, and bgehind-the-scenes activities.  A 10% discount at our Museum Shops, including the online shop.",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "9cf9e308-2933-4ac0-b201-2e60fe0cf93d.jpg"
+    ],
+    "FullImages": [
+      "9cf9e308-2933-4ac0-b201-2e60fe0cf93d.jpg"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 65,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": false,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": false,
+    "WinningBids_Count": 0,
+    "WinningBids_Amount": 0,
+    "WinningBid_Maximum": 0,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "Historic Hudson Valley",
+    "OnlineWinningBids": [],
+    "OnlineBidHistory": [],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "6651efff-5ffe-472e-ab97-f143f6d17c30"
+  },
+  {
+    "Title": "Study with the Maestro and receive a copy of his autobiography",
+    "TermsAndConditions": "These sessions can be held online or in person at a mutually agreed upon location.",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "6a568c7c-468d-4cd0-8938-eec142de7b6e.jpg",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 150,
+    "BidIncrement": 20,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "93383695-54f2-49de-a36d-aa6db5b23a47",
+    "ItemOptions": [],
+    "Number": "806",
+    "NumberOrder": "0000806",
+    "VisibleId": "Item# 806",
+    "EffTicketTitle": "Study with the Maestro and receive a copy of his autobiography",
+    "EffValue": 420,
+    "EffValueStr": "$420.00",
+    "EffValueAsCost": 420,
+    "HasCoupons": false,
+    "EffCatalogDescription": "Spend two hours with the Maestro studying conductiing, music theory, composition, sight singing, coaching players or singers or even a discussion of music!  Receive a copy of his autobiography, \"My Choral Journey.\"",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "6a568c7c-468d-4cd0-8938-eec142de7b6e.jpg"
+    ],
+    "FullImages": [
+      "6a568c7c-468d-4cd0-8938-eec142de7b6e.jpg"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 150,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": false,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": false,
+    "WinningBids_Count": 0,
+    "WinningBids_Amount": 0,
+    "WinningBid_Maximum": 0,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "Harold Rosenbaum",
+    "OnlineWinningBids": [],
+    "OnlineBidHistory": [],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "fe044cfd-b996-4ccd-8794-a48d5b2b5c9b"
+  },
+  {
+    "Title": "90 Minutes of your choice Massage!",
+    "TermsAndConditions": "Donor must have conversation with holder of donation before massage date to determine medical eligibility and clearance.\nExpiration: 5/3/2027",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "c1aabf25-2a74-49fb-a21c-ef4f1f07ac33.jpg",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 75,
+    "BidIncrement": 10,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "38d6eb72-837a-44aa-b6c5-cbd786b1319d",
+    "ItemOptions": [],
+    "Number": "807",
+    "NumberOrder": "0000807",
+    "VisibleId": "Item# 807",
+    "EffTicketTitle": "90 Minutes of your choice Massage!",
+    "EffValue": 225,
+    "EffValueStr": "$225.00",
+    "EffValueAsCost": 225,
+    "HasCoupons": false,
+    "EffCatalogDescription": "90 minutes of your choice massage:\nSwedish - long, broad strokes - calming and relaxing\nSports - focus on one particular issue of prep for an upcoming event\nHot Stone - use of hot stones as a tool for releasing tension in the muscle tissue\nDeep Tissue - addresses buried \"knots\" and aids in healing of old injuries and tension\nThai - an artform (fully clothed and on the floor) of massage through compression and traction",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "c1aabf25-2a74-49fb-a21c-ef4f1f07ac33.jpg"
+    ],
+    "FullImages": [
+      "c1aabf25-2a74-49fb-a21c-ef4f1f07ac33.jpg"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 85,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": true,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": true,
+    "WinningBids_Count": 1,
+    "WinningBids_Amount": 75,
+    "WinningBid_Maximum": 75,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "Stephanie Abbinanti",
+    "OnlineWinningBids": [
+      {
+        "Id": "2bc76bbf-25e2-4549-a8fa-e8e13dc92e92",
+        "Amount": 75,
+        "Quantity": 1,
+        "CreatedAt": "2026-04-09T15:56:01Z",
+        "IsCurrentBidder": false,
+        "Online_BidderNumber": "",
+        "Online_BidderFirstName": "",
+        "Online_BidderLastName": "",
+        "Online_BidderPseudonym": "",
+        "WasProxyTriggered": false,
+        "WasTriggeringBidderCurrentBidder": false,
+        "Online_TriggeringBidderNumber": "",
+        "Online_TriggeringBidderFirstName": "",
+        "Online_TriggeringBidderLastName": "",
+        "Online_TriggeringBidderPseudonym": "",
+        "IsReserveMet": true,
+        "Origin": "Bidder",
+        "Item_EventStartTime": null,
+        "Item_EventStartTimeText": "",
+        "Item_EventLocation": ""
+      }
+    ],
+    "OnlineBidHistory": [
+      {
+        "Id": "2bc76bbf-25e2-4549-a8fa-e8e13dc92e92",
+        "Amount": 75,
+        "Quantity": 1,
+        "CreatedAt": "2026-04-09T15:56:01Z",
+        "Winning": true,
+        "IsCurrentBidder": false,
+        "Online_BidderNumber": "",
+        "Online_BidderFirstName": "",
+        "Online_BidderLastName": "",
+        "Online_BidderPseudonym": "",
+        "WasProxyTriggered": false,
+        "WasTriggeringBidderCurrentBidder": false,
+        "Online_TriggeringBidderNumber": "",
+        "Online_TriggeringBidderFirstName": "",
+        "Online_TriggeringBidderLastName": "",
+        "Online_TriggeringBidderPseudonym": "",
+        "IsReserveMet": true,
+        "Origin": "Bidder",
+        "Item_EventStartTime": null,
+        "Item_EventStartTimeText": "",
+        "Item_EventLocation": ""
+      }
+    ],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "44b0829d-5f6e-44a4-8279-c60c10c36c90"
+  },
+  {
+    "Title": "Two 60 minute voice lessons with Ellen Taylor Sisson, Soprano",
+    "TermsAndConditions": "Expiration: 5/3/2027",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "e03126c4-ddee-4f80-81a1-b9e9060ea746.jpg",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 100,
+    "BidIncrement": 25,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "a1521f1c-7724-45fe-b88b-541cc4dc8446",
+    "ItemOptions": [],
+    "Number": "808",
+    "NumberOrder": "0000808",
+    "VisibleId": "Item# 808",
+    "EffTicketTitle": "Two 60 minute voice lessons with Ellen Taylor Sisson, Soprano",
+    "EffValue": 300,
+    "EffValueStr": "$300.00",
+    "EffValueAsCost": 300,
+    "HasCoupons": false,
+    "EffCatalogDescription": "Two 60 minute voice lessons with Ellen Taylor Sisson, Soprano.  Ms. Sisson has soloed with the Academy of St. Martin in the Fields and sung in NY professional choral ensembles, including The New York Virtuoso Singers, Voices of Ascension and Musica Sacra.  She has an active private voice studio serving students in Fairfield and Westchester Counties.  \nShe is a sought after teacher, specializing in healthy vocal production and technique, applicable to all genres of singing, but especially classical solo and choral singing.",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "e03126c4-ddee-4f80-81a1-b9e9060ea746.jpg"
+    ],
+    "FullImages": [
+      "e03126c4-ddee-4f80-81a1-b9e9060ea746.jpg"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 100,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": false,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": false,
+    "WinningBids_Count": 0,
+    "WinningBids_Amount": 0,
+    "WinningBid_Maximum": 0,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "Ellen Taylor Sisson",
+    "OnlineWinningBids": [],
+    "OnlineBidHistory": [],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "346d32c9-f48e-4a26-9fdf-a612ebea6583"
+  },
+  {
+    "Title": "Voice Lesson or Coaching",
+    "TermsAndConditions": "The lesson will be held in Katonah, NY, at St. Luke's Episcopal Church.  Details to follow.\n\nExpiration: 5/3/2027",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "86ddd500-f37e-41fe-90ba-dfd9e6bfe63b.jpg",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 75,
+    "BidIncrement": 25,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "8de4e1ab-17a1-4192-b314-db6d95c42d53",
+    "ItemOptions": [],
+    "Number": "809",
+    "NumberOrder": "0000809",
+    "VisibleId": "Item# 809",
+    "EffTicketTitle": "Voice Lesson or Coaching",
+    "EffValue": 150,
+    "EffValueStr": "$150.00",
+    "EffValueAsCost": 150,
+    "HasCoupons": false,
+    "EffCatalogDescription": "One hour of vocal help and instruction on the area of your choice OR one hour of coaching vocal music you choose.\n\nEllen Lang was a first-place winner of the Concert Artist Guild Award.  She then had a long solo career, after which she sang\nin the Metropolitan opera chorus for many years.\n\nAs a performer herself in opera, art song, chamber music, pop music, Broadway, etc., she is comfortable coaching students of all levels and goals.",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "86ddd500-f37e-41fe-90ba-dfd9e6bfe63b.jpg"
+    ],
+    "FullImages": [
+      "86ddd500-f37e-41fe-90ba-dfd9e6bfe63b.jpg"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 75,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": false,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": false,
+    "WinningBids_Count": 0,
+    "WinningBids_Amount": 0,
+    "WinningBid_Maximum": 0,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "Ellen Lang",
+    "OnlineWinningBids": [],
+    "OnlineBidHistory": [],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "ef77bd68-a316-4efc-8fa9-c193bbf8d50a"
+  },
+  {
+    "Title": "Tour of the Aaron Copland Historic Landmark home!",
+    "TermsAndConditions": "Set by mutual agreement, as available in the Copland House calendar.  At least three weeks notice is required for\nscheduling.  Tour must be scheduled before May, 2027. This tour is for up to six guests.",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "02f29c43-67f5-4013-9871-76be042b838c.jpg",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 40,
+    "BidIncrement": 10,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "da606154-6d71-4507-ad6e-91bded067fdd",
+    "ItemOptions": [],
+    "Number": "810",
+    "NumberOrder": "0000810",
+    "VisibleId": "Item# 810",
+    "EffTicketTitle": "Tour of the Aaron Copland Historic Landmark home!",
+    "EffValue": 100,
+    "EffValueStr": "$100.00",
+    "EffValueAsCost": 100,
+    "HasCoupons": false,
+    "EffCatalogDescription": "An illuminating tour of Aaron Copland's historic landmark home in Northern Westchester County led by Copland House's\nArtistic and Executive Director Michael Boriskin, a renowned pianist and prominent authority on Aaron Copland and early\nAmerican music history.",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "02f29c43-67f5-4013-9871-76be042b838c.jpg"
+    ],
+    "FullImages": [
+      "02f29c43-67f5-4013-9871-76be042b838c.jpg"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 40,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": false,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": false,
+    "WinningBids_Count": 0,
+    "WinningBids_Amount": 0,
+    "WinningBid_Maximum": 0,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "Aaron Copland House",
+    "OnlineWinningBids": [],
+    "OnlineBidHistory": [],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "a245da7e-91d5-4983-a710-0887a0996bfd"
+  },
+  {
+    "Title": "Mary Mogil Fitness",
+    "TermsAndConditions": "Sessions must be held at Mary Mogil Fitness gym in Goldens Bridge, NY.\n\nExpiration:  May 3, 2027",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "3312a77a-d647-4b27-85da-8804aafa78ab.jpg",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 110,
+    "BidIncrement": 20,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "f204ae7a-2558-4066-a1b9-1172b5d194a0",
+    "ItemOptions": [],
+    "Number": "811",
+    "NumberOrder": "0000811",
+    "VisibleId": "Item# 811",
+    "EffTicketTitle": "Mary Mogil Fitness",
+    "EffValue": 330,
+    "EffValueStr": "$330.00",
+    "EffValueAsCost": 330,
+    "HasCoupons": false,
+    "EffCatalogDescription": "Three one-hour personal training sessions with Mary Mogil, Certified Personal Trainer.  The first session includes a health and fitness evaluation, along with a detailed discussion about a previous history with exercise, and then what you would like to achieve going forward.  Overall, the goal is to find an exercise routine that helps you find the best version of yourself!",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "3312a77a-d647-4b27-85da-8804aafa78ab.jpg"
+    ],
+    "FullImages": [
+      "3312a77a-d647-4b27-85da-8804aafa78ab.jpg"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 110,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": false,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": false,
+    "WinningBids_Count": 0,
+    "WinningBids_Amount": 0,
+    "WinningBid_Maximum": 0,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "Mary Mogil Fitness",
+    "OnlineWinningBids": [],
+    "OnlineBidHistory": [],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "ece0621b-2e65-4c80-af40-ccec2d7f3483"
+  },
+  {
+    "Title": "James Bassi - Piano or Composition Lesson",
+    "TermsAndConditions": "This offer expires May 3, 2027",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "b32d66f1-7f9a-4032-b3ab-e622c7563031.png",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 75,
+    "BidIncrement": 10,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "043ab5e0-5b8c-448b-8d04-7b5edadccf88",
+    "ItemOptions": [],
+    "Number": "812",
+    "NumberOrder": "0000812",
+    "VisibleId": "Item# 812",
+    "EffTicketTitle": "James Bassi - Piano or Composition Lesson",
+    "EffValue": 200,
+    "EffValueStr": "$200.00",
+    "EffValueAsCost": 200,
+    "HasCoupons": false,
+    "EffCatalogDescription": "One (1) hour piano or composition lesson, given on-line over Zoom or comparable program, at a mutually agreeable time.\nThis lesson can also be at his studio in Astoria, Queens.\nJames Bassi is a pianist, composer, and music director.  He is frequently engaged as rehearsal pianist for the New York Philharmonic, has played many concerts with renowned artists of our time, and has works commissioned by Orchestra of St. Luke's and Voices of Ascension.  He has music directed productions at Lincoln Center Theater and numerous Off-Broadway and regional venues.  He sings tenor with many professional ensembles in NYC.",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "b32d66f1-7f9a-4032-b3ab-e622c7563031.png"
+    ],
+    "FullImages": [
+      "b32d66f1-7f9a-4032-b3ab-e622c7563031.png"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 75,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": false,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": false,
+    "WinningBids_Count": 0,
+    "WinningBids_Amount": 0,
+    "WinningBid_Maximum": 0,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "James Bassi",
+    "OnlineWinningBids": [],
+    "OnlineBidHistory": [],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "8b00b628-d50f-4add-bbc2-bab52ec525dd"
+  },
+  {
+    "Title": "Private Theory or Composition Lesson with Ramin Amir Arjomand.",
+    "TermsAndConditions": "Expiration: 12/30/2026",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "47abb9fc-b4cf-4114-a47c-49ac18bf2f7b.png",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 75,
+    "BidIncrement": 10,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "e3d67162-212f-4ffe-b841-d90a3e96f87f",
+    "ItemOptions": [],
+    "Number": "813",
+    "NumberOrder": "0000813",
+    "VisibleId": "Item# 813",
+    "EffTicketTitle": "Private Theory or Composition Lesson with Ramin Amir Arjomand.",
+    "EffValue": 200,
+    "EffValueStr": "$200.00",
+    "EffValueAsCost": 200,
+    "HasCoupons": false,
+    "EffCatalogDescription": "Private lesson in classical music theory (including harmony and counterpoint) or composition.\nLesson will be at studio in Brooklyn, NY.",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "47abb9fc-b4cf-4114-a47c-49ac18bf2f7b.png"
+    ],
+    "FullImages": [
+      "47abb9fc-b4cf-4114-a47c-49ac18bf2f7b.png"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 75,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": false,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": false,
+    "WinningBids_Count": 0,
+    "WinningBids_Amount": 0,
+    "WinningBid_Maximum": 0,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "Ramin Amir Arjomond",
+    "OnlineWinningBids": [],
+    "OnlineBidHistory": [],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "e3d67162-212f-4ffe-b841-d90a3e96f87f"
+  },
+  {
+    "Title": "Organ Lesson",
+    "TermsAndConditions": "Expiration: 5/3/2027",
+    "TicketTitle": "",
+    "DonationLevels": "",
+    "Type": {
+      "Value": "Silent",
+      "Display": "Paper Bidding",
+      "Id": "Silent"
+    },
+    "ItemCategory": {
+      "Id": "1dd3941e-9883-470d-b117-e07d114a863b",
+      "Value": "Services",
+      "Display": "Services",
+      "Fields": {}
+    },
+    "Image": "84153faf-10fb-4e07-ac53-8bbe12c03d73.jpg",
+    "Attachments": "",
+    "IsSponsorship": false,
+    "IsEvent": false,
+    "EventLocation": "",
+    "EventStartTime": null,
+    "EventStartTimeText": "",
+    "BiddingClosed": false,
+    "LiveNumber": null,
+    "StartingBid": 75,
+    "BidIncrement": 10,
+    "BuyItNowPrice": null,
+    "MaxPerBidder": null,
+    "TicketType": {
+      "Value": "None",
+      "Display": "None",
+      "Id": "None"
+    },
+    "TicketsPer": null,
+    "OnlinePurchaseMode": {
+      "Value": "",
+      "Display": "",
+      "Id": ""
+    },
+    "ClosingMode": {
+      "Value": "Default",
+      "Display": "Default",
+      "Id": "Default"
+    },
+    "Id": "2ed00c23-3c15-4402-a160-0507741a2f72",
+    "ItemOptions": [],
+    "Number": "814",
+    "NumberOrder": "0000814",
+    "VisibleId": "Item# 814",
+    "EffTicketTitle": "Organ Lesson",
+    "EffValue": 200,
+    "EffValueStr": "$200.00",
+    "EffValueAsCost": 200,
+    "HasCoupons": false,
+    "EffCatalogDescription": "One hour private organ lesson with Jason Roberts.  Lesson will be at Blessed Sacrament Church, 152 W. 71st Street, NYC.",
+    "EffShippingCost": 0,
+    "CanHaveShippingCost": true,
+    "HasBiddingType": true,
+    "IncomeCategory": "Paper auction",
+    "Images": [
+      "84153faf-10fb-4e07-ac53-8bbe12c03d73.jpg"
+    ],
+    "FullImages": [
+      "84153faf-10fb-4e07-ac53-8bbe12c03d73.jpg"
+    ],
+    "EffEventStartTimeWithTimezone": "",
+    "EffMultipleWinners": false,
+    "EffBuyItNowPrice": null,
+    "EffBuyItNowOnly": false,
+    "EffQuantity": 1,
+    "IsAdmissionTicket": false,
+    "IsRaffleTicket": false,
+    "IsOtherTicket": false,
+    "MultipleBiddingMisconfigured": false,
+    "EnforceableQuantity": false,
+    "RemainingQuantity": 1,
+    "EffMinimumBid": 75,
+    "SingleWinner": true,
+    "WinningBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "TriggeringBidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Quantity": 0,
+      "Notes": "",
+      "Removed": false,
+      "Winning": false,
+      "SalesTax1": 0,
+      "SalesTax2": 0,
+      "SalesTax3": 0,
+      "Origin": {
+        "Value": "User",
+        "Display": "User",
+        "Id": 0
+      },
+      "PaymentSplit": {
+        "Id": null,
+        "Value": null,
+        "Display": "",
+        "Fields": {}
+      },
+      "RaffleTicketId": null,
+      "TicketClaimCode": "",
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": "",
+      "Total": 0,
+      "TotalSalesTax": 0,
+      "AmountPer": 0,
+      "Taxable": 0,
+      "TaxDeductible": 0,
+      "EffQuantity": 1,
+      "IsReserveMet": true,
+      "AllowItemChange": false,
+      "IsTicketPurchase": false,
+      "IsRaffleTicketPurchase": false,
+      "IsOtherTicketPurchase": false,
+      "IsBuyItNowBid": false,
+      "IsAuctionBid": false,
+      "IsPurchase": false,
+      "IsRafflePrize": false,
+      "IsDonation": true,
+      "IsBidRemovable": false,
+      "BidType": "Donation",
+      "IsCashDonation": true,
+      "ClaimTicketUrl": "",
+      "ShowTicketClaimCode": false
+    },
+    "WinningBidQuantity": -1,
+    "WinningBidActualQuantity": -1,
+    "WinningBidActualAmount": 0,
+    "Sold": false,
+    "HasReserve": false,
+    "WinningBids": [],
+    "HasWinningBids": false,
+    "WinningBids_Count": 0,
+    "WinningBids_Amount": 0,
+    "WinningBid_Maximum": 0,
+    "TotalDonations": 0,
+    "ProxyBid": {
+      "Item": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "Title": "",
+          "Type": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          },
+          "LiveNumber": 0,
+          "TicketType": {
+            "Value": "",
+            "Display": "",
+            "Id": ""
+          }
+        }
+      },
+      "Bidder": {
+        "Id": null,
+        "Value": "",
+        "Display": "",
+        "Fields": {
+          "DisplayName": "",
+          "FullDisplayNames": "",
+          "EffPseudonym": ""
+        }
+      },
+      "Amount": 0,
+      "Active": false,
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "CreatedAt": "0001-01-01T00:00:00Z",
+      "CreatedAtLocal": null,
+      "LastModifiedAt": "0001-01-01T00:00:00Z",
+      "LastModifiedAtLocal": null,
+      "CreatedBy": "",
+      "LastModifiedBy": ""
+    },
+    "ProxyBiddingDefault": {
+      "Value": "Off",
+      "Display": "Off",
+      "Id": 2
+    },
+    "IsProxyBiddingAllowed": false,
+    "IsStarred": false,
+    "OnlineContents": [],
+    "AllDonors": "Jason Roberts",
+    "OnlineWinningBids": [],
+    "OnlineBidHistory": [],
+    "Winnable": true,
+    "EffOnlinePurchaseMode": {
+      "Value": "AccountOnly",
+      "Display": "AccountOnly",
+      "Id": 2
+    },
+    "AntiSnipingActive": false,
+    "AntiSnipingEligible": false,
+    "EffOnlineBiddingOpen": true,
+    "EffOnlineSaleStart": "2026-04-09T04:00:00Z",
+    "EffOnlineSaleEnd": "2026-05-01T03:59:00Z",
+    "EffOnlineSaleOpen": true,
+    "EffLocalId": "2ed00c23-3c15-4402-a160-0507741a2f72"
+  }
+]

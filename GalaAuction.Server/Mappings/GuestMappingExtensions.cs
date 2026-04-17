@@ -1,6 +1,7 @@
 ﻿using GalaAuction.Server.DTOs;
 using GalaAuction.Server.Models;
 using GalaAuction.Server.Services;
+using Npgsql.PostgresTypes;
 
 namespace GalaAuction.Server.Mappings
 {
@@ -84,6 +85,9 @@ namespace GalaAuction.Server.Mappings
 
         public static CheckoutDto ToCheckoutDto(this Guest guest)
         {
+            var latestPaymentDate = new DateTime(1900, 1, 1);
+            var latestPaymentMethodId = "";
+            var latestPaymentMethod = "";
             var dto = new CheckoutDto
             {
                 GuestId = guest.GuestId,
@@ -95,6 +99,13 @@ namespace GalaAuction.Server.Mappings
             if (ipBidder != null)
             {
                 dto.InPersonBidderNumber = ipBidder.BidderNumber;
+                var maxItem = ipBidder.ItemsWon.MaxBy(i => i.PaymentDate);
+                if (maxItem?.PaymentDate > latestPaymentDate)
+                {
+                    latestPaymentDate = (DateTime)maxItem.PaymentDate;
+                    latestPaymentMethodId = maxItem.PaymentMethodId;
+                    latestPaymentMethod = maxItem.PaymentMethod!.PaymentMethodName;
+                }
                 var ipItems = ipBidder.ItemsWon.Select(i => i.ToCheckoutItemDto()).ToArray();
                 dto.ItemsWon = dto.ItemsWon.Concat(ipItems).ToArray();
             }
@@ -102,13 +113,22 @@ namespace GalaAuction.Server.Mappings
             if (olBidder != null)
             {
                 dto.OnlineBidderNumber = olBidder.BidderNumber;
+                var maxItem = olBidder.ItemsWon.MaxBy(i => i.PaymentDate);
+                if (maxItem?.PaymentDate > latestPaymentDate)
+                {
+                    latestPaymentDate = (DateTime)maxItem.PaymentDate;
+                    latestPaymentMethodId = maxItem.PaymentMethodId;
+                    latestPaymentMethod = maxItem.PaymentMethod!.PaymentMethodName;
+                }
                 var olItems = olBidder.ItemsWon.Select(i => i.ToCheckoutItemDto()).ToArray();
                 dto.ItemsWon = dto.ItemsWon.Concat(olItems).ToArray();
             }
             dto.TotalItemsWon = dto.ItemsWon.Length;
             dto.TotalOwed = dto.ItemsWon.Sum(i => i.WinningBidAmount ?? 0);
             dto.IsPaid = dto.ItemsWon.Length > 0 && dto.ItemsWon.All(i => i.IsPaid);
-
+            dto.PaymentDate = latestPaymentDate;
+            dto.PaymentMethodId = latestPaymentMethodId;
+            dto.PaymentMethodName = latestPaymentMethod;
             return dto;
         }
 

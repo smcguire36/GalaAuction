@@ -17,6 +17,8 @@ import DeleteActionButton from "../components/common/DeleteActionButton";
 import UploadCsvButton from "../components/common/UploadCsvButton";
 import AddActionButton from "../components/common/AddActionButton";
 import { useConfirm } from "../store/ConfirmProvider";
+import PrintLabelsButton from "../components/common/PrintLabelsButton";
+import PrintLabelsDialog from "../components/guests/PrintLabelsDialog";
 
 const GuestList = () => {
   const context = useContext(EventContext);
@@ -28,6 +30,7 @@ const GuestList = () => {
   const addGuestRef = useRef<ModalHandle>(null);
   const editGuestRef = useRef<ModalHandle>(null);
   const uploadGuestsRef = useRef<ModalHandle>(null);
+  const printLabelsRef = useRef<ModalHandle>(null);
   const event = context.event;
   const [formSession, setFormSession] = useState<number>(0);
   const [searchText, setSearchText] = useState<string>("");
@@ -113,8 +116,12 @@ const GuestList = () => {
           getGuests(context.eventId);
         }
         //        console.log("Delete response:", response);
-      } catch (err: any) {
-        alert(`Error deleting guest... ${err.message ?? "Unknown error"}`);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          alert(`Error deleting guest... ${err.message ?? "Unknown error"}`);
+        } else {
+          alert("Error deleting guest... Unknown error");
+        }
       }
     }
   };
@@ -127,6 +134,10 @@ const GuestList = () => {
   const handleModalConfirm = () => {
     console.log("Modal Dialog confirmed!  Let's reload the guest list now!");
     getGuests(context.eventId);
+  };
+
+  const handlePrintLabels = () => {
+    printLabelsRef.current?.open();
   };
 
   /**
@@ -182,6 +193,11 @@ const GuestList = () => {
               onClick={onOpenUploadGuests}
               disabled={event?.eventStatusId !== EventStatus.Setup}
             />
+            <PrintLabelsButton
+              label="PRINT LABELS"
+              onClick={handlePrintLabels}
+              disabled={guests.length === 0}
+             />
           </div>
         </div>
       </div>
@@ -291,6 +307,12 @@ const GuestList = () => {
         key={`upload-${formSession}`}
         ref={uploadGuestsRef}
         onConfirm={handleModalConfirm}
+      />
+      <PrintLabelsDialog
+        key={`print-${formSession}`}
+        ref={printLabelsRef}
+        onConfirm={handleModalConfirm}
+        guests={guests}
       />
     </>
   );

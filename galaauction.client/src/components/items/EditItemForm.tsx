@@ -110,6 +110,7 @@ const EditItemForm: React.FC<EditItemFormProps> = ({
   // Check the contents of the first and last name fields and update the validity state for those fields since they are required and their validity depends on their contents
   useEffect(() => {
     // Reset valid states when new data loads
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setValid(prev => ({
       ...prev,
       itemNumber: data.itemNumber !== null,

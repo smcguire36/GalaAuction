@@ -78,32 +78,39 @@ namespace GalaAuction.Server.Controllers
 
 
         // POST: api/events/5/checkout/claim-orchid
-        [HttpPost("claim-orchid")]
-        public async Task<ActionResult<ItemDto>> ClaimOrchid(int eventId, ClaimOrchidDto dto)
+        [HttpPost("{guestId}/claim-orchid")]
+        public async Task<ActionResult<ItemDto>> ClaimOrchid(int eventId, int guestId)
         {
-            if (dto.GalaEventId != GalaEvent!.GalaEventId)
+            if (eventId != GalaEvent!.GalaEventId)
             {
                 return BadRequest("Event Ids do not match");
             }
-            if (eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
+            if (!eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
             {
                 return BadRequest("Orchids can only be claimed when the event is in Checkout");
             }
-
-            var item = await context.Items.AsQueryable()
-                // No Winning Bidder and only the Orchid category items (9xx)
-                .Where(i => i.GalaEventId == eventId && i.WinningBidderNumber == null && i.CategoryId == 9)
-                .OrderBy(i => i.ItemNumber)
-                .FirstOrDefaultAsync();
-            if (item == null)
+            try
             {
-                return NotFound("No Orchids are available for purchase.");
+                var guest = await guestService.GetGuestAsync(eventId, guestId);
+                var item = await context.Items.AsQueryable()
+                    // No Winning Bidder and only the Orchid category items (9xx)
+                    .Where(i => i.GalaEventId == eventId && i.WinningBidderNumber == null && i.CategoryId == 9)
+                    .OrderBy(i => i.ItemNumber)
+                    .FirstOrDefaultAsync();
+                if (item == null)
+                {
+                    return NotFound("No Orchids are available for purchase.");
+                }
+                item.WinningBidderNumber = guest.Bidders[0].BidderNumber;
+                item.WinningBidAmount = item.OpeningBid;
+                await context.SaveChangesAsync();
             }
-            item.WinningBidderNumber = dto.BidderNumber;
-            item.WinningBidAmount = item.OpeningBid;
-            await context.SaveChangesAsync();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
-            return NoContent();
+            return NoContent(); 
         }
 
         [HttpGet("{guestId}")]
@@ -118,6 +125,7 @@ namespace GalaAuction.Server.Controllers
                                 .Where(g => g.GalaEventId == GalaEvent!.GalaEventId && g.GuestId == guestId)
                                 .Include(g => g.Bidders)
                                 .ThenInclude(b => b!.ItemsWon)
+                                .ThenInclude(i => i!.PaymentMethod)
                                 .FirstOrDefaultAsync();
 
             if (guest == null)
@@ -145,6 +153,8 @@ namespace GalaAuction.Server.Controllers
         [HttpPut("{guestId}")]
         public async Task<ActionResult> SaveGuestCheckout(int eventId, int guestId, CheckoutPaymentDto dto)
         {
+            var paymentDate = DateTime.UtcNow;  
+
             if (!eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
             {
                 return BadRequest("Guest checkout only available when the event is in Checkout");
@@ -152,6 +162,8 @@ namespace GalaAuction.Server.Controllers
             // Get the guest entity and verify that it was found
             var guest = await context.Guests.AsQueryable()
                 .Where(g => g.GuestId == dto.GuestId)
+                .Include(g => g.Bidders)
+                .ThenInclude(b => b!.ItemsWon)
                 .FirstOrDefaultAsync();
             if (guest == null)
             {
@@ -170,47 +182,61 @@ namespace GalaAuction.Server.Controllers
             {
                 return BadRequest("Cannot find all the items listed as being paid");
             }
+            // Verify the payment method
+            var payment = await context.PaymentMethods.AsQueryable()
+                .Where(pm => pm.PaymentMethodId == dto.PaymentMethodId)
+                .FirstOrDefaultAsync();
+            if (payment == null)
+            {
+                return BadRequest("Invalid payment method");
+            }
             // Update the payment information (isPaid and PaymentMethod) on each item
             items.ForEach(item =>
             {
                 item.IsPaid = true;
                 item.PaymentMethodId = dto.PaymentMethodId;
+                item.PaymentDate = paymentDate;
                 context.Items.Update(item);
             });
             guestService.ClearCheckoutLock(guest, guest.CheckoutLock);
             await context.SaveChangesAsync();
 
-            return NoContent();
+            var newDto = guest.ToCheckoutDto();
+            newDto.PaymentMethodId = payment.PaymentMethodId;
+            newDto.PaymentMethodName = payment.PaymentMethodName;
+            newDto.PaymentDate = paymentDate;
+
+            return Ok(newDto);
         }
 
-        [HttpGet("lock")]
-        public async Task<ActionResult<Guid>> GetCheckoutLock(int eventId, int bidderNumber)
+
+        [HttpPost("{guestId}/release-lock")]
+        public async Task<ActionResult> ReleaseCheckoutLock(int eventId, int guestId, [FromBody] CheckoutLockDto dto)
         {
             // Validate event is in checkout
-            if (eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
+            if (!eventService.ValidateEventStatus(GalaEvent, EventStatus.Checkout))
             {
                 return BadRequest("Bidder checkout only available when the event is in Checkout");
             }
-            // Get the bidder entity including the related Guest entity
-            var bidder = await context.Bidders.AsQueryable()
-                .Where(b => b.BidderNumber == bidderNumber && b.Guest.GalaEventId == eventId)
-                .Include(b => b.Guest)
+            // Get the guest entity and verify that it was found
+            var guest = await context.Guests.AsQueryable()
+                .Where(g => g.GuestId == guestId && g.GalaEventId == eventId)
                 .FirstOrDefaultAsync();
-            if (bidder == null)
+            if (guest == null)
             {
-                return NotFound("Bidder not found");
+                return BadRequest("Guest not attending this event");
             }
-            // Set and return a checkout lock on the guest
-            var lockId = Guid.Empty;
+            // Now try to clear the checkout lock
             try
             {
-                lockId = await guestService.GetCheckoutLockAsync(bidder.Guest);
+                await guestService.ClearCheckoutLockAsync(guest, dto.CheckoutLock);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(e.Message);
             }
-            return Ok(() => new { LockId = lockId });
+
+            return NoContent();
         }
     }
 }

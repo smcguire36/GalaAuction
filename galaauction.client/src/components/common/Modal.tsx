@@ -19,6 +19,7 @@ interface ModalProps extends ComponentProps<"dialog"> {
   onCancel?: () => void;
   className?: string;
   extraButtons?: ReactNode;
+  formRef?: React.RefObject<HTMLFormElement|null>;
   children: ReactNode;
 }
 
@@ -30,6 +31,7 @@ export function Modal({
   children,
   className = "",
   extraButtons = <></>,
+  formRef,
   ...props
 }: ModalProps) {
   const { activeId, close } = use(ModalContext);
@@ -62,7 +64,12 @@ export function Modal({
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
-    if (onConfirm) onConfirm();
+    if (formRef) {
+      formRef.current?.requestSubmit();
+    }
+    else if (onConfirm) {
+      onConfirm();
+    }
   };
 
   return (

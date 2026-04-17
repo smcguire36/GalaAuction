@@ -33,7 +33,8 @@ namespace GalaAuction.Server.Mappings
                 ItemNumber = dto.ItemNumber, 
                 ItemName = dto.ItemName,
                 GalaEventId = dto.GalaEventId,
-                CategoryId = categoryId
+                CategoryId = categoryId,
+                OpeningBid = dto.OpeningBid
             };
         }
 

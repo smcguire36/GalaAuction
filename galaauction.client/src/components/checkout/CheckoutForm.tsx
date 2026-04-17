@@ -7,7 +7,7 @@ import type { CheckoutPaymentDto } from "../../dto/CheckoutPaymentDto";
 import { parseRequiredInt } from "../../utilities/parseInteger";
 
 type CheckoutFormProps = {
-  ref: Ref<ModalFormHandle>;
+  formRef: React.RefObject<HTMLFormElement|null>;
   onSubmit: (data: CheckoutPaymentDto) => void;
   guestId?: number;
   data: CheckoutDto;
@@ -35,7 +35,7 @@ const ValidDefaultState = {
 };
 
 const CheckoutForm = ({
-  ref,
+  formRef,
   onSubmit,
   guestId,
   data,
@@ -45,19 +45,11 @@ const CheckoutForm = ({
   const [touched, setTouched] = useState(TouchedDefaultState);
   // State to track the validity of each field for validation styling purposes
   const [valid, setValid] = useState(ValidDefaultState);
-  const formRef = useRef<HTMLFormElement>(null);
-
-  useImperativeHandle(ref, () => ({
-    submit: () => {
-      console.log("in submit() handler inside CheckoutForm");
-      formRef.current?.requestSubmit();
-    },
-  }));
 
   const handleAction = (formData: FormData) => {
     console.log("in handleAction of CheckoutForm, formData:", Object.fromEntries(formData));
 
-    const data: CheckoutPaymentDto = {
+    const checkoutData: CheckoutPaymentDto = {
       guestId: parseRequiredInt(formData.get("guestId")),
       galaEventId: parseRequiredInt(formData.get("galaEventId")),
       paymentMethodId: formData.get("paymentMethodId") as string,
@@ -66,7 +58,7 @@ const CheckoutForm = ({
       checkoutLock: formData.get("checkoutLock") as string
     }
 
-    onSubmit(data);
+    onSubmit(checkoutData);
   };
 
   return (
@@ -124,10 +116,11 @@ const CheckoutForm = ({
             <tr className="font-bold flex flex-row items-center w-full py-2">
               <th className="w-16 py-1 text-left flex flex-col items-center">
                 <div>PAID BY</div>
-                <div>&nbsp;</div>
+                {!data.isPaid && <div>&nbsp;</div>}
               </th>
               <th className="flex-1 py-1 min-w-0 align-middle">
-                <div className="grid grid-cols-4 gap-2">
+                {!data.isPaid && 
+                <div className="grid grid-cols-4 gap-2 ">
                   <input type="radio" id="pm-cash" name="paymentMethodId" value="Cash" className="sr-only peer/cash validator" required onInvalid={(e) => e.preventDefault()}/>
                   <label htmlFor="pm-cash" className="flex-1 btn btn-sm peer-checked/cash:btn-primary cursor-pointer">CASH</label>
 
@@ -152,6 +145,12 @@ const CheckoutForm = ({
                   <label htmlFor="pm-discover" className="flex-1 btn btn-sm peer-checked/discover:btn-primary cursor-pointer">DISCOVER</label>
                   <p className="validator-hint">Please select a payment method.</p>
                 </div>
+                }
+                {data.isPaid && 
+                  <div className="grid grid-cols-1 gap-2">
+                    <div className="text-base-content font-bold">{data.paymentMethodName} on {data.paymentDate ? new Date(data.paymentDate).toLocaleDateString() : "--"}</div>
+                  </div>
+                }
               </th>
             </tr>
           </tfoot>

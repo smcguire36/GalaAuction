@@ -10,7 +10,8 @@
         public int TotalItemsWon { get; set; }
         public decimal TotalOwed { get; set; }
         public bool IsPaid { get; set; }
-        public string? PaymentMethod { get; set; }
+        public string? PaymentMethodId { get; set; }
+        public string? PaymentMethodName { get; set; }
         public DateTime? PaymentDate { get; set; }
         public CheckoutItemDto[] ItemsWon { get; set; } = [];
         public Guid? CheckoutLock { get; set; }

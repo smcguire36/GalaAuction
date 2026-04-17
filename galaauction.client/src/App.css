@@ -97,3 +97,29 @@ light, dark, cupcake, bumblebee, emerald, corporate, synthwave, retro, cyberpunk
         @apply border border-base-content/90 bg-base-300 shadow-lg;
     }
 }
+
+/* Base style for printing landscape receipts */
+@layer base {
+    @media print {
+        @page landscape-page {
+            size: landscape;
+            margin: 0;
+        }
+
+        @page portrait-page {
+            size: portrait;
+            margin: 0;
+        }
+
+        /* Apply the landscape page style to the receipts */
+        .print-landscape {
+            page: landscape-page;
+        }
+        
+        /* Apply the portrait page style to the labels */
+        .print-portrait {
+            page: portrait-page;
+        }
+
+    }
+}

@@ -1,5 +1,6 @@
 ﻿using GalaAuction.Server.Data;
 using GalaAuction.Server.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GalaAuction.Server.Services
 {
@@ -7,6 +8,21 @@ namespace GalaAuction.Server.Services
     {
         public const int OnlineBidderNumberDefault = 1000;
         public const int InPersonBidderNumberDefault = 0;
+
+        public async Task<Guest> GetGuestAsync(int eventId, int guestId)
+        {
+            var guest = await context.Guests.AsQueryable()
+                                .Where(g => g.GalaEventId == eventId && g.GuestId == guestId)
+                                .Include(g => g.Bidders)
+                                .ThenInclude(b => b!.ItemsWon)
+                                .ThenInclude(i => i!.PaymentMethod)
+                                .FirstOrDefaultAsync();
+            if (guest == null)
+            {
+                throw new Exception("Guest Not Found");
+            }
+            return guest;
+        }
 
         public int GetNextBidderNumber(int eventId, bool isOnline)
         {
@@ -56,7 +72,8 @@ namespace GalaAuction.Server.Services
             {
                 if (guest.CheckoutLock == null)
                 {
-                    message = "No checkout lock found";
+                    message = "Guest is not locked for checkout";
+                    return false;
                 }
                 else
                 {
@@ -64,10 +81,10 @@ namespace GalaAuction.Server.Services
                     // If the lock is less than 10 minutes old, then return an error
                     if (diff.Duration().TotalMinutes < 10)
                     {
-                        message = "Bidder is locked for checkout by someone else";
+                        message = "Guest is locked for checkout by someone else";
+                        return false;
                     }
                 }
-                return false;
             }
             return true;
         }

@@ -3,19 +3,30 @@ import { useNavigate } from "react-router-dom";
 import { useHttp } from "../../hooks/useHttp";
 import EventContext from "../../store/EventContext";
 import { ModalContext } from "../../store/ModalContext";
-import type { GalaEventType } from "../../types/GalaEvent";
+import { parseRequiredInt } from "../../utilities/parseInteger";
+import { type GalaEventDto } from "../../dto/GalaEventDto";
 
-const SelectEvent = () => {
+type SelectEventProps = {
+  formRef: React.RefObject<HTMLFormElement|null>;
+  onSubmit: () => void;
+};
+
+const SelectEvent: React.FC<SelectEventProps> = ({ formRef, onSubmit }) => {
     const { close } = use(ModalContext);
     const navigate = useNavigate();
     const context = useContext(EventContext);
     const { request, isLoading, error } = useHttp();
-    const [ events, setEvents ] = useState<GalaEventType[]>();
+    const [ events, setEvents ] = useState<GalaEventDto[]>();
+    const [selectedEventId, setSelectedEventId] = useState("0");
     let existingEventId = 0;
 
     if (context.event && context.event?.galaEventId) {
         existingEventId = context.event.galaEventId;
     }
+
+    useEffect(() => {
+        setSelectedEventId(existingEventId > 0 ? String(existingEventId) : "0");
+    }, [existingEventId]);
 
     useEffect(() => {
         const getEvents = async () => {
@@ -26,12 +37,13 @@ const SelectEvent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleSelectEvent = (e: ChangeEvent<HTMLSelectElement>) => {
-        const eventId = parseInt(e.target.value);
+    const handleSubmitAction = (formData: FormData) => {
+        const eventId = parseRequiredInt(formData.get("selectEvent"));
         if (events) {
             const event = events.find((event) => event.galaEventId === eventId);
             context.setEvent(event!);
             close();
+            onSubmit();
         }
     };
 
@@ -40,12 +52,17 @@ const SelectEvent = () => {
         close();
     };
 
+    const handleChangeEvent = (e: ChangeEvent<HTMLSelectElement>) => {
+        setSelectedEventId(e.target.value);
+    };
+
     return (
-      <fieldset className="flex flex-row gap-4 items-center">
+      <form className="flex flex-row gap-4 items-center" ref={formRef} action={handleSubmitAction}>
         <select
           className="select select-sm select-bordered border-base-content/20 bg-base-200 shadow-sm flex-1"
-          value={existingEventId}
-          onChange={handleSelectEvent}
+          name="selectEvent"
+                    value={selectedEventId}
+                    onChange={handleChangeEvent}
         >
             { !isLoading && events && (
                 <option value="0" disabled>Select an event...</option>
@@ -60,10 +77,10 @@ const SelectEvent = () => {
                 <option disabled>Error: {error}</option>
             )}
         </select>
-        <button className="btn btn-outline border-base-content/20 bg-base-200 shadow-sm w-20 flex-none" onClick={handleManageEvents}>
+        <button type="button" className="btn btn-outline border-base-content/20 bg-base-200 shadow-sm w-20 flex-none" onClick={handleManageEvents}>
             Manage
         </button>
-      </fieldset>
+      </form>
     );
 };
 
