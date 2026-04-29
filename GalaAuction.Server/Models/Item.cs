@@ -15,9 +15,9 @@ namespace GalaAuction.Server.Models
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? OpeningBid { get; set; }
 
-        public int? WinningBidderNumber { get; set; }
+        public int? WinningBidderId { get; set; }
 
-        // Navigation property back to Bidder (configured via Fluent API to use BidderNumber as principal key)
+        // Navigation property back to Bidder (configured via Fluent API to use WinningBidderId as foreign key)
         public Bidder? WinningBidder { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]

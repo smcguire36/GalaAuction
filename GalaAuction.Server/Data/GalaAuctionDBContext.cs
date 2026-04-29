@@ -22,8 +22,8 @@ namespace GalaAuction.Server.Data
             modelBuilder.Entity<Item>()
                 .HasOne(i => i.WinningBidder)
                 .WithMany(b => b.ItemsWon)
-                .HasForeignKey(i => i.WinningBidderNumber)
-                .HasPrincipalKey(b => b.BidderNumber);
+                .HasForeignKey(i => i.WinningBidderId)
+                .HasPrincipalKey(b => b.BidderId);
 
             // This data wil always seed tables in any environment,
             // ensuring that essential reference data is available in both development and production.
@@ -262,37 +262,44 @@ namespace GalaAuction.Server.Data
                     new PaymentMethod
                     {
                         PaymentMethodId = "AmEx",
-                        PaymentMethodName = "American Express"
+                        PaymentMethodName = "American Express",
+                        PaymentType = "Credit Card"
                     },
                     new PaymentMethod
                     {
                         PaymentMethodId = "Cash",
-                        PaymentMethodName = "Cash"
+                        PaymentMethodName = "Cash",
+                        PaymentType = "Cash"
                     },
                     new PaymentMethod
                     {
                         PaymentMethodId = "Chk",
-                        PaymentMethodName = "Check"
+                        PaymentMethodName = "Check",
+                        PaymentType = "Check"
                     },
                     new PaymentMethod
                     {
                         PaymentMethodId = "Disc",
-                        PaymentMethodName = "Discover"
+                        PaymentMethodName = "Discover",
+                        PaymentType = "Credit Card"
                     },
                     new PaymentMethod
                     {
                         PaymentMethodId = "MC",
-                        PaymentMethodName = "Mastercard"
+                        PaymentMethodName = "Mastercard",
+                        PaymentType = "Credit Card"
                     },
                     new PaymentMethod
                     {
                         PaymentMethodId = "Visa",
-                        PaymentMethodName = "Visa"
+                        PaymentMethodName = "Visa",
+                        PaymentType = "Credit Card"
                     },
                     new PaymentMethod
                     {
                         PaymentMethodId = "Other",
-                        PaymentMethodName = "Other"
+                        PaymentMethodName = "Other",
+                        PaymentType = "Other"
                     }
                 );
 

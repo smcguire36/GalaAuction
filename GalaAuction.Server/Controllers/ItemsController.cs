@@ -127,8 +127,20 @@ namespace GalaAuction.Server.Controllers
             {
                 return ValidationProblem("Event must be in closeout");
             }
-            // Update the specific data included in this patch
-            item.WinningBidderNumber = dto.WinningBidderNumber;
+            if (dto.WinningBidderNumber != null)
+            {
+                // Lookup the WinningBidderNumber in the Bidders table to get the BidderId to store in the Item record
+                var winningBidder = await context.Bidders
+                .Include(b => b.Guest)
+                .SingleOrDefaultAsync(b => b.BidderNumber == dto.WinningBidderNumber && b.Guest.GalaEventId == eventId);
+                // Update the specific data included in this patch
+                item.WinningBidderId = winningBidder?.BidderId;
+            }
+            else
+            {
+                // Update the specific data included in this patch
+                item.WinningBidderId = null;
+            }
             item.WinningBidAmount = dto.WinningBidAmount;
 
             context.Entry(item).State = EntityState.Modified;
@@ -187,7 +199,19 @@ namespace GalaAuction.Server.Controllers
             // [TODO] Consider using AutoMapper for this kind of mapping
             item.ItemNumber = (int)dto.ItemNumber;  // Item number is required, but just in case we want to allow it to be optional in the DTO in the future, we will fall back to the existing item number if it is not provided.
             item.ItemName = dto.ItemName;
-            item.WinningBidderNumber = dto.WinningBidderNumber;
+            if (dto.WinningBidderNumber != null)
+            {
+                // Lookup the WinningBidderNumber in the Bidders table to get the BidderId to store in the Item record
+                var winningBidder = await context.Bidders
+                    .Include(b => b.Guest)
+                    .SingleOrDefaultAsync(b => b.BidderNumber == dto.WinningBidderNumber && b.Guest.GalaEventId == eventId);
+                // Update the specific data included in this patch
+                item.WinningBidderId = winningBidder?.BidderId;
+            }
+            else
+            {
+                item.WinningBidderId = null;
+            }
             item.WinningBidAmount = dto.WinningBidAmount;
             item.IsPaid = dto.IsPaid;
             item.PaymentMethodId = dto.PaymentMethodId;

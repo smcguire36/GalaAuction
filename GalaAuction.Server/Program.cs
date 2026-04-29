@@ -44,6 +44,7 @@ builder.Services.AddAuthentication()
         options.MetadataAddress = $"{keycloakRealmUrl}/.well-known/openid-configuration";
         options.TokenValidationParameters.ValidIssuers = [
             "http://localhost:6001/realms/GalaAuction",
+            "http://localhost:8001/auth/realms/GalaAuction",
             "http://keycloak:8080/realms/GalaAuction",
             "http://id.GalaAuction.local/realms/GalaAuction",
             "https://id.GalaAuction.local/realms/GalaAuction"

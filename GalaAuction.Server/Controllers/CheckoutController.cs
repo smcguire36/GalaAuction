@@ -94,14 +94,14 @@ namespace GalaAuction.Server.Controllers
                 var guest = await guestService.GetGuestAsync(eventId, guestId);
                 var item = await context.Items.AsQueryable()
                     // No Winning Bidder and only the Orchid category items (9xx)
-                    .Where(i => i.GalaEventId == eventId && i.WinningBidderNumber == null && i.CategoryId == 9)
+                    .Where(i => i.GalaEventId == eventId && i.WinningBidderId == null && i.CategoryId == 9)
                     .OrderBy(i => i.ItemNumber)
                     .FirstOrDefaultAsync();
                 if (item == null)
                 {
                     return NotFound("No Orchids are available for purchase.");
                 }
-                item.WinningBidderNumber = guest.Bidders[0].BidderNumber;
+                item.WinningBidderId = guest.Bidders[0].BidderId;
                 item.WinningBidAmount = item.OpeningBid;
                 await context.SaveChangesAsync();
             }

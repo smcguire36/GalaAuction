@@ -9,8 +9,8 @@ namespace GalaAuction.Server.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public required string PaymentMethodId { get; set; }
-
         public required string PaymentMethodName { get; set; }
+        public required string PaymentType { get; set; }
 
         // Navigation property for related Items
         [JsonIgnore]

@@ -89,7 +89,8 @@ namespace GalaAuction.Server.Controllers
             var paymentMethod = new PaymentMethod
             {
                 PaymentMethodId   = dto.PaymentMethodId,
-                PaymentMethodName = dto.PaymentMethodName
+                PaymentMethodName = dto.PaymentMethodName,
+                PaymentType = dto.PaymentType
             };
 
             context.PaymentMethods.Add(paymentMethod);

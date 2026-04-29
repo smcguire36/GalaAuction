@@ -8,6 +8,7 @@ namespace GalaAuction.Server.DTOs
     {
         public required string PaymentMethodId { get; set; }
         public required string PaymentMethodName { get; set; } 
+        public required string PaymentType { get; set; }
     }
 
 }

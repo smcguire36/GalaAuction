@@ -10,7 +10,8 @@ namespace GalaAuction.Server.Mappings
             return new PaymentMethodDto
             {
                 PaymentMethodId = paymentMethod.PaymentMethodId,
-                PaymentMethodName = paymentMethod.PaymentMethodName
+                PaymentMethodName = paymentMethod.PaymentMethodName,
+                PaymentType = paymentMethod.PaymentType
             };
         }
     }

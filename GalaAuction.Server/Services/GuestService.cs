@@ -26,19 +26,14 @@ namespace GalaAuction.Server.Services
 
         public int GetNextBidderNumber(int eventId, bool isOnline)
         {
-            int maxId = isOnline ? OnlineBidderNumberDefault : InPersonBidderNumberDefault;
-            try
-            {
-                maxId = context.Bidders
-                    .Where(b => b.Guest.GalaEventId == eventId && b.IsOnline == isOnline)
-                    .Select(b => b.BidderNumber)
-                    .Max();
-            }
-            catch (Exception)
-            {
-                // Catch the error but do nothing as nextId has already been defaulted to 0.
-            }
-            return ++maxId;
+            int defaultId = isOnline ? OnlineBidderNumberDefault : InPersonBidderNumberDefault;
+
+            int? maxId = context.Bidders
+                .Where(b => b.Guest.GalaEventId == eventId && b.IsOnline == isOnline)
+                .Select(b => (int?)b.BidderNumber)
+                .Max();
+
+            return (maxId ?? defaultId) + 1;
         }
 
         public async Task<Guid> GetCheckoutLockAsync(Guest guest)
