@@ -61,7 +61,7 @@ services:
     environment:
       OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
       ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
-      HTTP_PORTS: "${GALAAUCTION_SERVER_PORT};8081"
+      HTTP_PORTS: "${GALAAUCTION_SERVER_PORT};8082"
       KEYCLOAK_HTTP: "http://keycloak:8080"
       services__keycloak__http__0: "http://keycloak:8080"
       KEYCLOAK_MANAGEMENT: "http://keycloak:9000"
@@ -81,7 +81,7 @@ services:
       OTEL_SERVICE_NAME: "galaauction-server"
     ports:
       - "${GALAAUCTION_SERVER_PORT}"
-      - "7001:8081"
+      - "7001:8082"
     depends_on:
       keycloak:
         condition: "service_started"
@@ -97,19 +97,19 @@ services:
       GALAAUCTION_SERVER_HTTP: "http://galaauction-server:${GALAAUCTION_SERVER_PORT}"
       services__galaauction-server__http__0: "http://galaauction-server:${GALAAUCTION_SERVER_PORT}"
       GALAAUCTION_SERVER_HTTPS: "https://galaauction-server:${GALAAUCTION_SERVER_PORT}"
-      GALAAUCTION_SERVER_AUCTIONAPI: "http://galaauction-server:8081"
-      services__galaauction-server__http__1: "http://galaauction-server:8081"
+      GALAAUCTION_SERVER_AUCTIONAPI: "http://galaauction-server:8082"
+      services__galaauction-server__http__1: "http://galaauction-server:8082"
       KEYCLOAK_HTTP: "http://keycloak:8080"
       services__keycloak__http__0: "http://keycloak:8080"
       KEYCLOAK_MANAGEMENT: "http://keycloak:9000"
       services__keycloak__http__1: "http://keycloak:9000"
-      VITE_BACKEND_URL: "http://galaauction-server:8081"
       VITE_KEYCLOAK_URL: "http://keycloak:8080"
       GATEWAY_HTTP: "http://gateway:5000"
       services__gateway__http__0: "http://gateway:5000"
-      GATEWAY_GATEWAY: "http://gateway:8001"
-      services__gateway__http__1: "http://gateway:8001"
-      VITE_GATEWAY_URL: "http://gateway:5000"
+      GATEWAY_GATEWAY_HTTP: "http://gateway:8080"
+      services__gateway__http__1: "http://gateway:8080"
+      VITE_BACKEND_URL: "http://gateway:8080"
+      VITE_GATEWAY_URL: "http://gateway:8080"
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://production-dashboard:18889"
       OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
       OTEL_SERVICE_NAME: "frontend"
@@ -132,6 +132,7 @@ services:
       REVERSEPROXY__ROUTES__route0__MATCH__PATH: "/api/{**catch-all}"
       REVERSEPROXY__ROUTES__route0__ORDER: "1"
       REVERSEPROXY__ROUTES__route0__CLUSTERID: "cluster_galaauction-server"
+      REVERSEPROXY__ROUTES__route0__TRANSFORMS__0__PathRemovePrefix: "/api"
       REVERSEPROXY__ROUTES__route1__MATCH__PATH: "{**catch-all}"
       REVERSEPROXY__ROUTES__route1__ORDER: "2"
       REVERSEPROXY__ROUTES__route1__CLUSTERID: "cluster_frontend"
@@ -139,11 +140,11 @@ services:
       REVERSEPROXY__CLUSTERS__cluster_frontend__DESTINATIONS__destination1__ADDRESS: "http://frontend"
       services__galaauction-server__http__0: "http://galaauction-server:${GALAAUCTION_SERVER_PORT}"
       GALAAUCTION_SERVER_HTTPS: "https://galaauction-server:${GALAAUCTION_SERVER_PORT}"
-      GALAAUCTION_SERVER_AUCTIONAPI: "http://galaauction-server:8081"
-      services__galaauction-server__http__1: "http://galaauction-server:8081"
+      GALAAUCTION_SERVER_AUCTIONAPI: "http://galaauction-server:8082"
+      services__galaauction-server__http__1: "http://galaauction-server:8082"
       FRONTEND_HTTP: "http://frontend:5173"
       services__frontend__http__0: "http://frontend:5173"
-      ASPNETCORE_URLS: "http://*:8001"
+      ASPNETCORE_URLS: "http://*:8080"
       VIRTUAL_HOST: "api.galaauction.local"
       VIRTUAL_PORT: "8002"
       Logging__LogLevel__Microsoft.ReverseProxy: "Debug"
@@ -157,7 +158,7 @@ services:
       OTEL_SERVICE_NAME: "gateway"
     ports:
       - "5000"
-      - "8001:8001"
+      - "8001:8080"
     networks:
       - "aspire"
 networks:
@@ -165,6 +166,8 @@ networks:
     driver: "bridge"
 volumes:
   keycloak-galaauction:
-    driver: "local"
+    external: true
   postgres-galaauction:
-    driver: "local"
+    external: true
+
+

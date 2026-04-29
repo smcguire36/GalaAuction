@@ -1,0 +1,5 @@
+volumes:
+  keycloak-galaauction:
+    external: true
+  postgres-galaauction:
+    external: true

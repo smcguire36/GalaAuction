@@ -1,0 +1,48 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.ReverseProxy": "Debug",
+      "Yarp": "Debug"
+    }
+  },
+  "ReverseProxy": {
+    "Routes": {
+      "api-route": {
+        "ClusterId": "backend-cluster",
+        "Match": {
+          "Path": "/api/{**catch-all}"
+        },
+        "Transforms": [
+          {
+            "PathPattern": "{**catch-all}"
+          }
+        ],
+        "Order": 1
+      },
+      "frontend-route": {
+        "ClusterId": "frontend-cluster",
+        "Match": {
+          "Path": "{**catch-all}"
+        },
+        "Order": 2
+      }
+    },
+    "Clusters": {
+      "backend-cluster": {
+        "Destinations": {
+          "backend": {
+            "Address": "http://galaauction-server:8082"
+          }
+        }
+      },
+      "frontend-cluster": {
+        "Destinations": {
+          "frontend-local": {
+            "Address": "http://host.docker.internal:5173"
+          }
+        }
+      }
+    }
+  }
+}

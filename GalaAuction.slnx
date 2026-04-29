@@ -1,7 +1,9 @@
 <Solution>
   <Folder Name="/Infra/">
     <File Path="Infra/.env" />
+    <File Path="Infra/docker-compose.override.yaml.disabled" />
     <File Path="Infra/docker-compose.yaml" />
+    <File Path="Infra/start.ps1" />
   </Folder>
   <Folder Name="/Realms/">
     <File Path="realms/GalaAuction-realm.json" />
