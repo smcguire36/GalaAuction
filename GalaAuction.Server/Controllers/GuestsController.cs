@@ -235,8 +235,16 @@ namespace GalaAuction.Server.Controllers
                         IsOnline = true
                     });
                 }
-
             }
+            else if (dto.OnlineAutoGen)
+            {
+                guest.Bidders.Add(new Bidder
+                {
+                    BidderNumber = guestService.GetNextBidderNumber(dto.GalaEventId, true),
+                    IsOnline = true
+                });
+            }
+
             if (dto.InPersonBidderNumber != null)
             {
                 var bidder = guest.Bidders.SingleOrDefault(bidder => !bidder.IsOnline);

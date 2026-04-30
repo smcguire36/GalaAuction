@@ -147,7 +147,7 @@ const EditGuestForm: React.FC<EditGuestFormProps> = ({
     <form className="flex flex-col gap-2" ref={formRef} action={handleAction}>
       <input type="hidden" name="guestId" value={data.guestId} />
       <div className="flex flex-row-reverse">
-        <label className="label">
+        <label className="label" hidden={data.inPersonBidderNumber !== null}>
           <input
             type="checkbox"
             name="onlineBidderOnly"

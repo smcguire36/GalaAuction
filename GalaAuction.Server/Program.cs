@@ -185,15 +185,32 @@ app.MapFallbackToFile("/index.html");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
+var logger = services.GetRequiredService<ILogger<Program>>();
+
 try
 {
+    logger.LogInformation("Starting database migration...");
     var dbContext = services.GetRequiredService<GalaAuctionDBContext>();
-    await dbContext.Database.MigrateAsync();
+
+    var pendingMigrations = await dbContext.Database.GetPendingMigrationsAsync();
+    if (pendingMigrations.Any())
+    {
+        logger.LogInformation("Found {Count} pending migration(s): {Migrations}", 
+            pendingMigrations.Count(), 
+            string.Join(", ", pendingMigrations));
+
+        await dbContext.Database.MigrateAsync();
+        logger.LogInformation("Database migration completed successfully.");
+    }
+    else
+    {
+        logger.LogInformation("No pending migrations found. Database is up to date.");
+    }
 }
 catch (Exception e)
 {
-    var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(e, "An error occurred while migrating or seeding the database.");
+    logger.LogError(e, "An error occurred while migrating the database.");
+    throw; // Re-throw to prevent app from starting with a broken database
 }
 
 app.Run();

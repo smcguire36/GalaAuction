@@ -87,6 +87,17 @@ const TopNavigation = () => {
     }
   };
 
+  const handleCloseEvent = async () => {
+    const isConfirmed = await confirm({
+      title: "CONFIRMATION",
+      message: `Are you sure you want to close the ${event?.eventName} event?  This cannot be undone.`,
+    });
+
+    if (isConfirmed) {
+      setEventStatus(EventStatus.Closed, "Closed");
+    }
+  };
+
   // Setup Event/Status button properties
   let selectedEvent: string = "Select Event";
   let selectedEventColor: string = "btn-warning";
@@ -177,9 +188,7 @@ const TopNavigation = () => {
                     <button
                       type="button"
                       className="btn btn-accent"
-                      onClick={() =>
-                        setEventStatus(EventStatus.Closed, "Closed")
-                      }
+                      onClick={handleCloseEvent}
                     >
                       CLOSE EVENT
                     </button>
