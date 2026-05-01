@@ -9,7 +9,7 @@ const ReceiptItemsTable: React.FC<{ data: CheckoutDto }> = ({ data }) => {
           <tr className="bg-accent flex flex-row w-full py-0">
             <th className="w-16 py-1 text-left shrink-0">Item #</th>
             <th className="flex-2 py-1 text-left min-w-0">Item Name</th>
-            <th className="flex-1 py-1 text-left min-w-fit">Winning Bid</th>
+            <th className="flex-1 py-1 text-right min-w-fit">Winning Bid</th>
           </tr>
         </thead>
         <tbody className="block h-96 max-h-96 overflow-y-auto">
@@ -17,11 +17,11 @@ const ReceiptItemsTable: React.FC<{ data: CheckoutDto }> = ({ data }) => {
             data.itemsWon.length > 0 &&
             data.itemsWon.map((item) => (
               <tr key={item.itemId} className="flex flex-row w-full py-0">
-                <td className="w-16 text-left shrink-0 font-bold text-lg align-middle">
+                <td className="w-16 text-left shrink-0 font-bold text-lg align-middle py-1">
                   {item.itemNumber}
                 </td>
-                <td className="flex-2 text-left min-w-0 align-middle">{item.itemName}</td>
-                <td className="flex-1 text-left min-w-fit align-middle">
+                <td className="flex-2 text-left min-w-0 align-middle py-1">{item.itemName}</td>
+                <td className="flex-1 text-right min-w-fit align-middle py-1">
                   {currencyFormatter.format(item.winningBidAmount)}
                 </td>
               </tr>
@@ -49,7 +49,7 @@ const ReceiptItemsTable: React.FC<{ data: CheckoutDto }> = ({ data }) => {
           <tr className="border-y-2 border-accent font-bold flex flex-row w-full py-0 text-lg">
             <th className="w-20 py-1 text-left shrink-0">TOTAL</th>
             <th className="flex-2 py-1 min-w-0"></th>
-            <th className="flex-1 py-1 text-left min-w-fit">
+            <th className="flex-1 py-1 text-right min-w-fit">
               {data.totalOwed ? currencyFormatter.format(data.totalOwed) : "--"}
             </th>
           </tr>

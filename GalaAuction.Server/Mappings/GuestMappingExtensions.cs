@@ -104,7 +104,7 @@ namespace GalaAuction.Server.Mappings
                 {
                     latestPaymentDate = (DateTime)maxItem.PaymentDate;
                     latestPaymentMethodId = maxItem.PaymentMethodId;
-                    latestPaymentMethod = maxItem.PaymentMethod!.PaymentMethodName;
+                    latestPaymentMethod = maxItem.PaymentMethod?.PaymentMethodName;
                 }
                 var ipItems = ipBidder.ItemsWon.Select(i => i.ToCheckoutItemDto()).ToArray();
                 dto.ItemsWon = dto.ItemsWon.Concat(ipItems).ToArray();

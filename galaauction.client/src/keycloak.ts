@@ -1,7 +1,7 @@
 import Keycloak from 'keycloak-js';
 
 const keycloakUrl =
-    import.meta.env.VITE_KEYCLOAK_URL || `${window.location.protocol}//${window.location.hostname}:6001`;
+    import.meta.env.VITE_KEYCLOAK_URL || `${window.location.protocol}//${window.location.hostname}:8001/auth`;
 
 const keycloak = new Keycloak({
     url: keycloakUrl,

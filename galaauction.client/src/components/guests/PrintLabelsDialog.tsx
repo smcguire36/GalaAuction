@@ -26,7 +26,6 @@ const PrintLabelsDialog = ({ ref, onConfirm, guests }: PrintReceiptDialogProps) 
   const contentRef = useRef(null);
   const handlePrint = useReactToPrint({ contentRef });
 
-
   useImperativeHandle(
     ref,
     () => ({
@@ -81,7 +80,7 @@ const PrintLabelsDialog = ({ ref, onConfirm, guests }: PrintReceiptDialogProps) 
           {pages.map((pageGuests, pageIndex) => (
             <div
               key={pageIndex}
-              className={`grid grid-cols-3 gap-4 print:grid-cols-[repeat(3,2.625in)] print:auto-rows-[1in] print:gap-x-[0.125in] print:gap-y-0 print:px-[0.125in] print:py-[0.5in]${pageIndex < pages.length - 1 ? " print:break-after-page" : ""}`}
+              className={`grid grid-cols-3 gap-4 print:mt-10 print:grid-cols-[repeat(3,2.625in)] print:auto-rows-[1in] print:gap-x-[0.125in] print:gap-y-0 print:px-[0.125in] print:py-[0.5in]${pageIndex < pages.length - 1 ? " print:break-after-page" : ""}`}
             >
               {pageGuests.map((guest) => (
                 <LabelTemplate key={guest.guestId} guest={guest} />

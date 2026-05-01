@@ -20,10 +20,10 @@ const isDisabled = (tab: string, status: number|undefined, ): string => {
 
     switch (status) {
         case EventStatus.Setup:
-            if (tab === "closeout" || tab === "checkout") styles = disabledStyles;
+            if (tab === "closeout" || tab === "checkout" || tab === "reports") styles = disabledStyles;
             break;
         case EventStatus.Active:
-            if (tab === "closeout" || tab === "checkout") styles = disabledStyles;
+            if (tab === "closeout" || tab === "checkout" || tab === "reports") styles = disabledStyles;
             break;
         case EventStatus.Closeout:
             if (tab === "guests" || tab === "items") styles = disabledStyles;
@@ -53,7 +53,8 @@ const TabNavigation = () => {
             <Link to="/items" role="tab" className={`tab ${isActive("items",thisPage)} ${isDisabled("items", event?.eventStatusId)}`}>Auction Items</Link>
             <Link to="/closeout" role="tab" className={`tab ${isActive("closeout",thisPage)} ${isDisabled("closeout", event?.eventStatusId)}`}>Closeout</Link>
             <Link to="/checkout" role="tab" className={`tab ${isActive("checkout",thisPage)} ${isDisabled("checkout", event?.eventStatusId)}`}>Checkout</Link>
-            <Link to="/audit" role="tab" className={`tab ${isActive("audit",thisPage)}`}>Audit Logs</Link>
+            <Link to="/reports" role="tab" className={`tab ${isActive("reports",thisPage)} ${isDisabled("reports", event?.eventStatusId)}`}>Reports</Link>
+            {/* <Link to="/audit" role="tab" className={`tab ${isActive("audit",thisPage)}`}>Audit Logs</Link> */}
         </div>
     );
 };

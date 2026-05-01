@@ -1,3 +1,4 @@
+using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Docker;
 using Aspire.Hosting.Yarp;
 using Aspire.Hosting.Yarp.Transforms;
@@ -9,17 +10,26 @@ var compose = builder.AddDockerComposeEnvironment("production")
 
 // Create the keycloak container
 #pragma warning disable ASPIRECERTIFICATES001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-var keycloak = builder.AddKeycloak("keycloak", 6001)
-    .WithoutHttpsCertificate()
+var keycloak = builder.AddKeycloak("keycloak")
     .WithDataVolume("keycloak-galaauction")
     .WithRealmImport("../Realms")
-    .WithExternalHttpEndpoints()
-    .WithEnvironment("KC_HTTP_ENABLED", "true")
+    .WithEnvironment("KC_HOSTNAME", "rivendell")
     .WithEnvironment("KC_HOSTNAME_STRICT", "false")
-    .WithEnvironment("KC_HTTP_RELATIVE_PATH", "/")
     .WithEnvironment("KC_HOSTNAME_STRICT_HTTPS", "false")
-    .WithEnvironment("VIRTUAL_HOST", "id.galaauction.local")
-    .WithEnvironment("VIRTUAL_PORT", "8080");
+    .WithEnvironment("KC_HTTP_ENABLED", "true")
+    .WithEnvironment("KC_PROXY_HEADERS", "xforwarded")
+    .WithEnvironment("KC_HOSTNAME_PORT", "8001")
+    .WithEnvironment("KC_HTTP_RELATIVE_PATH", "/auth")
+    .WithEnvironment("KC_HEALTH_ENABLED", "true")
+    .WithEndpoint("http", e => {
+        e.Port = 6001;
+        e.TargetHost = "0.0.0.0";
+        e.IsExternal = true;
+    })
+    .WithExternalHttpEndpoints()
+    .WithLifetime(ContainerLifetime.Persistent); // Keep running across restarts
+
+
 #pragma warning restore ASPIRECERTIFICATES001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 var postgres = builder.AddPostgres("postgres")
@@ -33,7 +43,7 @@ var backend = builder.AddProject<Projects.GalaAuction_Server>("galaauction-serve
     .WithExternalHttpEndpoints()
     .WithReference(keycloak)
     .WithReference(galaAuctionDb)
-    .WaitFor(keycloak)
+    // Removed .WaitFor(keycloak) - backend will retry connection to Keycloak
     .WaitFor(postgres);
 
 // Create the frontend container and reference the backend container and keycloak container
@@ -42,7 +52,7 @@ var frontend = builder.AddJavaScriptApp("frontend", "../galaauction.client")
     .WithExternalHttpEndpoints()
     .WithReference(backend)
     .WithReference(keycloak)
-    .WithEnvironment("VITE_KEYCLOAK_URL", keycloak.GetEndpoint("http"))
+//    .WithEnvironment("VITE_KEYCLOAK_URL", keycloak.GetEndpoint("http"))
     .WithArgs("--host")
     .WaitFor(backend);
 
@@ -71,6 +81,7 @@ backend.WithReference(frontend);
 
 var yarp = builder.AddYarp("gateway")
     .WithReference(backend)
+    .WithReference(keycloak)
     .WithConfiguration(yarpBuilder =>
     {
         // Route API calls to backend, removing /api prefix
@@ -78,10 +89,19 @@ var yarp = builder.AddYarp("gateway")
             .WithTransformPathRemovePrefix("/api")
             .WithOrder(1);
 
+        // Route Keycloak calls through YARP - keep /auth prefix (Keycloak expects it)
+        yarpBuilder.AddRoute("/auth/{**catch-all}", keycloak)
+            .WithOrder(2);
+
         // Note: Frontend route is configured via environment variables below
         // because frontend is not a containerized resource - it runs on host machine
     })
-    .WithHostPort(8001)
+    .WithEndpoint("https", endpoint => {
+        endpoint.Port = 8001;
+        endpoint.TargetPort = 443;
+        endpoint.UriScheme = "https";
+        endpoint.TargetHost = "0.0.0.0";
+    })
     .WithExternalHttpEndpoints()
     // Frontend route configuration (host machine access)
     .WithEnvironment("ReverseProxy__Routes__frontend-route__ClusterId", "frontend-cluster")

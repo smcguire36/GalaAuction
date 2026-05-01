@@ -30,7 +30,6 @@ const PrintReceiptDialog = ({ ref }: PrintReceiptDialogProps) => {
   const contentRef = useRef(null);
   const handlePrint = useReactToPrint({ contentRef });
 
-
   useImperativeHandle(
     ref,
     () => ({

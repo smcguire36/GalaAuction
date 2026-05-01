@@ -7,6 +7,7 @@ import GuestList from "./pages/GuestList";
 import AuctionItems from "./pages/AuctionItems";
 import Closeout from "./pages/Closeout";
 import Checkout from "./pages/Checkout";
+import ReportsPage from "./pages/Reports";
 
 const routes = createBrowserRouter([
     // Routes without the main layout
@@ -46,6 +47,10 @@ const routes = createBrowserRouter([
             {
                 path: "audit",
                 element: <p>Audit Logs</p>
+            },
+            {
+                path: "reports",
+                element: <ReportsPage />
             }
         ],
     },

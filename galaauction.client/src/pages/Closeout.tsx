@@ -78,6 +78,8 @@ const Closeout = () => {
           ? Number(bidAmount)
           : null;
 
+      const item = items.find((i) => i.itemId === itemId);
+
       let bidderName = bidders.find((b) => b.bidderNumber == parsedWinningBidder)?.fullName ?? "";
       if (winningBidder !== "" && bidderName === "") {
         // Set the validation to false on the bidder number field
@@ -96,7 +98,7 @@ const Closeout = () => {
       }));
 
       // Send the updated Dto to the API to update the item in the database
-      if (parsedWinningBidder !== null || parsedBidAmount !== null) {
+      if (item?.winningBidderNumber !== parsedWinningBidder || item?.winningBidAmount !== parsedBidAmount) {
         const closeoutDto = {
           itemId: itemId,
           winningBidderNumber: parsedWinningBidder,

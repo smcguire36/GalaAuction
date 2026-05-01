@@ -43,11 +43,14 @@ builder.Services.AddAuthentication()
         options.Authority = keycloakRealmUrl;
         options.MetadataAddress = $"{keycloakRealmUrl}/.well-known/openid-configuration";
         options.TokenValidationParameters.ValidIssuers = [
-            "http://localhost:6001/realms/GalaAuction",
+            "http://localhost:6001/auth/realms/GalaAuction",
             "http://localhost:8001/auth/realms/GalaAuction",
-            "http://keycloak:8080/realms/GalaAuction",
-            "http://id.GalaAuction.local/realms/GalaAuction",
-            "https://id.GalaAuction.local/realms/GalaAuction"
+            "http://rivendell:6001/auth/realms/GalaAuction",
+            "http://rivendell:8001/auth/realms/GalaAuction",
+            "https://rivendell:8001/auth/realms/GalaAuction",
+            "http://keycloak:8080/auth/realms/GalaAuction",
+            "http://id.GalaAuction.local/auth/realms/GalaAuction",
+            "https://id.GalaAuction.local/auth/realms/GalaAuction"
         ];
         options.TokenValidationParameters.ClockSkew = TimeSpan.FromMinutes(2);
 
