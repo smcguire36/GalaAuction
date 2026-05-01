@@ -98,10 +98,15 @@ var yarp = builder.AddYarp("gateway")
     })
     .WithEndpoint("https", endpoint => {
         endpoint.Port = 8001;
-        endpoint.TargetPort = 443;
+        endpoint.TargetPort = 5001; // Kestrel's default HTTPS port
         endpoint.UriScheme = "https";
         endpoint.TargetHost = "0.0.0.0";
     })
+    // Configure custom PFX certificate for rivendell
+    .WithEnvironment("ASPNETCORE_Kestrel__Endpoints__https__Url", "https://*:5001")
+    .WithEnvironment("ASPNETCORE_Kestrel__Endpoints__https__Certificate__Path", "/app/certs/rivendell-cert.pfx")
+    .WithEnvironment("ASPNETCORE_Kestrel__Endpoints__https__Certificate__Password", "rivendell-dev-password")
+    .WithBindMount(Path.Combine(builder.AppHostDirectory, "rivendell-cert.pfx"), "/app/certs/rivendell-cert.pfx", isReadOnly: true)
     .WithExternalHttpEndpoints()
     // Frontend route configuration (host machine access)
     .WithEnvironment("ReverseProxy__Routes__frontend-route__ClusterId", "frontend-cluster")

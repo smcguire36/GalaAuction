@@ -1,0 +1,2 @@
+$password = ConvertTo-SecureString -String "rivendell-dev-password" -Force -AsPlainText
+Import-PfxCertificate -FilePath ".\rivendell-cert.pfx" -CertStoreLocation Cert:\CurrentUser\Root -Password $password

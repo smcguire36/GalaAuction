@@ -480,3 +480,4 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+/Docs/.~lock.Gala 2025-new.xlsm#
