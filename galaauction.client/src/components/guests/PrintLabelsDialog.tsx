@@ -44,7 +44,7 @@ const PrintLabelsDialog = ({ ref, onConfirm, guests }: PrintReceiptDialogProps) 
     formRef.current?.submit();
   };
 
-  const filteredGuests = guests.filter((guest) => guest.inPersonBidderNumber);
+  const filteredGuests = guests.filter((guest) => guest.tableNumber !== null && guest.tableNumber !== undefined);
   const pageSize = 30;
   const pages: GuestType[][] = [];
   for (let i = 0; i < filteredGuests.length; i += pageSize) {
