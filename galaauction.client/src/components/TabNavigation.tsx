@@ -20,10 +20,10 @@ const isDisabled = (tab: string, status: number|undefined, ): string => {
 
     switch (status) {
         case EventStatus.Setup:
-            if (tab === "closeout" || tab === "checkout" || tab === "reports") styles = disabledStyles;
+            if (tab === "closeout" || tab === "checkout") styles = disabledStyles;
             break;
         case EventStatus.Active:
-            if (tab === "closeout" || tab === "checkout" || tab === "reports") styles = disabledStyles;
+            if (tab === "closeout" || tab === "checkout") styles = disabledStyles;
             break;
         case EventStatus.Closeout:
             if (tab === "guests" || tab === "items") styles = disabledStyles;

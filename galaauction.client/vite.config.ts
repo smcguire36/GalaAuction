@@ -17,13 +17,8 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
             // allow the Docker host name that Aspire uses when forwarding requests
             // some tooling expects an `allowedHosts` setting (webpack-dev-server); adding it is harmless
             // and lets other environments allow this host when present.
-            allowedHosts: ['host.docker.internal','host.containers.internal','localhost'],
+            allowedHosts: ['host.docker.internal', 'host.containers.internal', 'localhost', 'rivendell'],
             cors: true,
-            // configure HMR host so websocket connections from the browser work when routed through Docker
-            hmr: {
-                host: 'localhost',
-                port: 5173
-            },
             proxy: {
                 '/api': {
                     target: 'http://localhost:7001',
