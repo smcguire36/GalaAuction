@@ -35,7 +35,7 @@ const AuctionCloseoutReport: React.FC = () => {
                 EVENT CLOSEOUT REPORT
       </div>
       <div className="grow overflow-y-auto  my-2">
-        <table className="table table-zebra table-pin-rows w-full border-2 border-accent rounded-lg shadow-md">
+        <table className="table table-zebra table-pin-rows w-full">
           <thead>
             <tr>
               <th colSpan={3} className="text-lg font-bold">
@@ -97,7 +97,7 @@ const AuctionCloseoutReport: React.FC = () => {
             </tr>
           </tbody>
         </table>
-        <table className="table table-zebra table-pin-rows w-full border-2 border-accent rounded-lg shadow-md">
+        <table className="table table-zebra table-pin-rows w-full ">
           <thead>
             <tr>
               <th colSpan={3} className="text-lg font-bold">

@@ -32,7 +32,7 @@ const AuctionSummaryReport: React.FC = () => {
   return (
     <div className="print:m-4 print:mt-12">
       <div className="font-bold text-xl text-center hidden print:block">
-                EVENT SUMMARY REPORT
+        EVENT SUMMARY REPORT
       </div>
       <div className="grow overflow-y-auto border-2 border-accent rounded-lg shadow-md my-2">
         <table className="table table-zebra table-pin-rows w-full border-collapse">
@@ -50,14 +50,14 @@ const AuctionSummaryReport: React.FC = () => {
             <tr>
               <td></td>
               <td className="text-left">Event Date</td>
-              <td className="text-left">{formatDate(context.event?.eventDate)}</td>
+              <td className="text-left">
+                {formatDate(context.event?.eventDate)}
+              </td>
             </tr>
             <tr>
               <td></td>
               <td className="text-left">Event Status</td>
-              <td className="text-left">
-                {context.event?.eventStatusText}
-              </td>
+              <td className="text-left">{context.event?.eventStatusText}</td>
             </tr>
             <tr>
               <th colSpan={3} className="text-lg font-bold">
@@ -73,13 +73,13 @@ const AuctionSummaryReport: React.FC = () => {
               <td></td>
               <td className="text-left">Total In-Person Guests</td>
               <td>
-                {guests.filter((guest) => guest.inPersonBidderNumber).length}
+                {guests.filter(guest => guest.inPersonBidderNumber).length}
               </td>
             </tr>
             <tr>
               <td></td>
               <td className="text-left">Total Online Only Bidders</td>
-              <td>{guests.filter((guest) => !guest.tableNumber).length}</td>
+              <td>{guests.filter(guest => !guest.tableNumber).length}</td>
             </tr>
             <tr>
               <th colSpan={3} className="text-lg font-bold">
@@ -87,36 +87,94 @@ const AuctionSummaryReport: React.FC = () => {
               </th>
             </tr>
             <tr>
-              <td></td>
-              <td className="text-left">Total Auction Items</td>
-              <td>{auctionItems.length}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td className="text-left">Total Items Sold</td>
-              <td>
-                {auctionItems.filter((item) => item.winningBidderNumber).length}
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td className="text-left">Total Amount Sold</td>
-              <td>
-                $
-                {auctionItems
-                  .reduce((total, item) => total + item.winningBidAmount, 0)
-                  .toFixed(2)}
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td className="text-left">Total Items Unpaid</td>
-              <td>
-                {
-                  auctionItems.filter(
-                    (item) => item.winningBidderNumber && !item.isPaid,
-                  ).length
-                }
+              <td colSpan={3} className="p-2">
+                <div className="isolate mx-36">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr>
+                        <td className="border-b border-base-300 text-left py-2 px-3 font-bold"></td>
+                        <td className="border-b border-base-300 text-center py-2 px-3 font-bold">Items</td>
+                        <td className="border-b border-base-300 text-right py-2 px-3 font-bold">Amount</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="odd:bg-base-200">
+                        <td className="py-2 px-3">Total Auction Items</td>
+                        <td className="text-center py-2 px-3">{auctionItems.length}</td>
+                        <td className="text-right py-2 px-3"></td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 px-3">Total Items Without Bids</td>
+                        <td className="text-center py-2 px-3">
+                          {auctionItems.filter(item => !item.winningBidderNumber).length}
+                        </td>
+                        <td className="text-right py-2 px-3"></td>
+                      </tr>
+                      <tr className="odd:bg-base-200">
+                        <td className="py-2 px-3">Total Items Sold</td>
+                        <td className="text-center py-2 px-3">
+                          {
+                            auctionItems.filter(item => item.winningBidderNumber)
+                              .length
+                          }
+                        </td>
+                        <td className="text-right py-2 px-3">
+                          $
+                          {auctionItems
+                            .reduce(
+                              (total, item) => total + item.winningBidAmount,
+                              0,
+                            )
+                            .toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr className="odd:bg-base-200">
+                        <td className="py-2 px-3">Total Items Paid</td>
+                        <td className="text-center py-2 px-3">
+                          {
+                            auctionItems.filter(
+                              item => item.winningBidderNumber && item.isPaid,
+                            ).length
+                          }
+                        </td>
+                        <td className="text-right py-2 px-3">
+                          $
+                          {auctionItems
+                            .filter(
+                              item => item.winningBidderNumber && item.isPaid,
+                            )
+                            .reduce(
+                              (total, item) => total + item.winningBidAmount,
+                              0,
+                            )
+                            .toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr className="odd:bg-base-200">
+                        <td className="py-2 px-3">Total Items Unpaid</td>
+                        <td className="text-center py-2 px-3">
+                          {
+                            auctionItems.filter(
+                              item => item.winningBidderNumber && !item.isPaid,
+                            ).length
+                          }
+                        </td>
+                        <td className="text-right py-2 px-3">
+                          $
+                          {auctionItems
+                            .filter(
+                              item => item.winningBidderNumber && !item.isPaid,
+                            )
+                            .reduce(
+                              (total, item) => total + item.winningBidAmount,
+                              0,
+                            )
+                            .toFixed(2)}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </td>
             </tr>
 
