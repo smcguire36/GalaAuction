@@ -34,8 +34,8 @@ const AuctionCloseoutReport: React.FC = () => {
       <div className="font-bold text-xl text-center hidden print:block">
                 EVENT CLOSEOUT REPORT
       </div>
-      <div className="grow overflow-y-auto border-2 border-accent rounded-lg shadow-md my-2">
-        <table className="table table-zebra table-pin-rows w-full border-collapse">
+      <div className="grow overflow-y-auto  my-2">
+        <table className="table table-zebra table-pin-rows w-full border-2 border-accent rounded-lg shadow-md">
           <thead>
             <tr>
               <th colSpan={3} className="text-lg font-bold">
@@ -52,6 +52,9 @@ const AuctionCloseoutReport: React.FC = () => {
                 <th className="text-center">
                     Items Won
                 </th>
+                <th className="text-center">
+                    Unpaid Auction Number(s)
+                </th>
                 <th className="text-right">
                     Amount Owed
                 </th>
@@ -66,8 +69,12 @@ const AuctionCloseoutReport: React.FC = () => {
                 (total, item) => total + (item.isPaid ? 0 : item.winningBidAmount),
                 0,
               );
-              if (winningBids.length === 0) {
-                return null;        // Skip guests with no winning bids
+              const unpaidItems = winningBids.reduce(
+                (acc, item) => acc + (item.isPaid ? acc : acc !== "" ? ", " + item.itemNumber : item.itemNumber),
+                "",
+              );
+              if (winningBids.length === 0 || amountOwed === 0) {
+                return null;        // Skip guests with no winning bids or no amount owed
               }
               return (
                 <tr key={guest.guestId}>
@@ -78,6 +85,7 @@ const AuctionCloseoutReport: React.FC = () => {
                     {guest.onlineBidderNumber ? guest.onlineBidderNumber : ""}
                   </td>
                   <td className="text-center">{winningBids.length}</td>
+                  <td className="text-center">{unpaidItems}</td>
                   <td className="text-right">${amountOwed.toFixed(2)}</td>
                 </tr>
               );
@@ -88,6 +96,8 @@ const AuctionCloseoutReport: React.FC = () => {
               <td className="bg-base-100"></td>
             </tr>
           </tbody>
+        </table>
+        <table className="table table-zebra table-pin-rows w-full border-2 border-accent rounded-lg shadow-md">
           <thead>
             <tr>
               <th colSpan={3} className="text-lg font-bold">
