@@ -34,7 +34,13 @@ var keycloak = builder.AddKeycloak("keycloak")
 
 var postgres = builder.AddPostgres("postgres")
     .WithDataVolume("postgres-galaauction")
-    .WithPgAdmin(admin => admin.WithHostPort(5050));
+    .WithPgAdmin(admin => {
+        admin.WithHostPort(5050);
+        admin.WithBindMount(
+            source: "/Users/mcguire/Development/GalaAuction/Backups", 
+            target: "/var/lib/pgadmin/backups"
+        );
+    });
 var galaAuctionDb = postgres.AddDatabase("GalaAuctionDb");
 
 // Create the backend container and reference the keycloak container
