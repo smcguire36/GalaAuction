@@ -37,7 +37,7 @@ var postgres = builder.AddPostgres("postgres")
     .WithPgAdmin(admin => {
         admin.WithHostPort(5050);
         admin.WithBindMount(
-            source: "/Users/mcguire/Development/GalaAuction/Backups", 
+            source: "/Users/mcguire/Development/GalaAuction/Postgres-Backups", 
             target: "/var/lib/pgadmin/backups"
         );
     });
